@@ -37,7 +37,7 @@ interests:
 # Education to show in About widget
 education:
   courses:
-    - course: PhD in Artificial Intelligence
+    - course: Master in Artificial Intelligence and Data Design
       institution: College of Design and Innovation, Tongji University
       year: 2023-now
     # - course: MEng in Artificial Intelligence
