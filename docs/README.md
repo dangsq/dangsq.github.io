@@ -42,7 +42,7 @@ I consider myself to have an interdisciplinary background and have a strong inte
 <font size="+2">Publications</font>
 <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
   <div style="flex: 0 0 200px; margin-right: 20px;">
-    <img src="./figs/emoticrafter.png" alt="" style="width: 100%; height: auto;">
+    <!-- <img src="./figs/emoticrafter.png" alt="" style="width: 100%; height: auto;"> -->
   </div>
   <div>
     <font size="+1">EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model</font>
@@ -54,7 +54,7 @@ I consider myself to have an interdisciplinary background and have a strong inte
 
 <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
   <div style="flex: 0 0 200px; margin-right: 20px;">
-    <img src="./figs/picme.png" alt="" style="width: 100%; height: auto;">
+    <!-- <img src="./figs/picme.png" alt="" style="width: 100%; height: auto;"> -->
   </div>
   <div>
     <font size="+1"> Supporting Product Personalization through Stylized Head Portraits</font>
@@ -66,7 +66,7 @@ I consider myself to have an interdisciplinary background and have a strong inte
 
 <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
   <div style="flex: 0 0 200px; margin-right: 20px;">
-    <img src="./figs/clipfaceshop.png" alt="" style="width: 100%; height: auto;">
+    <!-- <img src="./figs/clipfaceshop.png" alt="" style="width: 100%; height: auto;"> -->
   </div>
   <div>
     <font size="+1">Bring Clipart to Life</font>
