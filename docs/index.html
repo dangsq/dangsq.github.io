@@ -11,17 +11,19 @@
   <style>
     h1, h2, h3, h4, h5, h6 {
       font-family: 'Merriweather', serif;
+      transition: all 0.2s ease-in-out;
     }
     body{
     background-color:rgb(238, 243, 225); /* 浅灰色背景，可根据需要修改颜色值 */
     margin-top: 0;
     padding-top: 0;
+    transition: all 0.2s ease-in-out;
     /* padding:0pt 250pt 0pt  250pt; */
     /* margin:0pt 250pt 0pt  250pt; */
     /* max-width: 900px;  设置最大宽度为900px，可根据需要调整 */
     /* padding: 0px; 添加内边距，避免内容紧贴边缘 */
     font-family: 'Merriweather', serif;
-    font-size: 10pt;
+    font-size: 9pt;
     color: rgb(63, 55, 90);
 }
   .markdown-section, content{
@@ -40,14 +42,21 @@
   100% { transform: rotate(0deg); }
 }
 
-li:hover {
-  background: rgba(0,0,0,0.05);
+li {
+  transition: background-color 0.2s ease-in-out;
+  color: rgb(63, 55, 90);
 }
 
-li:hover a {
+li:hover {
+  background: rgb(63, 55, 90);
+  color: rgba(255, 255, 255);
+ 
+}
+
+/* li:hover a {
   transform: scale(1.25);
   color: #2b3035 !important;
-}
+} */
 @keyframes typing {
   0% { width: 0; }
   30% { width: 9ch; }
@@ -62,11 +71,49 @@ li:hover a {
   90% { width: 0; }
   100% { width: 0; }
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body > * {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* 分层延迟 */
+body > div:nth-child(1) { animation-delay: 0.2s; }
+body > div:nth-child(2) { animation-delay: 0.4s; }
+.markdown-section * { 
+  animation: fadeIn 0.4s ease-out forwards;
+  animation-delay: 0.6s;
+}
   </style>
 </head>
 <body>
   <br/>
-  <font size="+3" style=" top: 70px; left: 0px; z-index: 100;">&ensp;&ensp;&ensp;🦋 Shengqi &ensp;&ensp;</font>
+<div style="display: flex; justify-content: space-between; align-items: center;">
+  <font size="+3" style="z-index: 100;">&ensp;&ensp;&ensp;🦋 Shengqi &ensp;&ensp;</font>
+  <div style="margin-left: auto;">
+    <div style="padding: 0px 15px; border-radius: 8px; margin: 0px 0; color:rgb(88, 59, 184)">
+        <ul style="display: inline-block; list-style-type: none; margin: 0; padding: 0; display: flex; gap: 0px;">
+          <a href="#/README.md#pub" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none;  font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;"> <center> About </br>关于我</center></li></a>
+          <a href="#/pub.md#pub" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px; padding: 8px 12px; border-radius: 10px;">    <center>Publications </br>论文</center>     </li></a>
+         <a href="#/proj.md#project" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;">      <center>Projects&Internship </br>项目&实习经历</center>    </li></a>
+         <a href="#/blogs.md#" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px; padding: 8px 12px; border-radius: 10px;"><center>Blogs</br> 博客</center>        </li></a>
+           <a href="#/works.md#" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none;  font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;">     <center>Works </br>作品</center>     </li></a>
+        </ul>
+    </div>
+  </div>
+</div>
+<br/><br/><br/>
+
+  <center><font style="display: inline-block; font-size: 50pt; color: rgb(89, 78, 126); animation: wave 2s infinite; transform-origin: 70% 70%;"> 👋 </font><font style="font-style: italic; font-size: 50pt; color: rgb(89, 78, 126);"> <font style="font-style: italic; font-size: 50pt; color: rgb(89, 78, 126);"> Hello, here is  <br/> </font>
+    <span style="display: inline-block; overflow: hidden; border-right: 3px solid #666; white-space: nowrap; animation: typing 3s steps(8) infinite;">
+      Shengqi.
+    </span></font> <font style="font-size: 50pt; color: rgb(89, 78, 126); animation: wave 2s infinite; transform-origin: 70% 70%;">  </font></center>
+  
   <div id="app">
     
   </div>
@@ -83,3 +130,4 @@ li:hover a {
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 </body>
 </html>
+
