@@ -9,7 +9,10 @@
 <!-- <center><font size="+3">Shengqi Dang 党圣奇</font></center> -->
 <br/>
 <br/>
-  <center><font style=" font-size: 50pt; color: rgb(89, 78, 126);"> 👋 </font><font style="font-style: italic; font-size: 50pt; color: rgb(89, 78, 126);"> Hello, here is Shengqi.</font> 🐈 🐕 🐒 🐘 🦙</center>
+  <center><font style="display: inline-block; font-size: 50pt; color: rgb(89, 78, 126); animation: wave 2s infinite; transform-origin: 70% 70%;"> 👋 </font><font style="font-style: italic; font-size: 50pt; color: rgb(89, 78, 126);"> <font style="font-style: italic; font-size: 50pt; color: rgb(89, 78, 126);"> Hello, here is  <br/> </font>
+<span style="display: inline-block; overflow: hidden; border-right: 3px solid #666; white-space: nowrap; animation: typing 3s steps(8) infinite;">
+  Shengqi.
+</span></font> <font style="font-size: 50pt; color: rgb(89, 78, 126); animation: wave 2s infinite; transform-origin: 70% 70%;">  </font></center>
 <br/>
 <br/>
 <br/>
@@ -30,11 +33,11 @@ I consider myself to have an interdisciplinary background and have a strong inte
   
   <div style="padding: 15px; border-radius: 8px; margin: 20px 0; color:rgb(63, 55, 90)">
     <nav>
-      <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; gap: 25px;">
-        <li><a href="#/README.md#about" style="text-decoration: none; color: #343a40; font-weight: bold; font-size: 17px;">About</a></li>
-        <li><a href="#/README.md#pub" style="text-decoration: none; color: #343a40; font-weight: bold; font-size: 17px;">Publications</a></li>
-        <li><a href="#/README.md#project" style="text-decoration: none; color: #343a40; font-weight: bold; font-size: 17px;">Projects</a></li>
-        <li><a href="#/README.md#internship" style="text-decoration: none; color: #343a40; font-weight: bold; font-size: 17px;">Internship</a></li>
+      <ul style="display: inline-block; list-style-type: none; margin: 0; padding: 0; display: flex; gap: 0px;">
+        <li style="transition: all 0.3s ease-in-out;">          <a href="#/README.md#about" style="text-decoration: none; color: #343a40; font-weight: bold; font-size: 17px; transition: inherit; padding: 8px 12px; border-radius: 4px;">About</a></li>
+        <li style="transition: all 0.3s ease-in-out;">          <a href="#/README.md#about" style="text-decoration: none; color: #343a40; font-weight: bold; font-size: 17px; transition: inherit; padding: 8px 12px; border-radius: 4px;">Publications</a></li>
+        <li style="transition: all 0.3s ease-in-out;">          <a href="#/README.md#about" style="text-decoration: none; color: #343a40; font-weight: bold; font-size: 17px; transition: inherit; padding: 8px 12px; border-radius: 4px;">Projects</a></li>
+        <li style="transition: all 0.3s ease-in-out;">          <a href="#/README.md#about" style="text-decoration: none; color: #343a40; font-weight: bold; font-size: 17px; transition: inherit; padding: 8px 12px; border-radius: 4px;">Internship</a></li>
       </ul>
     </nav>
   </div>
@@ -142,3 +145,7 @@ I consider myself to have an interdisciplinary background and have a strong inte
     商业算法实习生<br /> <br /> 
   </div>
 </div>
+<center style="margin-top: 50px; color: #888; font-size: 12pt;">
+  © 2025 Shengqi Dang. All rights reserved.<br/>
+  版权所有 © 2025 党圣奇
+</center>

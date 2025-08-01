@@ -13,7 +13,7 @@
       font-family: 'Merriweather', serif;
     }
     body{
-    background-color:rgb(243, 225, 238); /* 浅灰色背景，可根据需要修改颜色值 */
+    background-color:rgb(238, 243, 225); /* 浅灰色背景，可根据需要修改颜色值 */
     margin-top: 0;
     padding-top: 0;
     /* padding:0pt 250pt 0pt  250pt; */
@@ -29,6 +29,39 @@
     padding-top: 0;
   max-width: 700px;  /* 设置最大宽度为900px，可根据需要调整 */
   }
+
+  @keyframes wave {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(-10deg); }
+  20% { transform: rotate(12deg); }
+  30% { transform: rotate(-10deg); }
+  40% { transform: rotate(9deg); }
+  50% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+li:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+li:hover a {
+  transform: scale(1.25);
+  color: #2b3035 !important;
+}
+@keyframes typing {
+  0% { width: 0; }
+  30% { width: 9ch; }
+  80% { width: 9ch; }
+  90% { width: 0; }
+  100% { width: 0; }
+}
+@-webkit-keyframes typing {
+  0% { width: 0; }
+  30% { width: 9ch; }
+  80% { width: 9ch; }
+  90% { width: 0; }
+  100% { width: 0; }
+}
   </style>
 </head>
 <body>
