@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Shengqi Dang</title>
+  <link rel="icon" href="./1F34E.svg">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
@@ -86,16 +87,17 @@ li:hover {
 }
 
 body > * {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fadeIn 0.8s ease-out forwards;
   opacity: 0;
 }
 
 /* 分层延迟 */
-body > div:nth-child(1) { animation-delay: 0.2s; }
-body > div:nth-child(2) { animation-delay: 0.4s; }
+body > div:nth-child(1) { animation-delay: 0.4s; }
+body > div:nth-child(2) { animation-delay: 0.6s; }
+body > div:nth-child(3) { animation-delay: 0.8s; }
 .markdown-section * { 
-  animation: fadeIn 0.4s ease-out forwards;
-  animation-delay: 0.6s;
+  animation: fadeIn 0.8s ease-out forwards;
+  /* animation-delay: 0.6s; */
 }
   </style>
 </head>
@@ -131,7 +133,8 @@ body > div:nth-child(2) { animation-delay: 0.4s; }
       themeColor: "#42b983",
       hideSidebar: true,
       name: '',
-      repo: ''
+      repo: '',
+      // logo: './docs/1F34E.svg',
     }
   </script>
   <!-- Docsify v4 -->
