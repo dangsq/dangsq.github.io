@@ -52,13 +52,14 @@
 }
 
 li {
-  transition: background-color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   color: rgb(63, 55, 90);
 }
 
 li:hover {
   background: rgb(63, 55, 90);
   color: rgba(255, 255, 255);
+  font-size: 17px;
  
 }
 
@@ -99,12 +100,22 @@ body > div:nth-child(3) { animation-delay: 0.8s; }
   animation: fadeIn 0.8s ease-out forwards;
   /* animation-delay: 0.6s; */
 }
+
+font[size="+3"]:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.15));
+  cursor: pointer;
+}
+/* font[size="+3"] {
+
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-block;
+} */
   </style>
 </head>
 <body>
   <br/>
 <div style="display: flex; justify-content: space-between; align-items: center;">
-  <font size="+3" style="z-index: 100;">&ensp;&ensp;&ensp;🦋 Shengqi &ensp;&ensp;</font>
+  <font size="+3" style="z-index: 100; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-block;">&ensp;&ensp;&ensp;🦋 Shengqi &ensp;&ensp;</font>
   <div style="margin-left: auto;">
     <div style="padding: 0px 15px; border-radius: 8px; margin: 0px 0; color:rgb(88, 59, 184)">
         <ul style="display: inline-block; list-style-type: none; margin: 0; padding: 0; display: flex; gap: 0px;">
