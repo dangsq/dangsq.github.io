@@ -14,14 +14,22 @@
       transition: all 0.2s ease-in-out;
     }
     body{
-    background-color:rgb(238, 243, 225); /* 浅灰色背景，可根据需要修改颜色值 */
+    background-color: rgb(238, 243, 225);
+    background: 
+        repeating-linear-gradient(45deg, 
+            rgba(200, 200, 200, 0.1) 0px, 
+            rgba(200, 200, 200, 0.1) 2px,
+            transparent 2px,
+            transparent 8px),
+        repeating-linear-gradient(-45deg, 
+            rgba(200, 200, 200, 0.1) 0px, 
+            rgba(200, 200, 200, 0.1) 2px,
+            transparent 2px,
+            transparent 8px),
+        #f8f9fa;
     margin-top: 0;
     padding-top: 0;
     transition: all 0.2s ease-in-out;
-    /* padding:0pt 250pt 0pt  250pt; */
-    /* margin:0pt 250pt 0pt  250pt; */
-    /* max-width: 900px;  设置最大宽度为900px，可根据需要调整 */
-    /* padding: 0px; 添加内边距，避免内容紧贴边缘 */
     font-family: 'Merriweather', serif;
     font-size: 9pt;
     color: rgb(63, 55, 90);
