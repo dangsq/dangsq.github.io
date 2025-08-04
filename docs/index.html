@@ -15,25 +15,27 @@
       transition: all 0.2s ease-in-out;
     }
     body{
-    background-color: rgb(238, 243, 225);
+    /* background-color:  var(--bg-color1); */
     background: 
-        repeating-linear-gradient(45deg, 
-            rgba(200, 200, 200, 0.1) 0px, 
-            rgba(200, 200, 200, 0.1) 2px,
+        repeating-linear-gradient(20deg, 
+        var(--bg-color2) 0px, 
+        var(--bg-color2) 2.5px,
             transparent 2px,
             transparent 8px),
-        repeating-linear-gradient(-45deg, 
-            rgba(200, 200, 200, 0.1) 0px, 
-            rgba(200, 200, 200, 0.1) 2px,
+        /* repeating-linear-gradient(-45deg, 
+        var(--bg-color1) 0px, 
+        var(--bg-color1) 2px,
             transparent 2px,
-            transparent 8px),
-        #f8f9fa;
+            transparent 8px), */
+            var(--bg-color1);
     margin-top: 0;
     padding-top: 0;
     transition: all 0.2s ease-in-out;
     font-family: 'Merriweather', serif;
     font-size: 9pt;
-    color: rgb(63, 55, 90);
+    /* color: rgb(63, 55, 90); */
+    color: var(--text-color);
+  /* background: var(--bg-color); */
 }
   .markdown-section, content{
     margin-top: 0;
@@ -53,12 +55,12 @@
 
 li {
   transition: all 0.2s ease-in-out;
-  color: rgb(63, 55, 90);
+  color: var(--text-color);
 }
 
 li:hover {
-  background: rgb(63, 55, 90);
-  color: rgba(255, 255, 255);
+  background: rgb(255,255,255,0.3);
+  color: rgba(123,123,123);
   font-size: 17px;
   transform: scale(0.93);
   filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.15));
@@ -107,6 +109,7 @@ font[size="+3"]:hover {
   transform: scale(1.15);
   filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.15));
   cursor: pointer;
+  /* color:var(--text-color); */
 }
 /* font[size="+3"] {
 
@@ -132,10 +135,10 @@ font[size="+3"]:hover {
 </div>
 <br/><br/><br/>
 
-  <center><font style="display: inline-block; font-size: 50pt; color: rgb(89, 78, 126); animation: wave 2s infinite; transform-origin: 70% 70%;"> 👋 </font><font style="font-style: italic; font-size: 50pt; color: rgb(89, 78, 126);"> <font style="font-style: italic; font-size: 50pt; color: rgb(89, 78, 126);"> Hello, here is  <br/> </font>
+  <center><font style="display: inline-block; font-size: 50pt; color: var(--text-color); animation: wave 2s infinite; transform-origin: 70% 70%;"> 👋 </font><font style="font-style: italic; font-size: 50pt; color: var(--text-color);"> <font style="font-style: italic; font-size: 50pt; color: var(--text-color);"> Hello, here is  <br/> </font>
     <span style="display: inline-block; overflow: hidden; border-right: 3px solid #666; white-space: nowrap; animation: typing 3s steps(8) infinite;">
       Shengqi.
-    </span></font> <font style="font-size: 50pt; color: rgb(89, 78, 126); animation: wave 2s infinite; transform-origin: 70% 70%;">  </font></center>
+    </span></font> <font style="font-size: 50pt; color: var(--text-color); animation: wave 2s infinite; transform-origin: 70% 70%;">  </font></center>
   
   <div id="app">
     
@@ -149,6 +152,16 @@ font[size="+3"]:hover {
       repo: '',
       // logo: './docs/1F34E.svg',
     }
+    let isDark = true;
+    document.body.style.setProperty('--text-color', isDark ? 'rgb(63, 55, 90)' : 'rgb(240,240, 150)');
+    document.body.style.setProperty('--bg-color1', isDark ? 'rgb(200, 250, 180)' : 'rgb(0, 0, 100)');
+    document.body.style.setProperty('--bg-color2', isDark ? '#f8f9fa': 'rgb(63, 55, 90)');
+    document.querySelector('font[size="+3"]').addEventListener('click', () => {
+      isDark = !isDark;
+      document.body.style.setProperty('--text-color', isDark ? 'rgb(63, 55, 90)' : 'rgb(240,240, 150)');
+      document.body.style.setProperty('--bg-color1', isDark ? 'rgb(200, 250, 180)' : 'rgb(0, 0, 80)');
+      document.body.style.setProperty('--bg-color2', isDark ? '#f8f9fa': 'rgb(22, 55, 90)');
+    });
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
