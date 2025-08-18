@@ -1,12 +1,14 @@
 <span id="pub"></span>
 <font size="+2">Publications</font>
+<br /><br /><br />
+<font size="+1">Conference</font>
     <br /><br />
 <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
   <!-- <div style="flex: 0 0 200px; margin-right: 20px;"> -->
     <!-- <img src="./figs/emoticrafter.png" alt="" style="width: 100%; height: auto;"> -->
   <!-- </div> -->
   <div>
-    <font size="+1">EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model</font>
+    <font size="+1"><a href = "">EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model</a></font>
     <br /><br />
     International Conference on Computer Vision (ICCV), 2025 (accepted) <br /> <br />
     Shengqi Dang*, Yi He*, Long Ling, Ziqing Qian, Nanxuan Zhao, Nan Cao  <br /> <br />
@@ -14,7 +16,6 @@
     <!-- Controllable Emotional Image Generation -->
   </div>
 </div>
-
 <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
   <!-- <div style="flex: 0 0 200px; margin-right: 20px;"> -->
     <!-- <img src="./figs/picme.png" alt="" style="width: 100%; height: auto;"> -->
@@ -43,4 +44,26 @@
     <!-- Photo Editing Algorithm Based on Clipart Interaction -->
     <!-- <br /> <br /> -->
   </div>
+</div>
+
+<br />
+
+<font size="+1">Journals</font>
+
+<div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+  <!-- <div style="flex: 0 0 200px; margin-right: 20px;"> -->
+    <!-- <img src="./figs/emoticrafter.png" alt="" style="width: 100%; height: auto;"> -->
+  <!-- </div> -->
+  <div>
+    <font size="+1"><a href = "https://dl.acm.org/doi/10.1145/3748515"> MV-Crafter: An Intelligent System for Music-guided Video Generation</a></font>
+    <br /><br />
+    ACM Transactions on Interactive Intelligent Systems, 2025  <br /> <br />
+    Chuer Chen, Shengqi Dang, Yuqi Liu, Nanxuan Zhao, Yang Shi, Nan Cao  <br /> <br />
+    <!-- 智能可控的情感化图像生成  -->
+    <!-- Controllable Emotional Image Generation -->
+  </div>
+</div>
+
+
+
 </div>
