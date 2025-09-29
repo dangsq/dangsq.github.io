@@ -1,48 +1,155 @@
 <span id="project"></span>
-<font size="+2">Projects&Internship</font>
-<div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-  <div style="flex: 0 0 200px; margin-right: 20px;">
-    <!-- <img src="./figs/clipfaceshop.png" alt="" style="width: 100%; height: auto;"> -->
-  </div>
-  <div>
-    <font size="+1">智能音乐视频生成</font>
-    <br /><br />
-    生成节奏对齐，语义清晰的音乐视频<br /> <br />
-    <!-- Nanxuan Zhao, Shengqi Dang, Hexun Lin, Yang Shi, Nan Cao  <br /> <br /> -->
-  </div>
-</div>
-<br/>
 
-<div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-  <div style="flex: 0 0 200px; margin-right: 20px;">
-    <!-- <img src="./figs/clipfaceshop.png" alt="" style="width: 100%; height: auto;"> -->
+<!-- Project 1 -->
+<div class="project">
+  <div class="project-header">
+    <div class="project-meta">
+      <h3 class="project-title">
+        LLM长短期记忆存储及任务规划 <br>
+        Research on LLM Long Short Term Memory Storage and Task Planning
+      </h3>
+      <div class="project-sub">李雪琛，刘雨绮，党圣奇 | 2023 fall</div>
+    </div>
   </div>
-  <div>
-    <font size="+1">科技树造型设计</font>
-    <br /><br />
-   通过可视化分析历史发展规律，辅助设计人类科技树<br /> <br /> 
-  </div>
-</div>
 
-<div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-  <div style="flex: 0 0 200px; margin-right: 20px;">
-    <!-- <img src="./figs/clipfaceshop.png" alt="" style="width: 100%; height: auto;"> -->
+  <div id="proj-llm" class="project-summary">
+    <span>交互设计</span>
+    <span>智能体</span>
+    <span>大语言模型</span>
+    <span>用户界面设计</span>
+    <br/><br/>
+    大语言模型的出现让人们看到了解决复杂问题的可能。然而，受限于其自身的限制（幻觉,记忆有限，以及交互方式单一等问题），其在实际应用中往往会遇到一些挑战。 
+    我们通过设计交互方式，让人类可以参与到大语言模型的记忆管理，并使用工作流的方式对模型的记忆进行整理和规划，从而实现更高效的记忆管理和任务规划。
   </div>
-  <div>
-    <font size="+1">科大讯飞 (IFLYTEK)</font>
-    <br /><br />
-     助理算法工程师<br /> <br /> 
-  </div>
-</div>
 
-<div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-  <div style="flex: 0 0 200px; margin-right: 20px;">
-    <!-- <img src="./figs/clipfaceshop.png" alt="" style="width: 100%; height: auto;"> -->
-  </div>
-  <div>
-    <font size="+1">小红书 (REDBOOK)</font>
-    <br /><br />
-    商业算法实习生<br /> <br /> 
+  <button class="project-toggle" aria-expanded="false" aria-controls="proj-llm-details"> About More / 详情 </button>
+
+  <div id="proj-llm-details" class="project-details" aria-hidden="true">
+    <div class="md-carousel" data-autoplay="true" data-interval="3500">
+      <div class="md-slides">
+        <img src="./figs/zz/Slide 16_9 - 81.jpg" alt="图片1">
+        <img src="./figs/zz/Slide 16_9 - 117.jpg" alt="图片2">
+        <img src="./figs/zz/Slide 16_9 - 118.jpg" alt="图片3">
+        <img src="./figs/zz/Slide 16_9 - 119.jpg" alt="图片4">
+        <img src="./figs/zz/Slide 16_9 - 120.jpg" alt="图片5">
+        <img src="./figs/zz/Slide 16_9 - 139.jpg" alt="图片6">
+        <img src="./figs/zz/Slide 16_9 - 145.jpg" alt="图片7">
+      </div>
+    </div>
   </div>
 </div>
 
+<!-- Project 2 -->
+<div class="project">
+  <div class="project-header">
+    <div class="project-meta">
+      <h3 class="project-title">
+        文字洪流 <br>
+        TORRENT OF WORDS
+      </h3>
+      <div class="project-sub">倪豪，何一，党圣奇 | 2023 winter</div>
+    </div>
+  </div>
+
+  <div id="proj-tt" class="project-summary">
+    <span>体验设计</span>
+    <span>视觉艺术</span>
+    <span>粒子模拟 / 流体模拟</span>
+    <span>Unity</span>
+    <br/><br/>
+    生成式 AI 的时代，语言与文字已不再是人类的特权。如同新摩尔定律所述的那样，大语言模型所产生的文字和其中蕴含的情感、观点、知识、智慧正不断膨胀，终有一天会超过全体人类所产生的文字量。
+    从第一次使用 GPT，惊喜之余担心被取代的错愕，到未来的某一天，大模型能替代某人说出一句让自己铭记一生的话。我们逐渐意识到，我们需要重新审视和自己和文字之间的连接。
+    在这个作品中，我们希望通过一个多端的可交互程序，使观众在文字的洪流沉浸体验，寻找人和语言之间的新关系。
+  </div>
+
+  <button class="project-toggle" aria-expanded="false" aria-controls="proj-tt-details"> About More / 详情 </button>
+
+  <div id="proj-tt-details" class="project-details" aria-hidden="true">
+    <video controls style="width:100%; height:auto; display:block;" poster="./figs/Slide 16_9 - 1.jpg">
+      <source src="./figs/artg_269s1-yaml3_video.mp4" type="video/mp4">
+      您的浏览器不支持 video 标签。
+    </video>
+  </div>
+</div>
+
+<!-- Project 3 -->
+<div class="project">
+  <div class="project-header">
+    <div class="project-meta">
+      <h3 class="project-title">radical run run run</h3>
+      <div class="project-sub">倪豪，叶婧鑫，党圣奇 | 2024 spring & summer</div>
+    </div>
+  </div>
+
+  <div id="proj-rr" class="project-summary">
+    <span>游戏设计</span>
+    <span>算法设计</span>
+    <span>传统文化</span>
+    <br/><br/>
+    许多外国人发现学习中文是一项具有挑战性的任务，尤其是汉字。即使是一些中国人，由于长时间使用电脑打字，也会发现在写字时偶尔忘记某个汉字的写法。我们的游戏旨在为用户提供一个轻松、愉快的学习途径，用户利用碎片时间来玩游戏，他们既可以打发时间，也可以提高的汉字识别和书写能力。
+  </div>
+
+  <button class="project-toggle" aria-expanded="false" aria-controls="proj-rr-details"> About More / 详情 </button>
+
+  <div id="proj-rr-details" class="project-details" aria-hidden="true">
+    <img src="./figs/Slide 16_9 - 26.png" alt="radical run preview" style="width:100%; height:auto; display:block; border-radius:6px;">
+  </div>
+</div>
+
+<!-- Project 4: stable diffusion（已整理样式） -->
+<div class="project">
+  <div class="project-header">
+    <div class="project-meta">
+      <h3 class="project-title">stable diffusion 如何想象图像 -- 一段数据可视化之旅</h3>
+      <div class="project-sub">倪豪，党圣奇 | 2023 fall</div>
+    </div>
+  </div>
+
+  <div id="proj-sd" class="project-summary">
+    <span>信息设计</span>
+    <span>可视化</span>
+    <span>前端</span>
+    <span>生成式模型</span>
+    <br/><br/>
+    移步到 sd-vis.ioclab.app 概览内容（以下网页嵌入可能会出现自适应问题）。
+  </div>
+
+  <button class="project-toggle" aria-expanded="false" aria-controls="proj-sd-details"> About More / 详情 </button>
+
+  <div id="proj-sd-details" class="project-details" aria-hidden="true">
+    <div style="width:100%; max-width:100%; height:400px; border-radius:8px; overflow:hidden;">
+      <iframe
+        src="https://sd-vis.ioclab.app/"
+        style="width:100%; height:100%; border:none;"
+        allowfullscreen
+        loading="lazy"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- Project 5: Picme（已整理样式） -->
+<div class="project">
+  <div class="project-header">
+    <div class="project-meta">
+      <h3 class="project-title">Picme 个性化内容定制系统</h3>
+      <div class="project-sub">彭也纯，党圣奇，石洋，曹楠，赵南轩 | 2022 fall</div>
+    </div>
+  </div>
+
+  <div id="proj-picme" class="project-summary">
+    <span>交互设计</span>
+    <span>内容定制</span>
+    <span>卡通头像生成</span>
+    <br/><br/>
+    个性化产品帮助我们提升自我认识以及有助于自我表达，基于此，我们利用深度学习模型设计了头像照片到卡通头像的转化系统，并应用到个性化内容定制系统中。
+  </div>
+
+  <button class="project-toggle" aria-expanded="false" aria-controls="proj-picme-details"> About More / 详情 </button>
+
+  <div id="proj-picme-details" class="project-details" aria-hidden="true">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <img src="./figs/01.png" alt="Picme 01" style="width:100%; height:auto; border-radius:6px;">
+      <img src="./figs/02.png" alt="Picme 02" style="width:100%; height:auto; border-radius:6px;">
+    </div>
+  </div>
+</div>

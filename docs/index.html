@@ -9,12 +9,26 @@
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <canvas id="algo-bg" aria-hidden="true"></canvas>
   <style>
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3, h4, h5, h6, span{
       font-family: 'Merriweather', serif;
       transition: all 0.2s ease-in-out;
       color: var(--text-color);
     }
+    #algo-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* 放在内容下方 */
+    pointer-events: none;
+    display: block;
+    opacity: 0.95; /* 可调，微微透明以保留现有背景颜色 */
+    transition: opacity 300ms ease;
+  }
+  /* 如果你有暗色/亮色切换，可配合 body.data-theme 或 CSS 变量 */
+  body[data-theme="dark"] #algo-bg { opacity: 0.75; }
     body{
     /* background-color:  var(--bg-color1); */
     background: 
@@ -54,14 +68,14 @@ body {
   );
   font-family: 'Merriweather', serif;
   font-size: 9pt;
-  background: 
+  /* background: 
     repeating-linear-gradient(
       90deg,
       var(--bg-color) 0%,
       var(--bg-color) 100%
     ),
     var(--light-bg),
-    var(--dark-bg);
+    var(--dark-bg); */
   background-size: 100% 100%, 40px 40px, 40px 40px;
   animation: curtain 12s linear infinite;
   color: var(--text-color);
@@ -186,21 +200,106 @@ font[size="+3"].active::before {
 
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-block;
 } */
+ /* project card */
+.project{border-radius:10px;padding:12px;margin:18px 0;color:var(--text-color);}
+.project-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.project-summary span{background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;}
+.project-meta{flex:1;min-width:0}
+.project-title{margin:0;font-size:1.15rem;color:var(--text-color);}
+.project-title h3{color:var(--text-color);}
+.project-sub{color:var(--text-color);font-size:.9rem;margin-top:6px}
+
+/* toggle button */
+.project-toggle{border:0;background: rgba(0,0,0,0.0); cursor:pointer;font-family: 'Merriweather', serif; color:rgb(108, 72, 199)}
+.project-toggle:focus{outline:3px solid rgba(0,123,255,0.15)}
+
+/* summary */
+.project-summary{margin-top:10px;color:var(--text-color);}
+
+/* details (collapsible) */
+.project-details{overflow:hidden;height:0;transition:height 320ms ease, opacity 250ms ease;padding:0 0;opacity:0}
+.project-details.open{opacity:1;padding:12px 0 0 0}
+
+/* 内部媒体样式，与你现有样式兼容 */
+.md-carousel{margin:10px 0}
+/* .md-slides{display:flex;transition:transform .6s ease} */
+.md-slide{min-width:100%}
+.md-slide img{width:100%;height:320px;object-fit:cover;border-radius:6px}
+
+/* small screens */
+@media (max-width:600px){
+  .md-slide img{height:200px}
+  .project-title{font-size:1rem}
+}
+:root{
+  --frost-blur: 6px;              /* 模糊强度（可调 2px..12px） */
+  --frost-bg-light: rgba(255,255,255,0.38); /* 明亮主题遮罩色 */
+  --frost-bg-dark: rgba(12,12,18,0.36);     /* 暗色主题遮罩色 */
+  --frost-border: rgba(255,255,255,0.08);   /* 轻微边框/高光 */
+  --frost-padding: 10px;
+}
+
+/* 应用于希望有毛玻璃的容器 */
+.frost {
+  backdrop-filter: blur(var(--frost-blur));
+  -webkit-backdrop-filter: blur(var(--frost-blur));
+  background-clip: padding-box; /* 防止半透明边框被滤镜分享到内部 */
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(12,12,20,0.06);
+  border: 1px solid var(--frost-border);
+  padding: var(--frost-padding);
+  /* 让背景的颜色能被 backdrop-filter 渲染 */
+  background-color: var(--frost-bg-light);
+  transition: background-color 200ms ease, backdrop-filter 200ms ease, opacity 160ms ease;
+  will-change: backdrop-filter, background-color, transform;
+}
+
+/* 针对暗模式自动切换遮罩色 */
+body[data-theme="dark"] .frost {
+  background-color: var(--frost-bg-dark);
+  border: 1px solid rgba(0,0,0,0.28);
+}
+
+/* 应用在特定页面区域 / 更大面板的轻量变体（可选） */
+.frost-strong { --frost-blur: 10px; --frost-bg-light: rgba(255,255,255,0.48); }
+.frost-subtle { --frost-blur: 3px; --frost-bg-light: rgba(255,255,255,0.18); }
+
+/* 语义：对标题、导航、正文块分别微调边距和圆角（示例） */
+.header-frost { border-radius: 12px; padding: 6px 12px; }
+.content-frost { border-radius: 14px; padding: 16px; max-width: 950px; margin: 0 auto; }
+
+/* 优先考虑“减少透明/动画”的用户设置：禁用滤镜和弱效果 */
+@media (prefers-reduced-transparency: reduce), (prefers-reduced-motion: reduce) {
+  .frost { backdrop-filter: none; -webkit-backdrop-filter: none; background-color: rgba(255,255,255,0.88); box-shadow: none; }
+  body[data-theme="dark"] .frost { background-color: rgba(18,18,20,0.9); }
+}
+
+/* 为保证移动端性能，低尺寸运行设备使用更低模糊或关闭（你可以调整阈值） */
+@media (max-width: 600px) {
+  .frost { --frost-blur: 3px; --frost-bg-light: rgba(255,255,255,0.32); }
+}
+
+/* 如果你想只在文字周围显示“光晕”而不是整个面板，可以用 outline-halo（可选） */
+.outline-halo {
+  box-shadow: 0 4px 40px rgba(0,0,0,0.06), 0 0 40px rgba(255,255,255,0.02) inset;
+  border-radius: 8px;
+}
   </style>
 </head>
 <body>
   <br/>
 <div style="display: flex; justify-content: space-between; align-items: center;">
-  <font size="+3" style="z-index: 100; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-block;">&ensp;&ensp;&ensp;  (￫ܫ￩)</font>
+  <font size="+3" style="z-index: 100; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-block;">&ensp;&ensp;&ensp;  </font>
   <div style="margin-left: auto;">
     <div style="padding: 0px 15px; border-radius: 8px; margin: 0px 0; color:rgb(88, 59, 184)">
         <ul style="display: inline-block; list-style-type: none; margin: 0; padding: 0; display: flex; gap: 0px;">
-          <a  class="mode", style="text-decoration: none; color: #343a40;"><center> 🔅</center></a>
+          <a  class="mode", style="text-decoration: none; color: #343a40;"><center> </center></a>
           <a href="#/README.md#pub" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none;  font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;"> <center> About </br>关于我</center></li></a>
-          <a href="#/pub.md#pub" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px; padding: 8px 12px; border-radius: 10px;">    <center>Publications </br>论文</center>     </li></a>
-         <a href="#/proj.md#project" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;">      <center>Projects&Internship </br>项目&实习经历</center>    </li></a>
-         <a href="#/blogs.md#" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px; padding: 8px 12px; border-radius: 10px;"><center>Blogs</br> 博客</center>        </li></a>
-           <a href="#/works.md#" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none;  font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;">     <center>Works </br>作品</center>     </li></a>
+          <a href="#/pub.md#pub" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px; padding: 8px 12px; border-radius: 10px;">    <center>Academic
+          </br>学术</center>     </li></a>
+         <a href="#/proj.md#project" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;">      <center>Designs </br>项目/内容/产品</center>    </li></a>
+         <!-- <a href="#/blogs.md#" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px; padding: 8px 12px; border-radius: 10px;"><center>Blogs</br> 博客</center>        </li></a> -->
+           <a href="#/works.md#" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none;  font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;">     <center>Artworks </br>作品</center>     </li></a>
         </ul>
     </div>
   </div>
@@ -230,7 +329,7 @@ font[size="+3"].active::before {
   title.addEventListener('click', () => {
     title.classList.toggle('active');
     isButterfly = !isButterfly;
-    title.innerHTML = isButterfly ? '&ensp;&ensp;&ensp;   (￫ܫ￩)' : '&ensp;&ensp;&ensp; Shengqi (๑ơ ₃ ơ)♥';
+    // title.innerHTML = isButterfly ? '&ensp;&ensp;&ensp;   (￫ܫ￩)' : '&ensp;&ensp;&ensp; (๑ơ ₃ ơ)♥';
     });
     let isDark = false;
     document.body.style.setProperty('--text-color', isDark ? 'rgb(240,240, 150)':'rgb(63, 55, 90)');
@@ -252,13 +351,465 @@ else{
   document.body.style.backgroundSize = isDark ? '200% 200%, 40px 40px, 40px 40px' : '100% 100%, 40px 40px, 40px 40px';
   document.body.style.backgroundBlendMode = isDark ? 'overlay, difference' : 'overlay, difference';
     });
+
+    (function(){
+  // 简单安全的 helper：滑动展开/折叠（基于元素 scrollHeight）
+  function openDetails(el){
+    el.classList.add('open');
+    el.style.height = el.scrollHeight + 'px';
+    el.setAttribute('aria-hidden','false');
+  }
+  function closeDetails(el){
+    // 设置为自身高度再过渡到 0，避免跳动
+    el.style.height = el.scrollHeight + 'px';
+    // 强制重绘以确保 transition 生效
+    void el.offsetHeight;
+    el.style.height = '0px';
+    el.classList.remove('open');
+    el.setAttribute('aria-hidden','true');
+  }
+
+  function toggleDetails(container, details, toggleBtn){
+    const isOpen = details.classList.contains('open');
+    if(isOpen){
+      closeDetails(details);
+      toggleBtn.setAttribute('aria-expanded','false');
+      toggleBtn.textContent = ' About More /详情';
+    } else {
+      // 先关闭其它打开的
+      document.querySelectorAll('.project-details.open').forEach(openEl=>{
+        const parent = openEl.closest('.project');
+        const btn = parent && parent.querySelector('.project-toggle');
+        if(openEl !== details){ closeDetails(openEl); if(btn){ btn.setAttribute('aria-expanded','false'); btn.textContent = 'About More /详情'; } }
+      });
+      openDetails(details);
+      toggleBtn.setAttribute('aria-expanded','true');
+      toggleBtn.textContent = 'Hide /收起 ';
+      // 如果详情内有轮播需要初始化（如果使用了之前的轮播脚本）
+      if(details._initCarouselHook) details._initCarouselHook();
+    }
+  }
+
+  // 初始化单个 project block
+  function initProjectBlock(project){
+    if(project.dataset._initProject) return;
+    project.dataset._initProject = '1';
+
+    // 自动创建 id（若无）
+    const details = project.querySelector('.project-details');
+    if(!details) return;
+    if(!details.id){
+      details.id = 'proj-' + Math.random().toString(36).slice(2,9);
+    }
+
+    let toggleBtn = project.querySelector('.project-toggle');
+    if(!toggleBtn){
+      toggleBtn = document.createElement('button');
+      toggleBtn.className = 'project-toggle';
+      toggleBtn.textContent = 'About More /详情';
+      toggleBtn.setAttribute('aria-expanded','false');
+      toggleBtn.setAttribute('aria-controls', details.id);
+      project.querySelector('.project-header').appendChild(toggleBtn);
+    } else {
+      toggleBtn.setAttribute('aria-controls', details.id);
+      toggleBtn.setAttribute('aria-expanded','false');
+    }
+
+    // 初始隐藏（确保 aria 与样式同步）
+    details.style.height = '0px';
+    details.setAttribute('aria-hidden','true');
+
+    // 点击切换
+    toggleBtn.addEventListener('click', function(){
+      toggleDetails(project, details, toggleBtn);
+    });
+
+    // 键盘支持：Enter / Space 触发
+    toggleBtn.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+        e.preventDefault(); this.click();
+      }
+    });
+
+    // 当窗口 resize 时，如果是打开状态需重置高度为 scrollHeight（避免内容变化导致裁切）
+    window.addEventListener('resize', function(){
+      if(details.classList.contains('open')){
+        details.style.height = details.scrollHeight + 'px';
+      }
+    });
+
+    details._initCarouselHook = function(){
+
+    };
+  }
+
+
+  function initAllProjects(){
+    document.querySelectorAll('.project').forEach(initProjectBlock);
+  }
+
+
+  if(window.$docsify){
+    window.$docsify.plugins = window.$docsify.plugins || [];
+    window.$docsify.plugins.push(function(hook, vm){
+      hook.doneEach(function(){
+        initAllProjects();
+      });
+    });
+  } else {
+
+    document.addEventListener('DOMContentLoaded', initAllProjects);
+  }
+})();
+(function(){
+  // ------- 带种子的 RNG（mulberry32）方便复现 -------
+  function mulberry32(a) {
+    return function() {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+  }
+// `randomInt` 函数未定义，使用 `Math.floor` 和 `Math.random` 生成随机整数
+  let seed = Math.floor(Math.random() * 1000000);
+  // 配置（你可以在这里修改密度、风格混合、动画开关）
+  const config = {
+    seed: seed,                // 改变可得到不同布置
+    maxCircles: 60,           // 桌面时最大球数（小屏自动降级）
+    minRadius: 18,
+    maxRadius: 110,
+    maxAttemptsPerCircle: 300,
+    allowOverlap: 0.12,       // 允许部分重叠比例（0..1）
+    animation: true,          // 是否缓慢漂动/呼吸
+    driftSpeed: 0.004,        // 漂移速度
+    colors: null              // 如果设为 null 则从 CSS 变量生成
+  };
+
+  const canvas = document.getElementById('algo-bg');
+  const ctx = canvas.getContext('2d', { alpha: true });
+  let DPR = window.devicePixelRatio || 1;
+
+  // 读取页面 CSS 变量的颜色调色板（优雅地回落）
+  function paletteFromCSS() {
+    const cs = getComputedStyle(document.body);
+    const base = cs.getPropertyValue('--bg-color').trim() || '#FDF4E6';
+    const text = cs.getPropertyValue('--text-color').trim() || '#3f375a';
+    // 由 base 和 text 派生几个颜色（简单做法）
+    function lerpColor(a, b, t){
+      const pa = hexToRgb(a), pb = hexToRgb(b);
+      const r = Math.round(pa.r + (pb.r - pa.r) * t);
+      const g = Math.round(pa.g + (pb.g - pa.g) * t);
+      const bl = Math.round(pa.b + (pb.b - pa.b) * t);
+      return `rgb(${r},${g},${bl})`;
+    }
+    return [
+      base,
+      lerpColor(base, text, 0.08),
+      lerpColor(base, text, 0.18),
+      lerpColor(base, text, 0.30),
+      lerpColor(text, base, 0.9)
+    ];
+  }
+  function hexToRgb(hex) {
+    hex = hex.replace('#','').trim();
+    if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+    const num = parseInt(hex,16);
+    return { r: (num>>16)&255, g: (num>>8)&255, b: num&255 };
+  }
+
+  // Circle packing（拒绝采样），允许小量重叠
+  function generateCircles(width, height, rng, desiredCount) {
+    const circles = [];
+    const attemptsLimit = config.maxAttemptsPerCircle;
+    const minR = config.minRadius * (Math.min(width, height) / 900);
+    const maxR = config.maxRadius * (Math.min(width, height) / 900);
+
+    let target = desiredCount;
+    for (let i=0; i<target; i++) {
+      let placed = false;
+      for (let attempt = 0; attempt < attemptsLimit; attempt++) {
+        const r = minR + rng() * (maxR - minR);
+        const x = r + rng() * (width - 2*r);
+        const y = r + rng() * (height - 2*r);
+        let ok = true;
+        for (const c of circles) {
+          const dx = c.x - x, dy = c.y - y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          const minAllowed = c.r + r - (Math.min(c.r, r) * config.allowOverlap);
+          if (dist < minAllowed) { ok = false; break; }
+        }
+        if (ok) {
+          // 随机风格
+          const styles = ['solid', 'stroke-bold', 'rings', 'gradient', 'dashed', 'subtle-shadow'];
+          const style = styles[Math.floor(rng()*styles.length)];
+          const color = config.colors ? config.colors[Math.floor(rng()*config.colors.length)] : null;
+          circles.push({x,y,r,style,color,ox:x,oy:y,phase: rng()*Math.PI*2});
+          placed = true;
+          break;
+        }
+      }
+      // 如果一直放不下，跳出以防无限循环
+      if (!placed) break;
+    }
+    return circles;
+  }
+
+  // 渲染每个球的不同方式
+  function drawCircle(c, t) {
+    const { x, y, r, style } = c;
+    // pick color if not set
+    const colors = config.colors || paletteFromCSS();
+    const color = c.color || colors[Math.floor(Math.abs((c.x+c.y+c.r)) % colors.length)];
+
+    ctx.save();
+    // subtle compositing for richness
+    ctx.globalCompositeOperation = 'overlay';
+
+    if (style === 'solid') {
+      // 1. 半透明实心 + soft border
+      const alpha = 0.9;
+      ctx.beginPath();
+      ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fillStyle = colorWithAlpha(color, 0.65 * alpha);
+      ctx.fill();
+      // soft edge
+      ctx.lineWidth = Math.max(2, r * 0.03);
+      ctx.strokeStyle = colorWithAlpha(color, 0.12);
+      ctx.stroke();
+    } else if (style === 'stroke-bold') {
+      // 2. 粗线描边 + 透明内部（或很浅）
+      ctx.beginPath();
+      ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fillStyle = colorWithAlpha(color, 0.06);
+      ctx.fill();
+      ctx.lineWidth = Math.max(6, r * 0.14);
+      ctx.strokeStyle = colorWithAlpha(color, 0.85);
+      ctx.stroke();
+    } else if (style === 'rings') {
+      // 3. 同心圈，多圈细线
+      const rings = 3 + Math.floor(r/30);
+      for (let i=0;i<rings;i++){
+        ctx.beginPath();
+        const rr = r * (0.2 + 0.8 * (1 - i/(rings)));
+        ctx.arc(x, y, rr, 0, Math.PI*2);
+        ctx.lineWidth = Math.max(1, r * 0.02 * (1 + i*0.5));
+        ctx.strokeStyle = colorWithAlpha(color, 0.18 + i*0.06);
+        ctx.stroke();
+      }
+    } else if (style === 'gradient') {
+      // 4. 径向渐变
+      const g = ctx.createRadialGradient(x, y, r*0.15, x, y, r);
+      g.addColorStop(0, colorWithAlpha(color, 0.9));
+      g.addColorStop(0.6, colorWithAlpha(color, 0.45));
+      g.addColorStop(1, colorWithAlpha(color, 0.08));
+      ctx.beginPath();
+      ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fillStyle = g;
+      ctx.fill();
+      // subtle stroke
+      ctx.lineWidth = Math.max(1, r*0.015);
+      ctx.strokeStyle = colorWithAlpha('#000000', 0.03);
+      ctx.stroke();
+    } else if (style === 'dashed') {
+      // 5. 虚线轮廓 + 内部透明
+      ctx.beginPath();
+      ctx.setLineDash([Math.max(6, r*0.06), Math.max(4, r*0.03)]);
+      ctx.lineWidth = Math.max(4, r * 0.06);
+      ctx.strokeStyle = colorWithAlpha(color, 0.6);
+      ctx.arc(x, y, r, 0, Math.PI*2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    } else if (style === 'subtle-shadow') {
+      // 6. 带阴影的浅填充
+      ctx.beginPath();
+      ctx.shadowColor = colorWithAlpha('#000000', 0.12);
+      ctx.shadowBlur = Math.max(8, r*0.12);
+      ctx.shadowOffsetY = Math.max(2, r*0.06);
+      ctx.fillStyle = colorWithAlpha(color, 0.5);
+      ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fill();
+      // reset shadow
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+    }
+
+    ctx.restore();
+  }
+
+  function colorWithAlpha(c, a){
+    a = Math.min(a, 0.05);
+    if (!c) return `rgba(200,200,200,${a})`;
+    // if rgb() or rgba() already
+    if (c.startsWith('rgb')) return c.replace('rgb', 'rgba').replace(')', `, ${a})`);
+    if (c.startsWith('#')) {
+      const {r,g,b} = hexToRgb(c);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+    return c;
+  }
+
+  // 布局 + 动画逻辑
+  let circles = [];
+  let rng;
+  let lastTime = 0;
+  function resizeAndGenerate() {
+    DPR = window.devicePixelRatio || 1;
+    const w = Math.max(300, window.innerWidth);
+    const h = Math.max(300, window.innerHeight);
+    canvas.width = Math.round(w * DPR);
+    canvas.height = Math.round(h * DPR);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    // set colors from CSS if null
+    if (!config.colors) config.colors = paletteFromCSS();
+
+    // seed RNG
+    const seed = config.seed;
+    rng = mulberry32(seed);
+
+    // desired count based on screen size
+    let desired = config.maxCircles;
+    if (Math.min(w,h) < 600) desired = Math.max(8, Math.round(config.maxCircles * 0.28));
+    else if (Math.min(w,h) < 900) desired = Math.max(18, Math.round(config.maxCircles * 0.6));
+    // generate
+    circles = generateCircles(w, h, rng, desired);
+    // small random nudge to initial offsets
+    circles.forEach(c => {
+      c.ox = c.x; c.oy = c.y;
+      c.jitterAmp = (Math.min(w,h) / 900) * (5 + rng()*16);
+    });
+    drawFrame(0); // immediate draw
+  }
+
+  function drawFrame(ts) {
+    if (!lastTime) lastTime = ts;
+    const dt = ts - lastTime;
+    lastTime = ts;
+    const w = canvas.width / DPR, h = canvas.height / DPR;
+    // clear
+    ctx.clearRect(0,0,w,h);
+
+    // background subtle overlay (keeps original CSS variable visible)
+    ctx.save();
+    // you can change this base overlay color for tint
+    // ctx.fillStyle = colorWithAlpha(config.colors[0], 0.03);
+    // ctx.fillRect(0,0,w,h);
+    ctx.restore();
+
+    // draw circles in order (sort by radius so layering looks nice)
+    const order = circles.slice().sort((a,b)=>a.r - b.r);
+    const t = ts/1000;
+    for (const c of order) {
+      // if animation enabled, slowly drift positions (sin/cos)
+      if (config.animation) {
+        const phase = c.phase || 0;
+        const drift = config.driftSpeed * Math.max(w,h);
+        c.x = c.ox + Math.sin(t * (0.2 + (c.r%7)/10) + phase) * c.jitterAmp;
+        c.y = c.oy + Math.cos(t * (0.17 + (c.r%11)/15) + phase) * (c.jitterAmp * 0.7);
+        // gentle pulsation
+        c._animatedR = c.r * (1 + 0.02 * Math.sin(t*0.9 + phase));
+      } else {
+        c._animatedR = c.r;
+      }
+      drawCircle({x:c.x,y:c.y,r:c._animatedR,style:c.style,color:c.color}, t);
+    }
+
+    // subtle vignette or grain could be added here if wanted
+    if (config.animation) requestAnimationFrame(drawFrame);
+  }
+
+  // init + resize handler
+  window.addEventListener('resize', () => {
+    // small debounce
+    clearTimeout(window._algoBgResizeTimer);
+    window._algoBgResizeTimer = setTimeout(resizeAndGenerate, 120);
+  });
+
+  // initial run
+  resizeAndGenerate();
+
+  // expose a tiny API for devtools tweaking
+  window._algoBg = {
+    regenerate(newSeed) {
+      if (typeof newSeed === 'number') config.seed = newSeed;
+      resizeAndGenerate();
+    },
+    setAnimation(on) {
+      config.animation = !!on;
+      if (on) requestAnimationFrame(drawFrame);
+    },
+    setOpacity(o) {
+      canvas.style.opacity = o;
+    },
+    config
+  };
+
+})();
+
+(function(){
+  function applyFrost() {
+    // 选择你希望加毛玻璃的容器：可按需修改选择器
+    const selectors = [
+      ".algo-bg",
+    ];
+    const els = new Set();
+    selectors.forEach(s=>{
+      document.querySelectorAll(s).forEach(el=>{
+        // 避免把 canvas 或页面全局背景覆盖
+        if (el && el.id !== 'algo-bg' && el.tagName !== 'CANVAS') {
+          els.add(el);
+        }
+      });
+    });
+
+    // 添加类（并做少量样式微调以免布局突变）
+    els.forEach(el=>{
+      // 防止重复添加导致内部 padding 累加的问题
+      if (!el.classList.contains('frost')) {
+        el.classList.add('frost');
+        // 轻微调整背景透明度或内边距（仅当原来没有 padding 时）
+        if (!el.style.padding) el.style.padding = el.classList.contains('project') ? '10px' : '';
+        // 如果是 flex header，只加一个更小的样式
+        if (el.style.display && el.style.display.indexOf('flex') >= 0) {
+          el.classList.add('header-frost');
+        } else {
+          el.classList.add('content-frost');
+        }
+      }
+    });
+  }
+
+  // 等待 DOM ready（如果已经 ready 则立即执行）
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyFrost);
+  } else {
+    applyFrost();
+  }
+
+  // 如果你在切换主题（data-theme）后想刷新遮罩色：监听属性变化并微调
+  const observer = new MutationObserver(muts=>{
+    for(const m of muts) {
+      if (m.type === 'attributes' && m.attributeName === 'data-theme') {
+        // small reflow: reapply class to update computed styles
+        document.querySelectorAll('.frost').forEach(el=>{
+          el.style.transition = 'background-color 200ms ease';
+        });
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true });
+
+})();
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <!-- <center style="margin-top: 50px; color: #888; font-size: 12pt;">
-    © 2025 Shengqi Dang. All rights reserved.<br/>
-    版权所有 © 2025 党圣奇
-  </center> -->
+
 </body>
+<!-- <center style="margin-top: 50px; color: #888; font-size: 12pt;">
+  © 2025 Shengqi Dang. All rights reserved.<br/>
+  版权所有 © 2025 党圣奇
+</center> -->
 </html>
 
