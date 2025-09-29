@@ -66,7 +66,7 @@
 
   <div id="proj-tt-details" class="project-details" aria-hidden="true">
     <video controls style="width:100%; height:auto; display:block;" poster="./figs/Slide 16_9 - 1.jpg">
-      <source src="./figs/artg_269s1-yaml3_video.mp4" type="video/mp4">
+      <source src="./figs/zzzzzzzz.mp4" type="video/mp4">
       您的浏览器不支持 video 标签。
     </video>
   </div>
