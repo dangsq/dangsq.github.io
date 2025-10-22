@@ -8,7 +8,7 @@
     <!-- <img src="./figs/emoticrafter.png" alt="" style="width: 100%; height: auto;"> -->
   <!-- </div> -->
   <div>
-    <font size="+1"><a href = "">EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model</a></font>
+    <font size="+1"><a href = "https://openaccess.thecvf.com/content/ICCV2025/html/Dang_EmotiCrafter_Text-to-Emotional-Image_Generation_based_on_Valence-Arousal_Model_ICCV_2025_paper.html">EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model</a></font>
     <br />    <br />
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
       <span style="background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;">情感图像生成</span>
@@ -17,7 +17,7 @@
     </div>
     <br />    <br />
     
-    International Conference on Computer Vision (ICCV), 2025 (accepted) <br /> <br />
+    International Conference on Computer Vision (ICCV), 2025 <br /> <br />
     Shengqi Dang*, Yi He*, Long Ling, Ziqing Qian, Nanxuan Zhao, Nan Cao  <br /> <br />
     <!-- 智能可控的情感化图像生成  -->
     <!-- Controllable Emotional Image Generation -->
