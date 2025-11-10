@@ -17,7 +17,7 @@
     <br />    <br />
     
     Annual AAAI Conference on Artificial Intelligence (AAAI), 2026 (Accepted) <br /> <br />
-    Shengqi Dang, Fu Chai, Jiaxin Li, Chao Yuan, Wei Ye, Nan Cao  <br /> <br />
+    <strong>Shengqi Dang</strong>, Fu Chai, Jiaxin Li, Chao Yuan, Wei Ye, Nan Cao  <br /> <br />
   </div>
 </div>
 <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
@@ -32,7 +32,7 @@
     <br />    <br />
     
     Annual AAAI Conference on Artificial Intelligence (AAAI), 2026 (Accepted) <br /> <br />
-    Ziqing Qian, Jiaying Lei, Shengqi Dang, Nan Cao  <br /> <br />
+    Ziqing Qian, Jiaying Lei, <strong>Shengqi Dang</strong>, Nan Cao  <br /> <br />
   </div>
 </div>
 
@@ -49,7 +49,7 @@
     <br />    <br />
     
     International Conference on Computer Vision (ICCV), 2025 <br /> <br />
-    Shengqi Dang*, Yi He*, Long Ling, Ziqing Qian, Nanxuan Zhao, Nan Cao  <br /> <br />
+    <strong>Shengqi Dang</strong>*, Yi He*, Long Ling, Ziqing Qian, Nanxuan Zhao, Nan Cao  <br /> <br />
     <!-- 智能可控的情感化图像生成  -->
     <!-- Controllable Emotional Image Generation -->
   </div>
@@ -64,7 +64,7 @@
     </div>
     <br />    <br />
     Conference on Human Factors in Computing Systems (CHI), 2024 <br /> <br />
-    Yang Shi, Yechun Peng, Shengqi Dang, Nanxuan Zhao, Nan Cao  <br /> <br />
+    Yang Shi, Yechun Peng, <strong>Shengqi Dang</strong>, Nanxuan Zhao, Nan Cao  <br /> <br />
     <!-- 个性化头像生成算法与物品个性化系统  -->
     <!-- Personalized Avatar Generation and Product Personalization System -->
     <!-- <br/><br/> -->
@@ -85,7 +85,7 @@
     <br />
         <br />
     International Conference on Computer Vision (ICCV), 2023 <br /> <br />
-    Nanxuan Zhao, Shengqi Dang, Hexun Lin, Yang Shi, Nan Cao  <br /> <br />
+    Nanxuan Zhao, <strong>Shengqi Dang</strong>, Hexun Lin, Yang Shi, Nan Cao  <br /> <br />
     <!-- 基于拼贴画交互的照片编辑算法  -->
     <!-- Photo Editing Algorithm Based on Clipart Interaction -->
     <!-- <br /> <br /> -->
@@ -107,7 +107,7 @@
           <span style="background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;">智能体</span>
     <br /><br />
     ACM Transactions on Interactive Intelligent Systems, 2025  <br /> <br />
-    Chuer Chen, Shengqi Dang, Yuqi Liu, Nanxuan Zhao, Yang Shi, Nan Cao  <br /> <br />
+    Chuer Chen, <strong>Shengqi Dang</strong>, Yuqi Liu, Nanxuan Zhao, Yang Shi, Nan Cao  <br /> <br />
     <!-- 智能可控的情感化图像生成  -->
     <!-- Controllable Emotional Image Generation -->
   </div>
