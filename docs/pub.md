@@ -3,10 +3,41 @@
 <br /><br /><br />
 <font size="+1">Conference</font>
     <br /><br />
+
+
 <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-  <!-- <div style="flex: 0 0 200px; margin-right: 20px;"> -->
-    <!-- <img src="./figs/emoticrafter.png" alt="" style="width: 100%; height: auto;"> -->
-  <!-- </div> -->
+  <div>
+    <font size="+1"><a href = "./">DensiCrafter: Physically-Constrained Generation and Fabrication of Self-Supporting Hollow Structures</a></font>
+    <br />    <br />
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <span style="background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;">3D生成</span>
+      <span style="background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;">物理条件嵌入</span>
+      <span style="background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;">可打印物体生成</span>
+    </div>
+    <br />    <br />
+    
+    Annual AAAI Conference on Artificial Intelligence (AAAI), 2026 (Accepted) <br /> <br />
+    Shengqi Dang, Fu Chai, Jiaxin Li, Chao Yuan, Wei Ye, Nan Cao  <br /> <br />
+  </div>
+</div>
+<div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+  <div>
+    <font size="+1"><a href = "./">Designed to Spread: Generative Approaches to Enhance Information Diffusion</a></font>
+    <br />    <br />
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <span style="background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;">动态信息设计</span>
+      <span style="background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;">信息传播</span>
+      <span style="background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;">互联网营销</span>
+    </div>
+    <br />    <br />
+    
+    Annual AAAI Conference on Artificial Intelligence (AAAI), 2026 (Accepted) <br /> <br />
+    Ziqing Qian, Jiaying Lei, Shengqi Dang, Nan Cao  <br /> <br />
+  </div>
+</div>
+
+<div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+
   <div>
     <font size="+1"><a href = "https://openaccess.thecvf.com/content/ICCV2025/html/Dang_EmotiCrafter_Text-to-Emotional-Image_Generation_based_on_Valence-Arousal_Model_ICCV_2025_paper.html">EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model</a></font>
     <br />    <br />
@@ -24,9 +55,6 @@
   </div>
 </div>
 <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
-  <!-- <div style="flex: 0 0 200px; margin-right: 20px;"> -->
-    <!-- <img src="./figs/picme.png" alt="" style="width: 100%; height: auto;"> -->
-  <!-- </div> -->
   <div>
     <font size="+1"><a href="https://dl.acm.org/doi/abs/10.1145/3613904.3642391"> Supporting Product Personalization through Stylized Head Portraits</a></font>
     <br />    <br />
