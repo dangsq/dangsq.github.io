@@ -19,6 +19,9 @@ I am Shengqi Dang, a Ph.D. candidate at the Shanghai Research Institute for Inte
 I consider myself to have an interdisciplinary background and have a strong interest in cross-disciplinary research. My research interests include computer graphics, intelligent computational design, psychology, and artificial intelligence. I enjoy engaging in creative activities and look forward to translating these interests into practical and innovative outcomes in my future research. If you are interested in my research, please feel free to contact me.
 
 <br />
-
+<center style="margin-top: 50px; color: #888; font-size: 12pt;">
+  © 2025 Shengqi Dang. All rights reserved.<br/>
+  版权所有 © 2025 党圣奇
+</center>
 <!-- 导航菜单 -->
 

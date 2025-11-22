@@ -116,3 +116,7 @@
 
 
 </div>
+<center style="margin-top: 50px; color: #888; font-size: 12pt;">
+  © 2025 Shengqi Dang. All rights reserved.<br/>
+  版权所有 © 2025 党圣奇
+</center>
