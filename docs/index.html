@@ -2,161 +2,280 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Shengqi Dang - Vaporwave</title>
+  <title>Shengqi Dang - Vaporwave Ultimate</title>
   <link rel="icon" href="./1F34E.svg">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
   <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  
   <style>
-    /* --- 核心变量：高对比度霓虹 --- */
+    /* --- 核心变量 --- */
     :root {
-      --bg-deep: #050011;       /* 极深紫/黑 */
+      --bg-deep: #050011;       
       --bg-mid: #180c2e;
-      --neon-cyan: #00f3ff;     /* 赛博青 */
-      --neon-pink: #ff00ff;     /* 蒸汽粉 */
-      --neon-purple: #bc13fe;   /* 霓虹紫 */
-      --sun-yellow: #ffd700;    /* 夕阳黄 */
-      --text-main: #f0f0ff;
-      --grid-line: rgba(255, 0, 255, 0.5);
+      --neon-cyan: #4aebf4;     
+      --neon-pink: #ff00ff;     
+      --neon-purple: #bc13fe;   
+      --sun-yellow: #ffd700;    
+      --text-main: #ffffff;     
+      --grid-line: rgba(255, 0, 255, 0.4);
       
-      /* 玻璃/全息面板效果 */
-      --glass-bg: rgba(10, 5, 30, 0.75);
-      --glass-border: 1px solid rgba(0, 243, 255, 0.5);
-      --glass-shadow: 0 0 15px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(255, 0, 255, 0.1);
+      /* 玻璃面板变量 */
+      --panel-bg: rgba(13, 2, 33, 0.85); 
+      --panel-blur: 12px;                
+      --panel-border: 1px solid rgba(0, 243, 255, 0.5);
+      --panel-glow: 0 0 30px rgba(0, 243, 255, 0.15);
     }
 
-    /* --- 基础布局 --- */
+    /* --- 全局基础 --- */
     body {
         background: linear-gradient(to bottom, var(--bg-deep) 0%, var(--bg-mid) 80%, #2b003b 100%);
         min-height: 100vh;
         margin: 0;
         padding: 0;
-        overflow-x: hidden;
         font-family: 'Merriweather', serif;
         color: var(--text-main);
-        /* 隐藏滚动条但保留功能 */
-        scrollbar-width: none; 
-        -ms-overflow-style: none;
+        overflow-x: hidden;
     }
-    body::-webkit-scrollbar { display: none; }
 
-    /* --- 背景视觉元素 (Z-index < 0) --- */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-deep); }
+    ::-webkit-scrollbar-thumb { 
+        background: linear-gradient(var(--neon-purple), var(--neon-cyan)); 
+        border-radius: 5px;
+        border: 2px solid var(--bg-deep);
+    }
+    ::selection { background: var(--neon-pink); color: #fff; text-shadow: none; }
 
-    /* 1. CRT 屏幕效果覆盖层 (最顶层) */
+    /* --- 背景视觉层 (Z-index < 0) --- */
+
+    /* 1. CRT 扫描线 */
     .crt-overlay {
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
         background-size: 100% 2px, 3px 100%;
-        z-index: 9999;
-        pointer-events: none;
-        animation: crtFlicker 0.15s infinite;
-        opacity: 0.6;
-    }
-    @keyframes crtFlicker {
-        0% { opacity: 0.55; }
-        50% { opacity: 0.6; }
-        100% { opacity: 0.55; }
+        z-index: 9999; pointer-events: none; opacity: 0.15;
     }
 
-    /* 2. 蒸汽波复古夕阳 */
+    /* 2. 复古夕阳 */
     .retro-sun {
-        position: fixed;
-        bottom: 15vh;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60vh;
-        height: 60vh;
+        position: fixed; bottom: 20vh; left: 50%; transform: translateX(-50%);
+        width: 50vh; height: 50vh;
         background: linear-gradient(to bottom, var(--sun-yellow), var(--neon-pink));
-        border-radius: 50%;
-        z-index: -3;
-        box-shadow: 0 0 60px var(--neon-pink);
-        /* 百叶窗切割效果 */
-        -webkit-mask-image: linear-gradient(to bottom, 
-            black 0%, black 50%, 
-            transparent 50%, transparent 55%, 
-            black 55%, black 65%, 
-            transparent 65%, transparent 68%, 
-            black 68%, black 75%,
-            transparent 75%, transparent 77%,
-            black 77%, black 82%,
-            transparent 82%, transparent 83%,
-            black 83%, black 88%,
-            transparent 88%, transparent 89%,
-            black 89%, black 100%
+        border-radius: 50%; z-index: -5; 
+        box-shadow: 0 0 80px var(--neon-pink);
+        -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 50%, transparent 55%, black 55%, black 65%, transparent 65%, transparent 68%, black 68%, black 75%, transparent 75%, transparent 77%, black 77%, black 82%, transparent 82%, transparent 83%, black 83%, black 88%, transparent 88%, transparent 89%, black 89%, black 100%);
+    }
+
+    /* 3. 3D 网格 */
+    .vaporwave-grid {
+        position: fixed; bottom: -20vh; left: -50%; width: 200%; height: 70vh;
+        background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+        background-size: 50px 50px; transform: perspective(300px) rotateX(60deg);
+        animation: gridMove 3s linear infinite; z-index: -2;
+        box-shadow: 0 0 50px rgba(255, 0, 255, 0.4);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+    }
+    @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+
+    /* 4. 星空 */
+    .stars {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px);
+        background-size: 500px 500px; z-index: -6; opacity: 0.6;
+    }
+
+    /* --- ✨ 新增元素：赛博城市剪影 ✨ --- */
+    .cyber-city {
+        position: fixed;
+        bottom: 15vh; /* 对齐地平线 */
+        left: 0;
+        width: 100%;
+        height: 15vh;
+        background: 
+            linear-gradient(to top, #000 0%, transparent 100%),
+            repeating-linear-gradient(90deg, 
+                #000 0px, #000 10px, 
+                transparent 10px, transparent 15px,
+                #000 15px, #000 25px,
+                transparent 25px, transparent 40px
+            );
+        z-index: -4;
+        opacity: 0.7;
+        /* 使用 clip-path 制作高低错落的楼房 */
+        clip-path: polygon(
+            0% 100%, 5% 100%, 5% 60%, 10% 60%, 10% 80%, 15% 80%, 15% 40%, 20% 40%, 20% 85%, 
+            25% 85%, 25% 50%, 30% 50%, 30% 70%, 35% 70%, 35% 30%, 40% 30%, 40% 90%, 
+            45% 90%, 45% 55%, 50% 55%, 50% 20%, 55% 20%, 55% 60%, 60% 60%, 60% 35%, 
+            65% 35%, 65% 75%, 70% 75%, 70% 45%, 75% 45%, 75% 80%, 80% 80%, 80% 50%, 
+            85% 50%, 85% 70%, 90% 70%, 90% 40%, 95% 40%, 95% 100%, 100% 100%
         );
     }
 
-    /* 3. 3D 滚动网格 */
-    .vaporwave-grid {
+    /* --- ✨ 新增元素：旋转的线框金字塔 ✨ --- */
+    .pyramid-container {
         position: fixed;
-        bottom: -15vh; /* 拉低一点增加透视感 */
-        left: -50%;
-        width: 200%;
-        height: 60vh;
-        background-image: 
-            linear-gradient(var(--grid-line) 2px, transparent 2px),
-            linear-gradient(90deg, var(--grid-line) 2px, transparent 2px);
-        background-size: 60px 60px;
-        transform: perspective(400px) rotateX(70deg);
-        animation: gridMove 2s linear infinite;
-        z-index: -2;
-        box-shadow: 0 0 80px rgba(255, 0, 255, 0.6);
-        /* 远端虚化遮罩 */
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 40%);
+        width: 150px;
+        height: 150px;
+        z-index: -3;
+        perspective: 1000px;
+        opacity: 0.6;
+        pointer-events: none;
     }
-    @keyframes gridMove {
-        0% { background-position: 0 0; }
-        100% { background-position: 0 60px; }
-    }
+    .p-left { top: 20%; left: 5%; }
+    .p-right { top: 40%; right: 5%; }
 
-    /* 4. 远处山脉剪影 (伪元素) */
-    .mountains {
-        position: fixed;
-        bottom: 15vh;
+    .pyramid {
         width: 100%;
-        height: 15vh;
-        background: linear-gradient(to top, #0f0f20, transparent);
-        z-index: -2;
-        clip-path: polygon(0% 100%, 15% 40%, 30% 90%, 50% 20%, 70% 80%, 85% 30%, 100% 100%);
-        background-color: #03000a;
-        opacity: 0.9;
+        height: 100%;
+        transform-style: preserve-3d;
+        animation: spin 15s infinite linear;
+    }
+    .side {
+        position: absolute;
+        width: 0; height: 0;
+        border-left: 75px solid transparent;
+        border-right: 75px solid transparent;
+        border-bottom: 150px solid rgba(0, 243, 255, 0.1); /* 青色半透明填充 */
+        opacity: 0.7;
+    }
+    /* 描边效果 */
+    .side::after {
+        content: '';
+        position: absolute;
+        left: -75px; top: 0px;
+        width: 0; height: 0;
+        border-left: 75px solid transparent;
+        border-right: 75px solid transparent;
+        border-bottom: 150px solid transparent;
+    }
+    /* 金字塔四个面 */
+    .side:nth-child(1) { transform: rotateY(0deg) translateZ(30px) rotateX(30deg); border-bottom-color: rgba(0, 243, 255, 0.2); }
+    .side:nth-child(2) { transform: rotateY(90deg) translateZ(30px) rotateX(30deg); border-bottom-color: rgba(255, 0, 255, 0.2); }
+    .side:nth-child(3) { transform: rotateY(180deg) translateZ(30px) rotateX(30deg); border-bottom-color: rgba(0, 243, 255, 0.2); }
+    .side:nth-child(4) { transform: rotateY(270deg) translateZ(30px) rotateX(30deg); border-bottom-color: rgba(255, 0, 255, 0.2); }
+    
+    @keyframes spin {
+        from { transform: rotateY(0deg) rotateX(10deg); }
+        to { transform: rotateY(360deg) rotateX(10deg); }
     }
 
-    /* 5. 星空 */
-    .stars {
+    /* --- ✨ 新增元素：流星/数据流 ✨ --- */
+    .shooting-star {
         position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px);
-        background-size: 500px 500px;
+        top: 0; right: 0;
+        width: 200px; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+        transform: rotate(-45deg);
         z-index: -4;
-        opacity: 0.8;
+        opacity: 0;
+        animation: shoot 6s infinite ease-in-out;
     }
+    .shooting-star:nth-child(2) { top: 20%; right: -10%; animation-delay: 2s; width: 150px; background: linear-gradient(90deg, transparent, var(--neon-pink), transparent); }
+    .shooting-star:nth-child(3) { top: 40%; right: -20%; animation-delay: 4s; width: 250px; }
+
+    @keyframes shoot {
+        0% { transform: translate(100px, -100px) rotate(-45deg); opacity: 0; }
+        10% { opacity: 1; }
+        20% { transform: translate(-500px, 500px) rotate(-45deg); opacity: 0; }
+        100% { opacity: 0; }
+    }
+
 
     /* --- 内容样式 --- */
-    
-    /* 文字全局发光 */
-    h1, h2, h3, h4, h5, h6, span, div, p, li, a {
-      text-shadow: 0 0 5px rgba(0, 243, 255, 0.4);
-      color: var(--text-main);
-      z-index: 2;
+    .markdown-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px !important;
+      background-color: var(--panel-bg);
+      backdrop-filter: blur(var(--panel-blur));
+      -webkit-backdrop-filter: blur(var(--panel-blur));
+      border: var(--panel-border);
+      border-radius: 15px;
+      box-shadow: var(--panel-glow);
+      position: relative;
+      z-index: 5;
     }
 
-    /* 故障文字效果 (Glitch) */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Audiowide', cursive;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
+      margin-top: 1.5em;
+    }
+    
+    h1 {
+        background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: none;
+        filter: drop-shadow(0 0 5px rgba(255,0,255,0.5));
+    }
+
+    p, li, span, div {
+      text-shadow: none; 
+      color: #ffffff;
+      font-weight: 500; 
+      line-height: 1.8;
+      letter-spacing: 0.5px;
+    }
+
+    .markdown-section a {
+        color: var(--sun-yellow);
+        text-decoration: none;
+        position: relative;
+        font-weight: bold;
+        transition: 0.3s;
+        border-bottom: 2px solid transparent;
+    }
+    .markdown-section a:hover {
+        color: var(--neon-cyan);
+        text-shadow: 0 0 8px var(--neon-cyan);
+        border-bottom: 2px solid var(--neon-cyan);
+    }
+
+    .nav-container ul {
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid var(--neon-purple);
+        box-shadow: 0 0 15px var(--neon-purple);
+        border-radius: 8px;
+        padding: 5px;
+        backdrop-filter: blur(5px);
+    }
+    li { color: #fff; }
+    
+    .nav-container li {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 10px !important;
+      line-height: 1.5;
+      color: var(--neon-cyan) !important;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: 0.2s;
+    }
+    
+    .nav-container li:hover {
+      background: var(--neon-pink);
+      color: #000 !important;
+      box-shadow: 0 0 20px var(--neon-pink);
+      transform: scale(1.05);
+    }
+
     .glitch-text {
         position: relative;
-        font-family: 'Audiowide', cursive; /* 使用更有科技感的字体 */
-        animation: glitch-skew 1s infinite linear alternate-reverse;
+        font-family: 'Audiowide', cursive;
+        color: white;
+        font-size: 35pt;
     }
     .glitch-text::before, .glitch-text::after {
         content: attr(data-text);
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
+        background: var(--bg-deep);
     }
     .glitch-text::before {
         left: 2px;
@@ -181,42 +300,12 @@
         100% { clip: rect(34px, 9999px, 64px, 0); }
     }
 
-    /* 导航栏 */
-    .nav-container ul {
-        background: rgba(0,0,0,0.6);
-        border: 1px solid var(--neon-purple);
-        box-shadow: 0 0 15px var(--neon-purple);
-        border-radius: 8px;
-        padding: 5px;
-        backdrop-filter: blur(5px);
-    }
-
-    li {
-      font-family: 'Press Start 2P', cursive; /* 像素字体 */
-      font-size: 10px !important; /* 像素字体要小一点才好看 */
-      line-height: 1.5;
-      color: var(--neon-cyan) !important;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    li:hover {
-      background: var(--neon-pink);
-      color: #000 !important;
-      text-shadow: none;
-      box-shadow: 0 0 20px var(--neon-pink);
-      transform: scale(1.05);
-      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="fill:cyan"><circle cx="10" cy="10" r="8"/></svg>'), auto;
-    }
-
-    /* 打字机光标 */
     @keyframes typing {
       0% { width: 0; border-color: var(--neon-pink); }
       50% { border-color: var(--neon-cyan); }
       100% { width: 0; border-color: var(--neon-pink); }
     }
 
-    /* 蝴蝶 */
     font[size="+3"] {
       cursor: pointer;
       color: var(--neon-pink) !important;
@@ -227,88 +316,128 @@
        transform: rotate(15deg) scale(1.3);
     }
 
-    /* 项目卡片 - 全息玻璃风格 */
     .project {
-        background: var(--glass-bg);
-        border: var(--glass-border);
-        box-shadow: var(--glass-shadow);
-        border-radius: 5px; /* 更锐利的边角 */
-        padding: 20px;
-        margin: 25px 0;
+        background-color: var(--card-bg);
+        backdrop-filter: blur(var(--card-blur)); 
+        -webkit-backdrop-filter: blur(var(--card-blur));
+        border: var(--card-border);
+        border-left: 4px solid var(--neon-cyan);
+        border-radius: 6px;
+        padding: 25px;
+        margin: 40px 0;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
-    /* 给卡片加一个扫描线装饰条 */
-    .project::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; width: 4px; height: 100%;
-        background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-pink));
-        box-shadow: 0 0 10px var(--neon-cyan);
+    .project:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(0, 243, 255, 0.15);
+        border-color: var(--neon-cyan);
     }
 
-    .project-title h3 {
-        color: var(--neon-cyan);
-        font-family: 'Audiowide', cursive;
-        letter-spacing: 1px;
-        margin-bottom: 5px;
+    .project-title {
+        margin: 0 0 10px 0;
+        font-family: 'Audiowide', sans-serif;
+        font-size: 1.4rem;
+        line-height: 1.4;
+        color: #fff;
         text-transform: uppercase;
+        text-shadow: 0 0 0px rgba(0, 243, 255, 0.8);
+    }
+    .project-title h3{
+        margin: 0 0 10px 0;
+        font-family: 'Audiowide', sans-serif;
+        font-size: 1.4rem;
+        line-height: 1.4;
+        color: #fff;
+        text-transform: uppercase;
+        text-shadow: 0 0 0px rgba(0, 243, 255, 0.8);
+    }
+    .project-sub {
+        font-family: 'Merriweather', serif;
+        font-size: 0.9rem;
+        color: #ccc;
+        margin-bottom: 15px;
+        font-style: italic;
+    }
+
+    .project-summary {
+        color: #eee;
+        line-height: 1.8;
+        font-size: 1rem;
+        margin-bottom: 15px;
+        font-family: 'Merriweather', serif;
     }
 
     .project-summary span {
-        background: transparent;
+        display: inline-block;
+        background: rgba(255, 0, 255, 0.15);
         border: 1px solid var(--neon-pink);
         color: var(--neon-pink);
-        font-family: 'Press Start 2P', cursive;
-        font-size: 0.6rem;
-        box-shadow: 0 0 5px var(--neon-pink) inset;
+        font-family:'Audiowide', sans-serif;
+        font-size: 0.8rem;
+        padding: 6px 8px;
+        margin-right: 6px;
+        margin-bottom: 6px;
+        border-radius: 2px;
+    }
+
+    .project-details {
+        height: 0;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        transition: height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
+        margin-top: 0;
+        border-top: 1px solid transparent;
+    }
+
+    .project-details.open {
+        opacity: 1;
+        visibility: visible;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .project-toggle {
+        background: transparent;
         border: 1px solid var(--neon-cyan);
-        background: rgba(0, 243, 255, 0.1);
         color: var(--neon-cyan);
-        font-family: 'Press Start 2P', cursive;
+        font-family: 'Audiowide', sans-serif;
         font-size: 0.7rem;
-        padding: 8px 12px;
+        padding: 10px 15px;
         cursor: pointer;
         transition: 0.2s;
+        margin-top: 10px;
     }
     .project-toggle:hover {
         background: var(--neon-cyan);
         color: #000;
-        box-shadow: 0 0 20px var(--neon-cyan);
-    }
-
-    /* Markdown 内容区 */
-    .markdown-section {
-      max-width: 750px;
+        box-shadow: 0 0 15px var(--neon-cyan);
     }
     
-    /* 图片边框 */
+    .sidebar-toggle { display: none !important; }
+    
     .markdown-section img {
         border: 2px solid var(--neon-purple);
-        box-shadow: 0 0 15px var(--neon-purple);
-        border-radius: 4px;
-        filter: contrast(1.1) brightness(1.1);
-    }
-
-    /* 链接样式 */
-    .markdown-section a {
-        color: var(--neon-pink);
-        text-decoration: none;
-        border-bottom: 1px dashed var(--neon-cyan);
+        box-shadow: 0 0 10px var(--neon-purple);
+        border-radius: 6px;
+        max-width: 100%;
         transition: 0.3s;
     }
-    .markdown-section a:hover {
-        background: var(--neon-pink);
-        color: white;
-        box-shadow: 0 0 10px var(--neon-pink);
+    .markdown-section img:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 20px var(--neon-cyan);
+        border-color: var(--neon-cyan);
     }
-
-    /* 强制隐藏 docsify 侧边栏按钮（如果存在） */
-    .sidebar-toggle { display: none !important; }
+    
+    /* 移动端优化：金字塔缩小 */
+    @media (max-width: 768px) {
+        .pyramid-container { width: 80px; height: 80px; }
+        .side { border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 80px solid rgba(0, 243, 255, 0.1); }
+    }
 
   </style>
 </head>
@@ -316,8 +445,31 @@
   
   <div class="crt-overlay"></div>
   <div class="stars"></div>
+  
+  <div class="shooting-star"></div>
+  <div class="shooting-star"></div>
+  <div class="shooting-star"></div>
+  
+  <div class="pyramid-container p-left">
+    <div class="pyramid">
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+    </div>
+  </div>
+  
+  <div class="pyramid-container p-right">
+    <div class="pyramid">
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+        <div class="side"></div>
+    </div>
+  </div>
+
+  <div class="cyber-city"></div>
   <div class="retro-sun"></div>
-  <div class="mountains"></div>
   <div class="vaporwave-grid"></div>
 
   <br/>
@@ -329,22 +481,22 @@
         <ul style="display: flex; list-style-type: none; margin: 0; padding: 0; gap: 10px;">
           <a href="#/README.md#pub" style="text-decoration: none;">
             <li style="padding: 10px 15px; border-radius: 4px;"> 
-                <center>About<br/><span style="font-size: 12px">关于我</span></center>
+                <center>About<br/><span style="font-size: 16px; font-family: 'Press Start 2P';">关于我</span></center>
             </li>
           </a>
           <a href="#/pub.md#pub" style="text-decoration: none;">
             <li style="padding: 10px 15px; border-radius: 4px;">    
-                <center>Academic<br/><span style="font-size: 12px">学术</span></center>      
+                <center>Academic<br/><span style="font-size: 16px; font-family: 'Press Start 2P';">学术</span></center>      
             </li>
           </a>
          <a href="#/proj.md#project" style="text-decoration: none;">
             <li style="padding: 10px 15px; border-radius: 4px;">       
-                <center>Designs<br/><span style="font-size: 12p x">设计</span></center>    
+                <center>Designs<br/><span style="font-size: 16px; font-family: 'Press Start 2P';">设计</span></center>    
             </li>
         </a>
           <a href="#/works.md#" style="text-decoration: none;">
             <li style="padding: 10px 15px; border-radius: 4px;">      
-                <center>Artworks<br/><span style="font-size: 12px">作品</span></center>      
+                <center>Artworks<br/><span style="font-size: 16px; font-family: 'Press Start 2P';">作品</span></center>      
             </li>
         </a>
         </ul>
@@ -358,13 +510,13 @@
     <div style="display: flex; align-items: center; justify-content: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 10;">
       <div style="flex: 0 0 100%; text-align: center;">
         
-        <div style="margin-bottom: 20px;">
-            <font class="glitch-text" data-text="To Feel, and" style="font-size: 40pt; color: #fff; letter-spacing: 2px;">
+        <div style="margin-bottom: 30px;">
+            <font class="glitch-text" data-text="To Feel, and" style="font-size: 40pt; letter-spacing: 3px;">
                 To Feel, and
             </font>
         </div>
         
-        <span style="display: inline-block; font-family: 'Press Start 2P'; font-size: 20pt; color: var(--neon-cyan); border-right: 10px solid var(--neon-pink); padding-right: 10px; animation: typing 2s steps(10) infinite alternate; text-shadow: 0 0 10px var(--neon-cyan);">
+        <span style="display: inline-block; font-family: 'Press Start 2P'; font-size: 30pt; color: var(--neon-cyan); border-right: 10px solid var(--neon-pink); padding-right: 15px; animation: typing 2s steps(10) infinite alternate; text-shadow: 0 0 10px var(--neon-cyan);">
             To Create.
         </span>
 
@@ -372,6 +524,8 @@
     </div>
   </center>
   
+  <br/><br/><br/><br/><br/><br/><br/><br/>
+
   <div id="app"></div>
 
   <script>
@@ -384,7 +538,6 @@
       executeScript: true,
     }
     
-    // 蝴蝶点击互动保留，但仅做动画，不再切换颜色
     const title = document.querySelector('font[size="+3"]');
     title.addEventListener('click', () => {
         title.style.transform = "rotate(360deg) scale(1.5)";
@@ -459,7 +612,6 @@
           toggleDetails(project, details, toggleBtn);
         });
 
-        // 键盘支持
         toggleBtn.addEventListener('keydown', function(e){
           if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
             e.preventDefault(); this.click();
