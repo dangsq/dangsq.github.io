@@ -2,502 +2,491 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Shengqi Dang</title>
+  <title>Shengqi Dang - Vaporwave</title>
   <link rel="icon" href="./1F34E.svg">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+  
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <style>
-    /* --- 开始：落叶动画样式 --- */
+    /* --- 核心变量：高对比度霓虹 --- */
+    :root {
+      --bg-deep: #050011;       /* 极深紫/黑 */
+      --bg-mid: #180c2e;
+      --neon-cyan: #00f3ff;     /* 赛博青 */
+      --neon-pink: #ff00ff;     /* 蒸汽粉 */
+      --neon-purple: #bc13fe;   /* 霓虹紫 */
+      --sun-yellow: #ffd700;    /* 夕阳黄 */
+      --text-main: #f0f0ff;
+      --grid-line: rgba(255, 0, 255, 0.5);
+      
+      /* 玻璃/全息面板效果 */
+      --glass-bg: rgba(10, 5, 30, 0.75);
+      --glass-border: 1px solid rgba(0, 243, 255, 0.5);
+      --glass-shadow: 0 0 15px rgba(0, 243, 255, 0.2), inset 0 0 20px rgba(255, 0, 255, 0.1);
+    }
 
-    #leaf-container {
+    /* --- 基础布局 --- */
+    body {
+        background: linear-gradient(to bottom, var(--bg-deep) 0%, var(--bg-mid) 80%, #2b003b 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        font-family: 'Merriweather', serif;
+        color: var(--text-main);
+        /* 隐藏滚动条但保留功能 */
+        scrollbar-width: none; 
+        -ms-overflow-style: none;
+    }
+    body::-webkit-scrollbar { display: none; }
+
+    /* --- 背景视觉元素 (Z-index < 0) --- */
+
+    /* 1. CRT 屏幕效果覆盖层 (最顶层) */
+    .crt-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        background-size: 100% 2px, 3px 100%;
+        z-index: 9999;
         pointer-events: none;
-        z-index: -1; 
+        animation: crtFlicker 0.15s infinite;
+        opacity: 0.6;
+    }
+    @keyframes crtFlicker {
+        0% { opacity: 0.55; }
+        50% { opacity: 0.6; }
+        100% { opacity: 0.55; }
+    }
+
+    /* 2. 蒸汽波复古夕阳 */
+    .retro-sun {
+        position: fixed;
+        bottom: 15vh;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60vh;
+        height: 60vh;
+        background: linear-gradient(to bottom, var(--sun-yellow), var(--neon-pink));
+        border-radius: 50%;
+        z-index: -3;
+        box-shadow: 0 0 60px var(--neon-pink);
+        /* 百叶窗切割效果 */
+        -webkit-mask-image: linear-gradient(to bottom, 
+            black 0%, black 50%, 
+            transparent 50%, transparent 55%, 
+            black 55%, black 65%, 
+            transparent 65%, transparent 68%, 
+            black 68%, black 75%,
+            transparent 75%, transparent 77%,
+            black 77%, black 82%,
+            transparent 82%, transparent 83%,
+            black 83%, black 88%,
+            transparent 88%, transparent 89%,
+            black 89%, black 100%
+        );
+    }
+
+    /* 3. 3D 滚动网格 */
+    .vaporwave-grid {
+        position: fixed;
+        bottom: -15vh; /* 拉低一点增加透视感 */
+        left: -50%;
+        width: 200%;
+        height: 60vh;
+        background-image: 
+            linear-gradient(var(--grid-line) 2px, transparent 2px),
+            linear-gradient(90deg, var(--grid-line) 2px, transparent 2px);
+        background-size: 60px 60px;
+        transform: perspective(400px) rotateX(70deg);
+        animation: gridMove 2s linear infinite;
+        z-index: -2;
+        box-shadow: 0 0 80px rgba(255, 0, 255, 0.6);
+        /* 远端虚化遮罩 */
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 40%);
+    }
+    @keyframes gridMove {
+        0% { background-position: 0 0; }
+        100% { background-position: 0 60px; }
+    }
+
+    /* 4. 远处山脉剪影 (伪元素) */
+    .mountains {
+        position: fixed;
+        bottom: 15vh;
+        width: 100%;
+        height: 15vh;
+        background: linear-gradient(to top, #0f0f20, transparent);
+        z-index: -2;
+        clip-path: polygon(0% 100%, 15% 40%, 30% 90%, 50% 20%, 70% 80%, 85% 30%, 100% 100%);
+        background-color: #03000a;
+        opacity: 0.9;
+    }
+
+    /* 5. 星空 */
+    .stars {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px);
+        background-size: 500px 500px;
+        z-index: -4;
+        opacity: 0.8;
+    }
+
+    /* --- 内容样式 --- */
+    
+    /* 文字全局发光 */
+    h1, h2, h3, h4, h5, h6, span, div, p, li, a {
+      text-shadow: 0 0 5px rgba(0, 243, 255, 0.4);
+      color: var(--text-main);
+      z-index: 2;
+    }
+
+    /* 故障文字效果 (Glitch) */
+    .glitch-text {
+        position: relative;
+        font-family: 'Audiowide', cursive; /* 使用更有科技感的字体 */
+        animation: glitch-skew 1s infinite linear alternate-reverse;
+    }
+    .glitch-text::before, .glitch-text::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+    }
+    .glitch-text::before {
+        left: 2px;
+        text-shadow: -2px 0 var(--neon-pink);
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+    .glitch-text::after {
+        left: -2px;
+        text-shadow: -2px 0 var(--neon-cyan);
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim2 5s infinite linear alternate-reverse;
+    }
+    @keyframes glitch-anim {
+        0% { clip: rect(12px, 9999px, 32px, 0); }
+        50% { clip: rect(64px, 9999px, 80px, 0); }
+        100% { clip: rect(4px, 9999px, 20px, 0); }
+    }
+    @keyframes glitch-anim2 {
+        0% { clip: rect(52px, 9999px, 82px, 0); }
+        50% { clip: rect(2px, 9999px, 15px, 0); }
+        100% { clip: rect(34px, 9999px, 64px, 0); }
+    }
+
+    /* 导航栏 */
+    .nav-container ul {
+        background: rgba(0,0,0,0.6);
+        border: 1px solid var(--neon-purple);
+        box-shadow: 0 0 15px var(--neon-purple);
+        border-radius: 8px;
+        padding: 5px;
+        backdrop-filter: blur(5px);
+    }
+
+    li {
+      font-family: 'Press Start 2P', cursive; /* 像素字体 */
+      font-size: 10px !important; /* 像素字体要小一点才好看 */
+      line-height: 1.5;
+      color: var(--neon-cyan) !important;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    li:hover {
+      background: var(--neon-pink);
+      color: #000 !important;
+      text-shadow: none;
+      box-shadow: 0 0 20px var(--neon-pink);
+      transform: scale(1.05);
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="fill:cyan"><circle cx="10" cy="10" r="8"/></svg>'), auto;
+    }
+
+    /* 打字机光标 */
+    @keyframes typing {
+      0% { width: 0; border-color: var(--neon-pink); }
+      50% { border-color: var(--neon-cyan); }
+      100% { width: 0; border-color: var(--neon-pink); }
+    }
+
+    /* 蝴蝶 */
+    font[size="+3"] {
+      cursor: pointer;
+      color: var(--neon-pink) !important;
+      text-shadow: 2px 2px 0px var(--neon-cyan);
+      filter: drop-shadow(0 0 10px var(--neon-purple));
+    }
+    font[size="+3"]:hover {
+       transform: rotate(15deg) scale(1.3);
+    }
+
+    /* 项目卡片 - 全息玻璃风格 */
+    .project {
+        background: var(--glass-bg);
+        border: var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        border-radius: 5px; /* 更锐利的边角 */
+        padding: 20px;
+        margin: 25px 0;
+        position: relative;
         overflow: hidden;
     }
-
-    .falling-leaf {
+    
+    /* 给卡片加一个扫描线装饰条 */
+    .project::before {
+        content: '';
         position: absolute;
-        top: -150px; 
-        display: block;
-        animation: leaf-fall-1 20s linear infinite;
-        will-change: transform, opacity;
+        top: 0; left: 0; width: 4px; height: 100%;
+        background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-pink));
+        box-shadow: 0 0 10px var(--neon-cyan);
     }
 
-    .leaf-svg {
-        width: 100%;
-        height: 100%;
-        /* 调整阴影使其更自然，强调立体感 */
-        filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.25)); 
-        overflow: visible;
+    .project-title h3 {
+        color: var(--neon-cyan);
+        font-family: 'Audiowide', cursive;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+    }
+
+    .project-summary span {
+        background: transparent;
+        border: 1px solid var(--neon-pink);
+        color: var(--neon-pink);
+        font-family: 'Press Start 2P', cursive;
+        font-size: 0.6rem;
+        box-shadow: 0 0 5px var(--neon-pink) inset;
+    }
+
+    .project-toggle {
+        border: 1px solid var(--neon-cyan);
+        background: rgba(0, 243, 255, 0.1);
+        color: var(--neon-cyan);
+        font-family: 'Press Start 2P', cursive;
+        font-size: 0.7rem;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .project-toggle:hover {
+        background: var(--neon-cyan);
+        color: #000;
+        box-shadow: 0 0 20px var(--neon-cyan);
+    }
+
+    /* Markdown 内容区 */
+    .markdown-section {
+      max-width: 750px;
     }
     
-    @keyframes leaf-fall-1 {
-        0% { transform: translate3d(0, 0, 0) rotateZ(0deg) rotateX(0deg); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { transform: translate3d(30px, 110vh, 0) rotateZ(360deg) rotateX(180deg); opacity: 0; }
+    /* 图片边框 */
+    .markdown-section img {
+        border: 2px solid var(--neon-purple);
+        box-shadow: 0 0 15px var(--neon-purple);
+        border-radius: 4px;
+        filter: contrast(1.1) brightness(1.1);
     }
 
-    @keyframes leaf-fall-2 {
-        0% { transform: translate3d(0, 0, 0) rotateZ(45deg); opacity: 0; }
-        15% { opacity: 1; }
-        85% { opacity: 1; }
-        100% { transform: translate3d(-40px, 115vh, 0) rotateZ(-180deg) rotateY(180deg); opacity: 0; }
+    /* 链接样式 */
+    .markdown-section a {
+        color: var(--neon-pink);
+        text-decoration: none;
+        border-bottom: 1px dashed var(--neon-cyan);
+        transition: 0.3s;
+    }
+    .markdown-section a:hover {
+        background: var(--neon-pink);
+        color: white;
+        box-shadow: 0 0 10px var(--neon-pink);
     }
 
-    @keyframes leaf-fall-3 {
-        0% { transform: translate3d(0, 0, 0) rotateZ(0deg); opacity: 0; }
-        20% { opacity: 1; transform: translate3d(20px, 30vh, 0) rotateZ(45deg); }
-        50% { transform: translate3d(-20px, 60vh, 0) rotateZ(-30deg); }
-        80% { opacity: 1; }
-        100% { transform: translate3d(10px, 110vh, 0) rotateZ(90deg); opacity: 0; }
-    }
-    
-    body[data-theme="dark"] .leaf-svg {
-         filter: brightness(0.7) drop-shadow(3px 5px 8px rgba(0,0,0,0.5));
-    }
-    /* --- 结束：落叶动画样式 --- */
+    /* 强制隐藏 docsify 侧边栏按钮（如果存在） */
+    .sidebar-toggle { display: none !important; }
 
-
-    /* --- 文字内容样式 --- */
-    h1, h2, h3, h4, h5, h6, span, font, div, p, li, a {
-      font-family: 'Merriweather', serif;
-      transition: all 0.2s ease-in-out;
-      color: var(--text-color);
-      filter: drop-shadow(2px 2px 4px rgba(255,255,255));
-      line-height: 0.9; 
-      position: relative; 
-      z-index: 2; 
-    }
-
-    body{
-    background: 
-        url('./figs/texture/paper.jpg') center center / cover fixed,
-        linear-gradient(45deg, 
-            #FFF5D6 0%,     
-            #ffffff 50%,    
-            #E6F3FF 100%    
-        ) fixed;
-    background-blend-mode: multiply, normal;
-        
-    margin-top: 0;
-    padding-top: 0;
-    transition: all 0.2s ease-in-out;
-    font-family: 'Merriweather', serif;
-    font-size: 9pt;
-    color: var(--text-color);
-    overflow-x: hidden; 
-}
-
-  .markdown-section, content{
-    margin-top: 0;
-    padding-top: 0;
-    max-width: 700px; 
-    filter: drop-shadow(2px 2px 4px rgba(255,255,255));
-    position: relative;
-    z-index: 5; 
-  }
-
-li {
-  transition: all 0.2s ease-in-out;
-  color: var(--text-color);
-}
-
-li:hover {
-  background: rgb(255,255,255,0.3);
-  color: rgba(123,123,123);
-  font-size: 17px;
-  transform: scale(0.93);
-  filter: drop-shadow(2px 2px 4px rgba(255,255,255));
-  cursor: pointer;
-}
-
-@keyframes typing {
-  0% { width: 0; }
-  30% { width: 9ch; }
-  80% { width: 9ch; }
-  90% { width: 0; }
-  100% { width: 0; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-body > * {
-  animation: fadeIn 0.8s ease-out forwards;
-  opacity: 0;
-}
-
-body > div:nth-child(1) { animation-delay: 0.4s; }
-body > div:nth-child(2) { animation-delay: 0.6s; }
-body > div:nth-child(3) { animation-delay: 0.8s; }
-.markdown-section * { 
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-
-a.mode {
-  font-size: 36px !important;
-}
-@keyframes morphEffect {
-  0% { transform: rotate(0deg) scale(1); opacity: 1; }
-  50% { transform: rotate(180deg) scale(1.2); opacity: 0.5; }
-  100% { transform: rotate(360deg) scale(1); opacity: 1; }
-}
-font[size="+3"]:hover {
-  transform: scale(1.15);
-  filter: drop-shadow(2px 2px 4px rgba(255,255,255));
-  cursor: pointer;
-}
-font[size="+3"] {
-  cursor: pointer;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  z-index: 100; 
-}
-font[size="+3"]::before {
-  position: absolute;
-  animation: morphEffect 1.2s ease-in-out forwards;
-  opacity: 0;
-}
-
-font[size="+3"].active::before {
-  opacity: 1;
-}
-
- /* project card */
-.project{border-radius:10px;padding:12px;margin:18px 0;color:var(--text-color); position: relative; z-index: 5;}
-.project-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.project-summary span{background: rgba(240, 240, 240, 0.7); padding: 4px 8px; border-radius: 4px;}
-.project-meta{flex:1;min-width:0}
-.project-title{margin:0;font-size:1.15rem;color:var(--text-color);}
-.project-title h3{color:var(--text-color);}
-.project-sub{color:var(--text-color);font-size:.9rem;margin-top:6px}
-
-/* toggle button */
-.project-toggle{border:0;background: rgba(0,0,0,0.0); cursor:pointer;font-family: 'Merriweather', serif; color:rgb(108, 72, 199)}
-.project-toggle:focus{outline:3px solid rgba(0,123,255,0.15)}
-
-/* summary */
-.project-summary{margin-top:10px;color:var(--text-color);}
-
-/* details */
-.project-details{overflow:hidden;height:0;transition:height 320ms ease, opacity 250ms ease;padding:0 0;opacity:0}
-.project-details.open{opacity:1;padding:12px 0 0 0}
-
-.md-carousel{margin:10px 0}
-.md-slide{min-width:100%}
-.md-slide img{width:100%;height:320px;object-fit:cover;border-radius:6px}
-
-@media (max-width:600px){
-  .md-slide img{height:200px}
-  .project-title{font-size:1rem}
-}
-:root{
-  --frost-blur: 6px;
-  --frost-bg-light: rgba(255,255,255,0.38);
-  --frost-bg-dark: rgba(12,12,18,0.36);
-  --frost-border: rgba(255,255,255,0.08);
-  --frost-padding: 10px;
-}
-
-.frost {
-  backdrop-filter: blur(var(--frost-blur));
-  -webkit-backdrop-filter: blur(var(--frost-blur));
-  background-clip: padding-box; 
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(12,12,20,0.06);
-  border: 1px solid var(--frost-border);
-  padding: var(--frost-padding);
-  background-color: var(--frost-bg-light);
-  transition: background-color 200ms ease, backdrop-filter 200ms ease, opacity 160ms ease;
-  will-change: backdrop-filter, background-color, transform;
-  position: relative;
-  z-index: 5;
-}
-
-body[data-theme="dark"] .frost {
-  background-color: var(--frost-bg-dark);
-  border: 1px solid rgba(0,0,0,0.28);
-}
   </style>
 </head>
 <body>
   
-  <svg width="0" height="0" style="position:absolute;">
-    <defs>
-        <pattern id="leaf-texture-pattern" patternUnits="userSpaceOnUse" width="300" height="300">
-            <image href="./figs/texture/paper.jpg" x="0" y="0" width="50" height="50" preserveAspectRatio="xMidYMid slice"/>
-        </pattern>
-    </defs>
-  </svg>
-  
-  <div id="leaf-container"></div>
+  <div class="crt-overlay"></div>
+  <div class="stars"></div>
+  <div class="retro-sun"></div>
+  <div class="mountains"></div>
+  <div class="vaporwave-grid"></div>
 
   <br/>
-<div style="display: flex; justify-content: space-between; align-items: center;">
-  <font size="+3" style="z-index: 100; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-block;">&ensp;&ensp;&ensp;  </font>
-  <div style="margin-left: auto; position: relative; z-index: 10;">
-    <div style="padding: 0px 15px; border-radius: 8px; margin: 0px 0; color:rgb(88, 59, 184)">
-        <ul style="display: inline-block; list-style-type: none; margin: 0; padding: 0; display: flex; gap: 0px;">
-          <a  class="mode", style="text-decoration: none; color: #343a40;"><center> </center></a>
-          <a href="#/README.md#pub" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none;  font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;"> <center> About </br>关于我</center></li></a>
-          <a href="#/pub.md#pub" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px; padding: 8px 12px; border-radius: 10px;">    <center>Academic
-          </br>学术</center>      </li></a>
-         <a href="#/proj.md#project" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none; font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;">       <center>Designs </br>设计</center>    </li></a>
-          <a href="#/works.md#" style="text-decoration: none; color: #343a40;"><li style="transition: all 0.35s ease-in-out; text-decoration: none;  font-weight: bold; font-size: 14px;  padding: 8px 12px; border-radius: 10px;">      <center>Artworks </br>作品</center>      </li></a>
+<div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px;">
+  <font size="+3" style="z-index: 100; transition: all 0.3s; display: inline-block; margin-left: 20px;">🦋</font>
+  
+  <div style="margin-left: auto; position: relative; z-index: 10; margin-right: 20px;">
+    <div class="nav-container">
+        <ul style="display: flex; list-style-type: none; margin: 0; padding: 0; gap: 10px;">
+          <a href="#/README.md#pub" style="text-decoration: none;">
+            <li style="padding: 10px 15px; border-radius: 4px;"> 
+                <center>About<br/><span style="font-size: 12px">关于我</span></center>
+            </li>
+          </a>
+          <a href="#/pub.md#pub" style="text-decoration: none;">
+            <li style="padding: 10px 15px; border-radius: 4px;">    
+                <center>Academic<br/><span style="font-size: 12px">学术</span></center>      
+            </li>
+          </a>
+         <a href="#/proj.md#project" style="text-decoration: none;">
+            <li style="padding: 10px 15px; border-radius: 4px;">       
+                <center>Designs<br/><span style="font-size: 12p x">设计</span></center>    
+            </li>
+        </a>
+          <a href="#/works.md#" style="text-decoration: none;">
+            <li style="padding: 10px 15px; border-radius: 4px;">      
+                <center>Artworks<br/><span style="font-size: 12px">作品</span></center>      
+            </li>
+        </a>
         </ul>
     </div>
   </div>
 </div>
+
 <br/><br/><br/>
 
   <center>
-    <div style="display: flex; align-items: center; justify-content: space-between; max-width: 900px; margin: 0 auto; position: relative; z-index: 10;">
-
-  
-      <div style="flex: 0 0 100%;">
-        <font style="font-style: italic; font-size: 50pt; color: var(--text-color);">
-          <font style="display: block; margin-bottom: 20px;">To Feel, and</font>
-          <span style="display: inline-block; overflow: hidden; border-right: 3px solid #666; white-space: nowrap; animation: typing 8s steps(8) infinite;">
+    <div style="display: flex; align-items: center; justify-content: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 10;">
+      <div style="flex: 0 0 100%; text-align: center;">
+        
+        <div style="margin-bottom: 20px;">
+            <font class="glitch-text" data-text="To Feel, and" style="font-size: 40pt; color: #fff; letter-spacing: 2px;">
+                To Feel, and
+            </font>
+        </div>
+        
+        <span style="display: inline-block; font-family: 'Press Start 2P'; font-size: 20pt; color: var(--neon-cyan); border-right: 10px solid var(--neon-pink); padding-right: 10px; animation: typing 2s steps(10) infinite alternate; text-shadow: 0 0 10px var(--neon-cyan);">
             To Create.
-          </span>
-        </font>
+        </span>
+
       </div>
     </div>
-  
-    <style>
-      @media (max-width: 768px) {
-        div[style*="display: flex"] {
-          flex-direction: column;
-          gap: 40px;
-        }
-        div[style*="flex: 0 0 36%"] {
-          width: 70%;
-          margin: 0 auto;
-        }
-      }
-    </style>
   </center>
   
-  <div id="app">
-    
-  </div>
+  <div id="app"></div>
+
   <script>
     window.$docsify = {
       name: "shengqi dang",
-      themeColor: "#42b983",
+      themeColor: "#00f3ff", 
       hideSidebar: true,
       name: '',
       repo: '',
+      executeScript: true,
     }
+    
+    // 蝴蝶点击互动保留，但仅做动画，不再切换颜色
     const title = document.querySelector('font[size="+3"]');
-  let isButterfly = true;
-  
-  title.addEventListener('click', () => {
-    title.classList.toggle('active');
-    isButterfly = !isButterfly;
-    });
-    let isDark = false;
-    document.body.style.setProperty('--text-color', isDark ? 'rgb(240,240, 150)':'rgb(63, 55, 90)');
-    document.body.style.setProperty('--bg-color', isDark ? 'rgb(30,30,30)' : 'rgb(250,230,200)');
-  document.body.style.backgroundSize = 'cover, cover';
-  document.body.style.backgroundRepeat = 'no-repeat, no-repeat';
-  document.body.style.backgroundBlendMode = isDark ? 'multiply, screen' : 'multiply, normal';
-  
-  document.querySelector('a[class="mode"]').addEventListener('click', () => {
-  isDark = !isDark;
-  if(isDark){
-  document.querySelector('a[class="mode"]').innerHTML = '<center>☀️</center>';
-}
-else{
-  document.querySelector('a[class="mode"]').innerHTML = '<center>🔅</center>';
-}
-  document.body.style.setProperty('--text-color', isDark ? 'rgb(240,240, 150)':'rgb(63, 55, 90)');
-  document.body.style.setProperty('--bg-color', isDark ? 'rgb(30,30,30)' : 'rgb(250,230,200)');
-  document.body.style.backgroundSize = 'cover, cover';
-  document.body.style.backgroundBlendMode = isDark ? 'multiply, screen' : 'multiply, normal';
+    title.addEventListener('click', () => {
+        title.style.transform = "rotate(360deg) scale(1.5)";
+        setTimeout(() => {
+            title.style.transform = "rotate(0deg) scale(1)";
+        }, 1000);
     });
 
+    // 项目卡片展开逻辑
     (function(){
-  function openDetails(el){
-    el.classList.add('open');
-    el.style.height = el.scrollHeight + 'px';
-    el.setAttribute('aria-hidden','false');
-  }
-  function closeDetails(el){
-    el.style.height = el.scrollHeight + 'px';
-    void el.offsetHeight;
-    el.style.height = '0px';
-    el.classList.remove('open');
-    el.setAttribute('aria-hidden','true');
-  }
-
-  function toggleDetails(container, details, toggleBtn){
-    const isOpen = details.classList.contains('open');
-    if(isOpen){
-      closeDetails(details);
-      toggleBtn.setAttribute('aria-expanded','false');
-      toggleBtn.textContent = ' About More /详情';
-    } else {
-      document.querySelectorAll('.project-details.open').forEach(openEl=>{
-        const parent = openEl.closest('.project');
-        const btn = parent && parent.querySelector('.project-toggle');
-        if(openEl !== details){ closeDetails(openEl); if(btn){ btn.setAttribute('aria-expanded','false'); btn.textContent = 'About More /详情'; } }
-      });
-      openDetails(details);
-      toggleBtn.setAttribute('aria-expanded','true');
-      toggleBtn.textContent = 'Hide /收起 ';
-    }
-  }
-
-  function initProjectBlock(project){
-    if(project.dataset._initProject) return;
-    project.dataset._initProject = '1';
-
-    const details = project.querySelector('.project-details');
-    if(!details) return;
-    if(!details.id){
-      details.id = 'proj-' + Math.random().toString(36).slice(2,9);
-    }
-
-    let toggleBtn = project.querySelector('.project-toggle');
-    if(!toggleBtn){
-      toggleBtn = document.createElement('button');
-      toggleBtn.className = 'project-toggle';
-      toggleBtn.textContent = 'About More /详情';
-      toggleBtn.setAttribute('aria-expanded','false');
-      toggleBtn.setAttribute('aria-controls', details.id);
-      project.querySelector('.project-header').appendChild(toggleBtn);
-    } else {
-      toggleBtn.setAttribute('aria-controls', details.id);
-      toggleBtn.setAttribute('aria-expanded','false');
-    }
-
-    details.style.height = '0px';
-    details.setAttribute('aria-hidden','true');
-
-    toggleBtn.addEventListener('click', function(){
-      toggleDetails(project, details, toggleBtn);
-    });
-
-    toggleBtn.addEventListener('keydown', function(e){
-      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
-        e.preventDefault(); this.click();
+      function openDetails(el){
+        el.classList.add('open');
+        el.style.height = el.scrollHeight + 'px';
+        el.setAttribute('aria-hidden','false');
       }
-    });
-
-    window.addEventListener('resize', function(){
-      if(details.classList.contains('open')){
-        details.style.height = details.scrollHeight + 'px';
+      function closeDetails(el){
+        el.style.height = el.scrollHeight + 'px';
+        void el.offsetHeight;
+        el.style.height = '0px';
+        el.classList.remove('open');
+        el.setAttribute('aria-hidden','true');
       }
-    });
-  }
 
-
-  function initAllProjects(){
-    document.querySelectorAll('.project').forEach(initProjectBlock);
-  }
-
-
-  if(window.$docsify){
-    window.$docsify.plugins = window.$docsify.plugins || [];
-    window.$docsify.plugins.push(function(hook, vm){
-      hook.doneEach(function(){
-        initAllProjects();
-      });
-    });
-  } else {
-
-    document.addEventListener('DOMContentLoaded', initAllProjects);
-  }
-})();
-  </script>
-
-  <script>
-    (function() {
-        const leafContainer = document.getElementById('leaf-container');
-        
-        const leafColors = [
-            '#e67e22', '#d35400', '#f1c40f', '#c0392b', '#b7956d', '#eebb99',
-            '#a0522d', '#8b4513', '#d2691e', '#ff7f50' // 增加一些大地色和橙红色系
-        ];
-        
-        const leafShapes = [
-            // 枫叶状
-            {
-                viewBox: "0 0 100 100",
-                path: "M50,5 C45,25 25,30 10,25 C15,45 5,60 25,70 C20,85 40,95 50,85 C60,95 80,85 75,70 C95,60 85,45 90,25 C75,30 55,25 50,5 Z"
-            },
-            // 橡树叶状/波浪状
-            {
-                viewBox: "0 0 100 100",
-                path: "M50,0 C60,20 80,25 70,40 C90,50 85,70 65,75 C60,100 40,100 35,75 C15,70 10,50 30,40 C20,25 40,20 50,0 Z"
-            },
-            // 简单阔叶
-            {
-                viewBox: "0 0 100 100",
-                path: "M50,0 C80,20 90,60 50,100 C10,60 20,20 50,0 Z"
+      function toggleDetails(container, details, toggleBtn){
+        const isOpen = details.classList.contains('open');
+        if(isOpen){
+          closeDetails(details);
+          toggleBtn.setAttribute('aria-expanded','false');
+          toggleBtn.textContent = 'ACCESS DATA / 详情';
+        } else {
+          document.querySelectorAll('.project-details.open').forEach(openEl=>{
+            const parent = openEl.closest('.project');
+            const btn = parent && parent.querySelector('.project-toggle');
+            if(openEl !== details){ 
+                closeDetails(openEl); 
+                if(btn){ btn.setAttribute('aria-expanded','false'); btn.textContent = 'ACCESS DATA / 详情'; } 
             }
-        ];
+          });
+          openDetails(details);
+          toggleBtn.setAttribute('aria-expanded','true');
+          toggleBtn.textContent = 'MINIMIZE / 收起 ';
+        }
+      }
 
-        function createLeaf() {
-            const leaf = document.createElement('div');
-            leaf.className = 'falling-leaf';
+      function initProjectBlock(project){
+        if(project.dataset._initProject) return;
+        project.dataset._initProject = '1';
 
-            const shape = leafShapes[Math.floor(Math.random() * leafShapes.length)];
-            const color = leafColors[Math.floor(Math.random() * leafColors.length)];
-            
-            const size = Math.random() * 50 + 50; 
-            
-            const randPos = Math.random();
-            let startLeft;
-            
-            if (randPos < 0.5) {
-                // 左侧 0% 到 15% 之间
-                startLeft = Math.random() * 15;
-            } else {
-                // 右侧 85% 到 100% 之间
-                startLeft = Math.random() * 15 + 85;
-            }
-
-            const duration = Math.random() * 15 + 20; 
-            const delay = Math.random() * -30; 
-            const animationName = `leaf-fall-${Math.floor(Math.random() * 3) + 1}`;
-
-            leaf.style.width = `${size}px`;
-            leaf.style.height = `${size}px`;
-            leaf.style.left = `${startLeft}vw`;
-            
-            leaf.style.animationName = animationName;
-            leaf.style.animationDuration = `${duration}s`;
-            leaf.style.animationDelay = `${delay}s`;
-
-            let svgContent = `
-                <svg class="leaf-svg" viewBox="${shape.viewBox}" xmlns="http://www.w3.org/2000/svg">
-                    <path d="${shape.path}" fill="url(#leaf-texture-pattern)"/>
-                    
-                    <path d="${shape.path}" fill="${color}" fill-opacity="0.5" style="mix-blend-mode: multiply;"/>
-                </svg>
-            `;
-            
-            leaf.innerHTML = svgContent;
-            leafContainer.appendChild(leaf);
+        const details = project.querySelector('.project-details');
+        if(!details) return;
+        if(!details.id){
+          details.id = 'proj-' + Math.random().toString(36).slice(2,9);
         }
 
-        for (let i = 0; i < 20; i++) {
-            createLeaf();
+        let toggleBtn = project.querySelector('.project-toggle');
+        if(!toggleBtn){
+          toggleBtn = document.createElement('button');
+          toggleBtn.className = 'project-toggle';
+          toggleBtn.textContent = 'ACCESS DATA / 详情';
+          toggleBtn.setAttribute('aria-expanded','false');
+          toggleBtn.setAttribute('aria-controls', details.id);
+          project.querySelector('.project-header').appendChild(toggleBtn);
+        } else {
+          toggleBtn.setAttribute('aria-controls', details.id);
+          toggleBtn.setAttribute('aria-expanded','false');
         }
+
+        details.style.height = '0px';
+        details.setAttribute('aria-hidden','true');
+
+        toggleBtn.addEventListener('click', function(){
+          toggleDetails(project, details, toggleBtn);
+        });
+
+        // 键盘支持
+        toggleBtn.addEventListener('keydown', function(e){
+          if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+            e.preventDefault(); this.click();
+          }
+        });
+
+        window.addEventListener('resize', function(){
+          if(details.classList.contains('open')){
+            details.style.height = details.scrollHeight + 'px';
+          }
+        });
+      }
+
+      function initAllProjects(){
+        document.querySelectorAll('.project').forEach(initProjectBlock);
+      }
+
+      if(window.$docsify){
+        window.$docsify.plugins = window.$docsify.plugins || [];
+        window.$docsify.plugins.push(function(hook, vm){
+          hook.doneEach(function(){
+            initAllProjects();
+          });
+        });
+      } else {
+        document.addEventListener('DOMContentLoaded', initAllProjects);
+      }
     })();
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
