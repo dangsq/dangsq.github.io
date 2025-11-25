@@ -420,19 +420,60 @@
     
     .sidebar-toggle { display: none !important; }
     
+/* 图片样式 - 修复清晰度版 */
     .markdown-section img {
         border: 2px solid var(--neon-purple);
         box-shadow: 0 0 10px var(--neon-purple);
         border-radius: 6px;
         max-width: 100%;
         transition: 0.3s;
+        
+        /* 关键修改：增加对比度，弥补扫描线带来的变暗 */
+        filter: contrast(1.1) brightness(1.1); 
+
+        /* 核心修复：
+           1. #000 (黑色) 代表完全显示 (Alpha 1.0)
+           2. rgba(0,0,0, 0.7) 代表 70% 不透明度 (形成淡淡的扫描线)
+           这样图片主体是清晰的，只有细线处稍微透一点背景色 */
+        -webkit-mask-image: repeating-linear-gradient(
+            0deg,
+            #000 0px,
+            #000 4px,               /* 4px 的清晰区域 */
+            rgba(0, 0, 0, 0.7) 4px, /* 开始变淡 */
+            rgba(0, 0, 0, 0.7) 5px  /* 1px 的扫描线 */
+        );
+        mask-image: repeating-linear-gradient(
+            0deg,
+            #000 0px,
+            #000 4px,
+            rgba(0, 0, 0, 0.7) 4px,
+            rgba(0, 0, 0, 0.7) 5px
+        );
     }
+
+    /* 悬停效果 - 扫描线变细或消失，高亮 */
     .markdown-section img:hover {
         transform: scale(1.02);
-        box-shadow: 0 0 20px var(--neon-cyan);
+        box-shadow: 0 0 25px var(--neon-cyan);
         border-color: var(--neon-cyan);
+        filter: contrast(1.2) brightness(1.2); /* 悬停时更亮 */
+
+        /* 悬停时让扫描线几乎消失，或者变得更细，方便查看细节 */
+        -webkit-mask-image: repeating-linear-gradient(
+            0deg,
+            #000 0px,
+            #000 16px,                 /* 间隔变宽，看得更清 */
+            rgba(0, 0, 0, 0.9) 8px,   /* 线条非常淡 */
+            rgba(0, 0, 0, 0.9) 9px
+        );
+        mask-image: repeating-linear-gradient(
+            0deg,
+            #000 0px,
+            #000 16px,
+            rgba(0, 0, 0, 0.9) 8px,
+            rgba(0, 0, 0, 0.9) 9px
+        );
     }
-    
     /* 移动端优化：金字塔缩小 */
     @media (max-width: 768px) {
         .pyramid-container { width: 80px; height: 80px; }
