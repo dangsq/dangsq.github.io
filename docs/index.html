@@ -2,751 +2,333 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Shengqi Dang - Digital Retro</title>
+    <title>Shengqi Dang - Y2K Kawaii Realm</title>
     <link rel="icon" href="./1F34E.svg">
     
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet"> 
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     
     <style>
-        /* --- 核心变量 (Win98/Cyber-Retro Style) --- */
+        /* --- 核心变量 (Y2K Kawaii Aesthetic) --- */
         :root {
-            /* Win98/System Colors */
-            --win-bg-deep: #5a5a80; /* 更深的背景底色 */
-            --win-bg-light: #a5e1e1; /* 经典 Win95/98 桌面色 (青色) */
-            --win-system-gray: #C0C0C0; /* 经典系统灰色 */
-            --win-dark-shadow: #808080; /* 阴影色 */
-            --win-light-highlight: #FFFFFF; /* 高光色 */
-            
-            /* Cyber Retro Accents (减少纯霓虹，增加复古未来感) */
-            --cyber-accent-blue: #00C0FF; /* 赛博蓝色，清冷但明亮 */
-            --cyber-accent-orange: #FF8C00; /* 赛博橙色，温暖强调 */
-            --cyber-accent-green: #00FFC0; /* 赛博青绿色，数据感 */
-            --text-main: #000000; /* 内容区域文字改为黑色或深色 */
-            --text-on-accent: #FFFFFF;
-            
-            /* 窗口面板变量 (Classic Win Dialog) */
-            --panel-bg: var(--win-system-gray); 
-            --panel-border-top: 2px solid var(--win-light-highlight);
-            --panel-border-left: 2px solid var(--win-light-highlight);
-            --panel-border-bottom: 2px solid var(--win-dark-shadow);
-            --panel-border-right: 2px solid var(--win-dark-shadow);
+            /* 💿 Y2K 金属与全息色板 */
+            --y2k-bg-deep: #8457c8; /* 深空紫底色 */
+            --y2k-chrome: #e0e5ec; /* 铬金属色 */
+            --y2k-holo-gradient: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 25%, #a1c4fd 50%, #c2e9fb 75%, #d4fc79 100%); /* 全息渐变 */
+            --y2k-pink-glow: rgba(255, 105, 180, 0.6);
+            --y2k-blue-glow: rgba(135, 206, 235, 0.6);
 
-            /* 增强背景变量 (更深邃、更有层次感的赛博天空) */
-            --sky-start: #9a9aad; /* 近乎黑色的深空 */
-            --sky-mid: #dedef0; /* 深蓝紫过渡 */
-            --sky-horizon: #fdfdfd; /* 蓝紫色地平线 */
-            --sky-glow: rgba(0, 192, 255, 0.2); /* 地平线蓝色辉光 */
+            /* 🎀 Kawaii 强调色 */
+            --kawaii-pink: #FF69B4; /* 热粉 */
+            --kawaii-blue: #87CEFA; /* 天蓝 */
+            --kawaii-purple: #DDA0DD; /* 薰衣草 */
 
-            --grid-line-color: rgba(0, 255, 192, 0.4); /* 赛博青绿网格线 */
-            --grid-shadow-color: rgba(0, 255, 192, 0.2);
-            --data-cube-color: rgba(0, 192, 255, 0.1); /* 赛博蓝色半透明 */
-            --binary-code-color: #00a078; /* 动态二进制代码颜色 */
-            --geometric-glow-color: #FF8C00; /* 几何体发光色 */
+            /* 🔲 玻璃与金属面板 */
+            --panel-bg: rgba(255, 255, 255, 0.15); /* 更通透的玻璃 */
+            --panel-border: 2px solid rgba(255, 255, 255, 0.5); /* 半透明白边框 */
+            --panel-chrome-border: 3px solid var(--y2k-chrome); /* 金属边框 */
+            --panel-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            --panel-blur: blur(12px);
+            --text-main: #E0E0FF; /* 亮色文本以适应深背景 */
+            --text-highlight: #FFFFFF;
+
+            /* 🌌 背景变量 */
+            --grid-line-color: rgba(255, 105, 180, 0.3); /* 粉色网格 */
+            --star-color: #FFF;
         }
 
         /* --- 全局基础 --- */
         body {
-            background-color: var(--win-bg-light);
+            background-color: var(--y2k-bg-deep);
             background-image: 
-                /* 细微噪声/点阵 */
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="3" height="3"><filter id="a"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="1" result="b"/><feColorMatrix in="b" type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23a)" opacity="0.15"/></svg>'),
-                /* 新渐变天空：更具赛博感和深度的蓝紫到黑 */
-                radial-gradient(ellipse at bottom, var(--sky-horizon) 0%, var(--sky-mid) 50%, var(--sky-start) 100%);
+                /* 数码噪声纹理 */
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="100%" height="100%" fill="%232b213a"/><rect width="2" height="2" fill="%233b314a"/></svg>'),
+                radial-gradient(circle at center, #4a3563 0%, var(--y2k-bg-deep) 100%);
+            background-blend-mode: soft-light;
             
             min-height: 100vh;
             margin: 0;
             padding: 0;
-            font-family: 'Roboto Mono', monospace; 
+            font-family: 'Roboto Mono', monospace; /* 默认代码字体 */
             color: var(--text-main);
             overflow-x: hidden;
-            image-rendering: pixelated; 
         }
         
-        ::selection { background: var(--cyber-accent-blue); color: #FFF; text-shadow: none; }
+        ::selection { background: var(--kawaii-pink); color: #FFF; text-shadow: 0 0 5px #FFF; }
 
-        /* --- 背景视觉层 (Cyber-Retro Scenery) --- */
-        
-        /* 1. 低多边形地景 (更深邃的剪影) */
-        .low-poly-scenery {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 50vh;
-            z-index: -6; /* 更远的背景 */
-            background: linear-gradient(to top, 
-                #000000 0%, #000000 5%, 
-                #000010 5%, #000010 15%, 
-                #000020 15%, #000020 25%, 
-                #000040 25%, #000040 35%, 
-                transparent 35%
-            );
-            -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 5%, black 5%, black 15%, transparent 15%, transparent 25%, black 25%, black 35%, transparent 35%, transparent 45%, black 45%, black 55%, transparent 55%, transparent 65%, black 65%, black 75%, transparent 75%, transparent 85%, black 85%, black 100%);
-            -webkit-mask-size: 30% 100%;
-            -webkit-mask-repeat: repeat-x;
-            opacity: 0.8; 
-            filter: drop-shadow(0 -5px 15px rgba(0, 0, 0, 0.7)); 
-        }
-
-        /* 2. 噪声/扫描线 (更细微) */
-        .noise-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(
-                to bottom,
-                rgba(0, 0, 0, 0.04) 0px,
-                rgba(0, 0, 0, 0.04) 1px,
-                transparent 1px,
-                transparent 2px /* 更细密的扫描线 */
-            );
-            z-index: 9999; pointer-events: none; 
-            opacity: 0.15; 
-            mix-blend-mode: normal; 
-        }
-        
-        /* 3. 动态低多边形网格地板 (增强深度和动画) */
+        /* --- 背景视觉层 (Y2K Cyber Scenery) --- */
         .dynamic-grid-floor {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 30vh; /* 进一步增高 */
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 55vh;
             background-image: 
-                linear-gradient(to top, var(--grid-line-color) 1px, transparent 1px), 
-                linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px);
-            background-size: 70px 70px; /* 调整网格大小 */
-            transform: perspective(250px) rotateX(70deg); /* 调整视角 */
+                linear-gradient(to top, var(--grid-line-color) 2px, transparent 2px), 
+                linear-gradient(to right, var(--grid-line-color) 2px, transparent 2px);
+            background-size: 50px 50px;
+            transform: perspective(400px) rotateX(75deg);
             transform-origin: bottom center;
-            z-index: -4;
-            opacity: 0.7;
-            animation: gridPulse 8s infinite linear alternate, gridScroll 25s linear infinite; 
-            filter: drop-shadow(0 0 10px var(--grid-shadow-color)); /* 增强发光 */
-            -webkit-mask-image: linear-gradient(to top, black 60%, transparent 100%); /* 渐变过渡更平滑 */
-        }
-        @keyframes gridPulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 0.8; }
-            100% { opacity: 0.6; }
+            z-index: -5;
+            opacity: 0.5;
+            animation: gridScroll 20s linear infinite; 
+            filter: drop-shadow(0 0 10px var(--y2k-pink-glow));
+            -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%); 
         }
         @keyframes gridScroll {
             from { background-position: 0 0; }
-            to { background-position: 70px 0; }
+            to { background-position: 0 100px; }
         }
 
-        /* 4. 动态漂浮数据方块/几何体 (多样化和发光) */
-        .floating-data-cube, .floating-geometric-shard {
-            position: fixed;
-            background: var(--data-cube-color); 
-            border: 1px solid var(--cyber-accent-blue);
-            z-index: -4;
-            animation: floatCube 25s infinite ease-in-out, rotateCube 20s infinite linear;
-            box-shadow: 0 0 12px var(--cyber-accent-blue);
-            pointer-events: none;
-            will-change: transform, opacity;
-            border-radius: 2px; /* 略微圆角 */
+        /* ✨ Y2K 漂浮元素 (星星, 环, 像素心) */
+        .floating-element {
+            position: fixed; z-index: -3; pointer-events: none;
+            will-change: transform; opacity: 0.8;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
         }
-        .floating-data-cube:nth-child(1) { top: 15%; left: 10%; width: 90px; height: 90px; transform: scale(0.9); animation-delay: 0s; }
-        .floating-data-cube:nth-child(2) { top: 30%; right: 15%; width: 60px; height: 60px; animation-delay: 10s; background: rgba(0, 255, 192, 0.1); border-color: var(--cyber-accent-green); box-shadow: 0 0 10px var(--cyber-accent-green); }
-        .floating-data-cube:nth-child(3) { bottom: 25%; left: 5%; width: 100px; height: 100px; animation-delay: 5s; transform: scale(0.7); opacity: 0.4; background: rgba(0, 0, 128, 0.15); border-color: var(--sky-horizon); box-shadow: 0 0 18px var(--sky-horizon); }
         
-        /* 几何体碎片 - 更多形状和发光 */
-        .floating-geometric-shard {
-            background: none;
-            border: none;
-            box-shadow: none;
-            opacity: 0.6;
-            animation: floatShard 30s infinite ease-in-out, rotateShard 20s infinite linear;
+        /* 像素星星 */
+        .pixel-star {
+            color: var(--y2k-chrome);
+            font-family: 'Press Start 2P'; font-size: 25px;
+            animation: twinkle 3s infinite alternate, floatY 15s infinite ease-in-out alternate;
         }
-        .floating-geometric-shard::before {
-            content: '';
-            position: absolute;
-            width: 100%; height: 100%;
-            background: linear-gradient(45deg, rgba(0,192,255,0.3), rgba(255,140,0,0.3)); /* 渐变色 */
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); /* 三角形 */
-            box-shadow: 0 0 10px var(--geometric-glow-color); /* 发光 */
-            filter: blur(1px); /* 略微模糊 */
+        /* 数码环 */
+        .cyber-ring {
+            width: 80px; height: 80px;
+            border: 4px solid var(--kawaii-blue); border-radius: 50%;
+            box-shadow: 0 0 15px var(--kawaii-blue);
+            animation: rotateRing 10s linear infinite, floatX 20s infinite ease-in-out alternate;
         }
-        .floating-geometric-shard:nth-child(4) { top: 20%; right: 5%; width: 80px; height: 80px; animation-delay: 3s; transform: scale(0.8) rotateZ(30deg); }
-        .floating-geometric-shard:nth-child(4)::before { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* 菱形 */ box-shadow: 0 0 15px var(--cyber-accent-orange); }
-        .floating-geometric-shard:nth-child(5) { bottom: 10%; right: 20%; width: 120px; height: 120px; animation-delay: 12s; transform: scale(1.1) rotateZ(-10deg); opacity: 0.4; }
-        .floating-geometric-shard:nth-child(5)::before { clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%); /* 梯形 */ background: linear-gradient(45deg, rgba(0,255,192,0.3), rgba(0,192,255,0.3)); box-shadow: 0 0 10px var(--cyber-accent-green); }
-
-        @keyframes floatCube {
-            0% { transform: translateY(0) rotateX(0deg) rotateY(0deg); opacity: 0.5; }
-            30% { transform: translateY(-20px) rotateX(30deg) rotateY(15deg); opacity: 0.6; }
-            70% { transform: translateY(10px) rotateX(-15deg) rotateY(-20deg); opacity: 0.7; }
-            100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); opacity: 0.5; }
+        .cyber-ring::after {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            width: 110%; height: 110%; border: 2px dashed var(--kawaii-pink);
+            border-radius: 50%; transform: translate(-50%, -50%);
         }
-        @keyframes rotateCube {
-            from { transform: rotate3d(0,0,1,0deg); }
-            to { transform: rotate3d(0,0,1,360deg); }
-        }
-        @keyframes floatShard {
-            0% { transform: translateY(0) translateX(0) rotateZ(0deg); opacity: 0.6; }
-            25% { transform: translateY(-15px) translateX(10px) rotateZ(45deg); opacity: 0.7; }
-            50% { transform: translateY(5px) translateX(-5px) rotateZ(90deg); opacity: 0.5; }
-            75% { transform: translateY(-10px) translateX(15px) rotateZ(135deg); opacity: 0.8; }
-            100% { transform: translateY(0) translateX(0) rotateZ(0deg); opacity: 0.6; }
-        }
-        @keyframes rotateShard {
-            from { transform: rotateY(0deg) rotateX(0deg); }
-            to { transform: rotateY(360deg) rotateX(360deg); }
+        /* 像素心 */
+        .pixel-heart {
+            font-family: 'Press Start 2P'; color: var(--kawaii-pink); font-size: 30px;
+            animation: pulseHeart 2s infinite, floatY 12s infinite ease-in-out alternate-reverse;
+            text-shadow: 0 0 10px var(--kawaii-pink);
         }
 
-        /* 5. 动态二进制代码流 */
-        .binary-code-stream {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            overflow: hidden;
-            z-index: -7; /* 位于最底层 */
-            pointer-events: none;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 14px;
-            line-height: 1.2;
-            color: var(--binary-code-color);
-            opacity: 0.05; /* 非常细微的透明度 */
-            animation: binaryScroll 60s linear infinite;
-        }
-        .binary-code-stream pre {
-            white-space: pre-wrap;
-            word-break: break-all;
-            margin: 0;
-            padding: 0;
-        }
-        @keyframes binaryScroll {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-100%); } /* 向上滚动 */
-        }
+        @keyframes twinkle { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2) rotate(180deg); } }
+        @keyframes rotateRing { from { transform: rotate(0deg) rotateX(45deg); } to { transform: rotate(360deg) rotateX(45deg); } }
+        @keyframes pulseHeart { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        @keyframes floatY { 0% { transform: translateY(0); } 100% { transform: translateY(-30px); } }
+        @keyframes floatX { 0% { transform: translateX(0); } 100% { transform: translateX(40px); } }
 
-        /* 6. 远景赛博城市剪影 */
-        .cyber-city-silhouette {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 40vh; /* 略高一些 */
-            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
-            z-index: -5;
-            pointer-events: none;
-            /* 模拟城市建筑的简单剪影 */
-            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300"><path fill="%23000" d="M0 300L0 150L50 100L100 180L150 120L200 200L250 100L300 250L350 80L400 220L450 140L500 260L550 90L600 210L650 160L700 230L750 110L800 200L850 130L900 240L950 170L1000 250L1000 300L0 300Z"/></svg>');
-            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300"><path fill="%23000" d="M0 300L0 150L50 100L100 180L150 120L200 200L250 100L300 250L350 80L400 220L450 140L500 260L550 90L600 210L650 160L700 230L750 110L800 200L850 130L900 240L950 170L1000 250L1000 300L0 300Z"/></svg>');
-            -webkit-mask-size: cover;
-            mask-size: cover;
-            animation: cityGlow 15s ease-in-out infinite alternate;
-            filter: blur(0.5px); /* 远景模糊 */
-        }
-        @keyframes cityGlow {
-            0% { filter: drop-shadow(0 0 5px var(--cyber-accent-blue)) blur(0.5px); opacity: 0.6; }
-            50% { filter: drop-shadow(0 0 15px var(--cyber-accent-orange)) blur(1px); opacity: 0.8; }
-            100% { filter: drop-shadow(0 0 5px var(--cyber-accent-blue)) blur(0.5px); opacity: 0.6; }
-        }
-
-        /* 7. 动态星空/数据粒子 (更多粒子) */
         .stars-background {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -8;
-            background: transparent;
-            pointer-events: none;
-            animation: starFieldScroll 120s linear infinite; /* 缓慢滚动 */
+            position: fixed; top:0; left:0; width: 100%; height: 100%; z-index: -6;
+            background-image: radial-gradient(2px 2px at 50% 50%, var(--star-color), transparent),
+                              radial-gradient(2px 2px at 20% 80%, var(--star-color), transparent),
+                              radial-gradient(2px 2px at 80% 20%, var(--star-color), transparent);
+            background-size: 200px 200px;
+            animation: starScroll 60s linear infinite; opacity: 0.3;
         }
-        .stars-background::before {
-            content: '';
-            position: absolute;
-            width: 100%; height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 120px 80px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 150px 20px, #fff, rgba(0,0,0,0));
-            background-size: 150px 150px; /* 控制粒子密度 */
-            opacity: 0.1;
-        }
-        .stars-background::after {
-            content: '';
-            position: absolute;
-            width: 100%; height: 100%;
-            background-image: 
-                radial-gradient(1.5px 1.5px at 10px 110px, #fff, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 100px 10px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 60px 60px, #fff, rgba(0,0,0,0));
-            background-size: 120px 120px;
-            opacity: 0.08;
-            filter: blur(0.5px);
-            animation: starFieldScroll 90s linear infinite reverse; /* 另一层反向滚动 */
-        }
-        @keyframes starFieldScroll {
-            from { background-position: 0 0; }
-            to { background-position: 10000px 5000px; } /* 模拟无限滚动 */
-        }
+        @keyframes starScroll { from {background-position: 0 0;} to {background-position: 1000px 1000px;} }
 
-        /* 移除原有的 Vaporwave 背景元素 (再次确认) */
-        .crt-overlay, .retro-sun, .vaporwave-grid {
-            display: none !important;
-        }
 
-        /* --- 内容样式 (模拟 Win98 窗口) --- */
-        .markdown-section {
-            max-width: 800px;
-            margin: 60px auto; 
-            padding: 20px !important;
-            
-            background-color: var(--panel-bg);
-            border-top: var(--panel-border-top);
-            border-left: var(--panel-border-left);
-            border-right: var(--panel-border-bottom);
-            border-bottom: var(--panel-border-bottom);
-            box-shadow: 4px 4px 0 var(--win-dark-shadow); 
-            border-radius: 0; 
+        /* --- 布局与导航 (修复空白问题) --- */
+        /* 创建一个紧凑的头部容器 */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            max-width: 900px;
+            height: 120px;
+            margin: 20px auto 10px auto; /* 减少底部边距 */
+            background: var(--panel-bg);
+            backdrop-filter: var(--panel-blur);
+            border-radius: 20px;
+            border: var(--panel-border);
+            box-shadow: var(--panel-shadow), inset 0 0 10px rgba(255,255,255,0.2);
             position: relative;
-            z-index: 5;
-        }
-        
-        .markdown-section:before {
-            content: '💻 SYSTEM - README.TXT';
-            display: block;
-            background-color: #000080; 
-            color: var(--win-light-highlight);
-            font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
-            padding: 5px 10px;
-            margin: -20px -20px 20px -20px; 
-            cursor: move;
-            text-shadow: 1px 1px 0 #000;
-            border-bottom: 2px solid var(--win-dark-shadow); 
+            z-index: 20;
         }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Roboto Mono', monospace;
-            color: var(--text-main);
-            text-shadow: none;
-            margin-top: 1.5em;
-            border-bottom: 2px solid var(--cyber-accent-blue); /* H1/H2使用赛博蓝 */
-            padding-bottom: 5px;
+        /* 头部图标区 */
+        .header-icons span {
+            font-size: 32px; margin-right: 10px; cursor: pointer;
+            filter: drop-shadow(0 0 5px var(--kawaii-pink));
+            transition: transform 0.2s;
+            display: inline-block;
         }
-        h1 { border-color: var(--cyber-accent-orange); color: var(--cyber-accent-orange); font-size: 2.5em; } /* H1使用赛博橙 */
+        .header-icons span:hover { transform: scale(1.2) rotate(10deg); }
 
-        p, li, span, div {
-            color: var(--text-main);
-            font-weight: 400; 
-            line-height: 1.6;
-            letter-spacing: 0;
-            text-shadow: none; 
+        /* 导航胶囊 */
+        .nav-pills ul {
+            display: flex; list-style: none; margin: 0; padding: 0; gap: 10px;
         }
+        .nav-pills li {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--y2k-chrome);
+            padding: 8px 16px;
+            border-radius: 30px; /* 胶囊形状 */
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-pills li center {
+            font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--y2k-chrome);
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        .nav-pills li span {
+            font-family: 'Roboto Mono', monospace; font-size: 0.7rem; color: var(--kawaii-pink); display: block; margin-top: 2px;
+        }
+        /* 导航悬停效果 - 全息光泽 */
+        .nav-pills li:hover {
+            background: var(--y2k-holo-gradient);
+            border-color: transparent;
+            box-shadow: 0 0 15px var(--y2k-pink-glow);
+            transform: translateY(-3px);
+        }
+        .nav-pills li:hover center, .nav-pills li:hover span { color: #FFF !important; text-shadow: none; }
+        
 
-        .markdown-section a {
-            color: #0000FF; 
-            text-decoration: underline;
-            font-weight: bold;
-            transition: color 0.1s;
-            border-bottom: none;
+        /* 标题区域 (紧凑) */
+        .hero-title {
+            text-align: center; margin: 20px auto 30px auto; position: relative; z-index: 10;
         }
-        .markdown-section a:hover {
-            color: var(--cyber-accent-blue); /* 强调色高亮 */
-            text-shadow: none;
-            border-bottom: 2px solid var(--cyber-accent-blue);
-        }
-
-        .nav-container ul {
-            background: var(--win-system-gray);
-            border-top: 2px solid var(--win-light-highlight);
-            border-left: 2px solid var(--win-light-highlight);
-            border-right: 2px solid var(--win-dark-shadow);
-            border-bottom: 2px solid var(--win-dark-shadow);
-            box-shadow: 2px 2px 0 var(--win-dark-shadow);
-            padding: 2px;
-            backdrop-filter: none;
-            border-radius: 0;
-        }
-        
-        .nav-container li {
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.8rem !important;
-            line-height: 1.2;
-            color: var(--text-main) !important;
-            text-transform: uppercase;
-            letter-spacing: 0;
-            padding: 8px 12px !important;
-            border-radius: 0;
-            cursor: pointer;
-            border: 1px solid transparent; 
-        }
-        
-        .nav-container li:hover {
-            background: #000080;
-            color: var(--win-light-highlight) !important;
-            box-shadow: none;
-            transform: none;
-        }
-        
-        font[size="+3"] {
-            cursor: pointer; 
-            color: var(--cyber-accent-orange) !important; /* 图标使用赛博橙 */
-            text-shadow: 2px 2px 0px #000;
-            filter: drop-shadow(0 0 0);
-            font-size: 40px !important; 
-            transition: transform 0.1s;
-        }
-        font[size="+3"]:active {
-            transform: translateY(2px) scale(0.95);
-        }
-        
         .glitch-text {
             font-family: 'Press Start 2P', cursive;
-            color: var(--cyber-accent-green); /* 主标题使用赛博青绿 */
-            font-size: 30pt;
-            text-shadow: 4px 4px 0px #000; 
+            color: var(--y2k-chrome);
+            font-size: 32pt;
+            text-shadow: 3px 3px 0px var(--kawaii-pink), -3px -3px 0px var(--kawaii-blue);
+            letter-spacing: -2px;
+            animation: holographicText 3s infinite alternate;
         }
-        .glitch-text::before, .glitch-text::after { display: none; }
-        
-        span[style*="Press Start 2P"] {
-            font-family: 'Press Start 2P', cursive !important;
-            font-size: 20pt !important;
-            color: var(--cyber-accent-blue) !important; /* 副标题使用赛博蓝 */
-            border-right: 5px solid var(--cyber-accent-blue) !important;
-            padding-right: 10px !important;
-            animation: typing 0.5s steps(1) infinite alternate !important; 
-            text-shadow: 2px 2px 0px #000;
+        @keyframes holographicText {
+            0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); }
         }
-        @keyframes typing {
-            from { border-color: transparent; }
-            to { border-color: var(--cyber-accent-blue); }
+        .subtitle-text {
+            font-family: 'Orbitron', sans-serif; letter-spacing: 2px;
+            background: var(--y2k-holo-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-weight: 900; font-size: 20pt;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
         }
 
+
+        /* --- 主内容区域 (Docsify) --- */
+        /* 修复空白的关键：移除不必要的 margin-top */
+        .markdown-section {
+            max-width: 850px;
+            margin: 0 auto 60px auto !important; /* 移除巨大的顶部边距 */
+            padding: 30px !important;
+            background: var(--panel-bg);
+            backdrop-filter: var(--panel-blur);
+            border: var(--panel-chrome-border); /* 金属边框 */
+            border-radius: 25px;
+            box-shadow: 0 0 30px var(--y2k-pink-glow), inset 0 0 20px rgba(255,255,255,0.1);
+            position: relative; z-index: 5;
+        }
+        
+        /* Y2K 风格标题栏 */
+        .markdown-section:before {
+            content: '💿 Y2K_KAWAII_SYSTEM // ONLINE';
+            display: block;
+            background: var(--y2k-holo-gradient);
+            color: #FFF;
+            font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 1px;
+            font-size: 12px; padding: 8px 20px;
+            margin: -33px -33px 25px -33px; /* 调整位置以适应新边框 */
+            border-radius: 22px 22px 0 0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            border-bottom: 3px solid var(--y2k-chrome);
+        }
+
+        /* 内容样式 */
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif; text-transform: uppercase;
+            color: var(--y2k-chrome); text-shadow: 0 0 10px var(--y2k-blue-glow);
+            border-bottom: 2px dashed var(--kawaii-pink); padding-bottom: 10px; margin-top: 1.5em;
+        }
+        h1 { font-size: 2.5em; border-bottom: 3px solid var(--y2k-chrome); }
+        
+        p, li { font-family: 'Roboto Mono', monospace; line-height: 1.8; color: var(--text-main); }
+
+        a { color: var(--kawaii-pink); text-decoration: none; font-weight: bold; transition: all 0.3s; }
+        a:hover { color: var(--kawaii-blue); text-shadow: 0 0 10px var(--kawaii-blue); }
+
+        /* 项目卡片 */
         .project {
-            background-color: var(--win-system-gray);
-            border-top: var(--panel-border-top);
-            border-left: var(--panel-border-left);
-            border-right: var(--panel-border-bottom);
-            border-bottom: var(--panel-border-bottom);
-            border-radius: 0;
-            padding: 15px;
-            margin: 30px 0;
-            box-shadow: 2px 2px 0 var(--win-dark-shadow);
-            transition: box-shadow 0.1s;
+            background: rgba(255,255,255,0.08); border: 1px solid var(--y2k-chrome);
+            border-radius: 15px; padding: 20px; margin: 30px 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弹性过渡 */
         }
         .project:hover {
-            transform: none;
-            box-shadow: 2px 2px 0 var(--win-dark-shadow), 0 0 0 2px var(--cyber-accent-green); /* 悬停时添加赛博青绿外框 */
-            border-color: var(--win-system-gray);
+            transform: scale(1.03); box-shadow: 0 0 20px var(--y2k-pink-glow);
+            background: rgba(255,255,255,0.12);
         }
 
-        .project-details {
-            height: 0;
-            overflow: hidden;
-            opacity: 0;
-            visibility: hidden;
-            transition: height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
-            margin-top: 0;
-            border-top: 2px dashed var(--cyber-accent-green); /* 细节分隔线使用赛博青绿 */
-            padding-top: 0;
-            box-sizing: border-box;
-        }
-
-        .project-details.open {
-            opacity: 1;
-            visibility: visible;
-            margin-top: 20px;
-            padding-top: 20px;
-            height: auto; 
-        }
-        
-        /* 技能标签 (Tags) - 模拟按钮或选项卡 */
-        .project-summary span {
-            display: inline-block;
-            background: var(--win-system-gray);
-            border-top: 1px solid var(--win-light-highlight);
-            border-left: 1px solid var(--win-light-highlight);
-            border-right: 1px solid var(--win-dark-shadow);
-            border-bottom: 1px solid var(--win-dark-shadow);
-            color: var(--text-main);
-            font-family:'Roboto Mono', monospace;
-            font-size: 0.7rem;
-            padding: 4px 6px;
-            margin-right: 4px;
-            margin-bottom: 4px;
-            border-radius: 0;
-            cursor: default;
-        }
-
-
+        /* 按钮 (像糖果/果冻) */
         .project-toggle {
-            background: var(--win-system-gray);
-            border-top: 2px solid var(--win-light-highlight);
-            border-left: 2px solid var(--win-light-highlight);
-            border-right: 2px solid var(--win-dark-shadow);
-            border-bottom: 2px solid var(--win-dark-shadow);
-            color: var(--text-main);
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.7rem;
-            padding: 8px 12px;
-            cursor: pointer;
-            transition: none;
-            margin-top: 10px;
-            text-transform: uppercase;
-            box-shadow: 1px 1px 0 var(--win-dark-shadow);
+            background: linear-gradient(135deg, var(--kawaii-pink), var(--kawaii-purple));
+            border: 2px solid #fff; color: #fff;
+            font-family: 'Orbitron', sans-serif; font-size: 0.9rem; padding: 10px 20px;
+            border-radius: 50px; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4), inset 0 2px 5px rgba(255,255,255,0.4);
+            transition: all 0.3s;
         }
         .project-toggle:hover {
-            background: var(--win-system-gray);
-            border-top: 2px solid var(--win-dark-shadow);
-            border-left: 2px solid var(--win-dark-shadow);
-            border-right: 2px solid var(--win-light-highlight);
-            border-bottom: 2px solid var(--win-light-highlight);
-            color: #000;
-            box-shadow: none;
-            transform: translate(1px, 1px); 
-        }
-        
-        .markdown-section img {
-            border-top: 2px solid var(--win-light-highlight);
-            border-left: 2px solid var(--win-light-highlight);
-            border-right: 2px solid var(--win-dark-shadow);
-            border-bottom: 2px solid var(--win-dark-shadow);
-            
-            background-color: #000; 
-            box-shadow: 2px 2px 0 var(--win-dark-shadow);
-            border-radius: 0;
-            max-width: 100%;
-            transition: all 0.1s;
-            
-            filter: none;
-            image-rendering: pixelated; 
-        }
-        .markdown-section img:hover {
-            transform: none;
-            box-shadow: 2px 2px 0 var(--win-dark-shadow), 0 0 0 2px var(--cyber-accent-blue) inset; /* 强调色双重边框 */
-            border-color: var(--win-system-gray);
-            filter: none;
+            transform: translateY(-3px); box-shadow: 0 8px 20px rgba(135, 206, 235, 0.6);
+            background: linear-gradient(135deg, var(--kawaii-blue), var(--kawaii-purple));
         }
 
+        /* 图片样式 */
+        .markdown-section img {
+            border: 3px solid var(--y2k-chrome); border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3); transition: all 0.3s;
+        }
+        .markdown-section img:hover {
+            box-shadow: 0 0 25px var(--y2k-holo-gradient); border-color: var(--kawaii-pink);
+        }
     </style>
 </head>
 <body>
-    <div class="stars-background"></div> 
-    <div class="binary-code-stream" id="binaryStream"></div> 
-    <!-- <div class="cyber-city-silhouette"></div>  -->
-    <div class="low-poly-scenery"></div>
-    <div class="noise-overlay"></div>
-    
+    <div class="stars-background"></div>
     <div class="dynamic-grid-floor"></div>
-    <div class="floating-data-cube"></div>
-    <div class="floating-data-cube"></div>
-    <div class="floating-data-cube"></div> 
-    <div class="floating-geometric-shard"></div> <div class="floating-geometric-shard"></div> <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; max-width: 840px; margin: 0 auto; padding: 20px;">
-        <font size="+3" style="z-index: 100; display: inline-block;">💾</font>
-        
-        <div style="margin-left: auto; position: relative; z-index: 10;">
-            <div class="nav-container">
-                <ul style="display: flex; list-style-type: none; margin: 0; padding: 2px; gap: 5px;">
-                    <a href="#/README.md#pub" style="text-decoration: none;">
-                        <li style="padding: 10px 15px;"> 
-                            <center>INFO<br/><span style="font-size: 10px; font-family: 'Roboto Mono';">关于我</span></center>
-                        </li>
-                    </a>
-                    <a href="#/pub.md#pub" style="text-decoration: none;">
-                        <li style="padding: 10px 15px;">   
-                            <center>ACADEMIC<br/><span style="font-size: 10px; font-family: 'Roboto Mono';">学术</span></center>     
-                        </li>
-                    </a>
-                   <a href="#/proj.md#project" style="text-decoration: none;">
-                        <li style="padding: 10px 15px;">      
-                            <center>DESIGNS<br/><span style="font-size: 10px; font-family: 'Roboto Mono';">设计</span></center>   
-                        </li>
-                    </a>
-                    <a href="#/works.md#" style="text-decoration: none;">
-                        <li style="padding: 10px 15px;">      
-                            <center>ARTWORKS<br/><span style="font-size: 10px; font-family: 'Roboto Mono';">作品</span></center>     
-                        </li>
-                    </a>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <br/>
 
-    <center>
-        <div style="display: flex; align-items: center; justify-content: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 10;">
-            <div style="flex: 0 0 100%; text-align: center;">
-                
-                <div style="margin-bottom: 20px;">
-                    <font class="glitch-text" data-text="To Feel, and" style="font-size: 30pt; letter-spacing: 0;">
-                        > to_feel
-                    </font>
-                </div>
-                
-                <span style="display: inline-block; font-family: 'Press Start 2P'; font-size: 20pt; color: var(--cyber-accent-blue); border-right: 5px solid var(--cyber-accent-blue); padding-right: 10px;">
-                    To Create.
-                </span>
+    <div class="floating-element pixel-star" style="top: 15%; left: 10%;">✦</div>
+    <div class="floating-element cyber-ring" style="top: 25%; right: 15%; animation-delay: -5s;"></div>
+    <div class="floating-element pixel-heart" style="bottom: 30%; left: 8%;">♥</div>
+    <div class="floating-element pixel-star" style="bottom: 20%; right: 25%; font-size: 15px; animation-delay: -2s;">✨</div>
+    <div class="floating-element cyber-ring" style="bottom: 10%; left: -5%; width: 120px; height: 120px; border-color: var(--kawaii-pink); opacity: 0.4;"></div>
 
-            </div>
+
+    <header class="header-container">
+        <div class="header-icons">
+            <span>👾</span><span>💿</span>
         </div>
-    </center>
-    
+        <nav class="nav-pills">
+            <ul>
+                <a href="#/README.md#pub"><li><center>INFO</center><span>关于我</span></li></a>
+                <a href="#/pub.md#pub"><li><center>ACADEMIC</center><span>学术</span></li></a>
+                <a href="#/proj.md#project"><li><center>DESIGNS</center><span>设计</span></li></a>
+                <a href="#/works.md#"><li><center>ARTWORKS</center><span>作品</span></li></a>
+            </ul>
+        </nav>
+    </header>
     <br/><br/><br/><br/>
+    <div class="hero-title">
+        <div class="glitch-text">To_Feel_&_To_Create</div>
+        <div class="subtitle-text">///  ///</div>
+    </div>
 
     <div id="app"></div>
 
     <script>
-        // Docsify 配置
         window.$docsify = {
-            name: "shengqi dang",
-            themeColor: "#000080", // 经典蓝色标题栏
+            name: "Y2K CORE",
+            themeColor: "#FF69B4",
             hideSidebar: true,
             name: '',
             repo: '',
             executeScript: true,
         }
-        
-        // --- 核心功能保留：图标点击效果 ---
-        const title = document.querySelector('font[size="+3"]');
-        title.addEventListener('click', () => {
-            title.style.transform = "scale(1.2)";
-            setTimeout(() => {
-                title.style.transform = "scale(1)";
-            }, 300);
-        });
-
-        // --- 核心功能保留：项目卡片展开逻辑 ---
-        (function(){
-            function openDetails(el){
-                el.style.height = el.scrollHeight + 'px';
-                el.classList.add('open');
-                el.setAttribute('aria-hidden','false');
-                setTimeout(() => {
-                    if(el.classList.contains('open')) {
-                        el.style.height = 'auto';
-                    }
-                }, 400); 
-            }
-            function closeDetails(el){
-                el.style.height = el.scrollHeight + 'px';
-                void el.offsetHeight;
-                el.style.height = '0px';
-                el.classList.remove('open');
-                el.setAttribute('aria-hidden','true');
-            }
-
-            function toggleDetails(container, details, toggleBtn){
-                const isOpen = details.classList.contains('open');
-                if(isOpen){
-                    closeDetails(details);
-                    toggleBtn.setAttribute('aria-expanded','false');
-                    toggleBtn.textContent = 'ACCESS DATA / 详情';
-                } else {
-                    document.querySelectorAll('.project-details.open').forEach(openEl=>{
-                        const parent = openEl.closest('.project');
-                        const btn = parent && parent.querySelector('.project-toggle');
-                        if(openEl !== details){ 
-                            closeDetails(openEl); 
-                            if(btn){ btn.setAttribute('aria-expanded','false'); btn.textContent = 'ACCESS DATA / 详情'; } 
-                        }
-                    });
-                    openDetails(details);
-                    toggleBtn.setAttribute('aria-expanded','true');
-                    toggleBtn.textContent = 'MINIMIZE / 收起 ';
-                }
-            }
-
-            function initProjectBlock(project){
-                if(project.dataset._initProject) return;
-                project.dataset._initProject = '1';
-
-                const details = project.querySelector('.project-details');
-                if(!details) return;
-                if(!details.id){
-                    details.id = 'proj-' + Math.random().toString(36).slice(2,9);
-                }
-
-                let toggleBtn = project.querySelector('.project-toggle');
-                if(!toggleBtn){
-                    toggleBtn = document.createElement('button');
-                    toggleBtn.className = 'project-toggle';
-                    toggleBtn.textContent = 'ACCESS DATA / 详情';
-                    toggleBtn.setAttribute('aria-expanded','false');
-                    toggleBtn.setAttribute('aria-controls', details.id);
-                    let header = project.querySelector('.project-header');
-                    if(!header){ 
-                        header = document.createElement('div');
-                        header.className = 'project-header';
-                        project.insertBefore(header, details);
-                    }
-                    header.appendChild(toggleBtn);
-                } else {
-                    toggleBtn.setAttribute('aria-controls', details.id);
-                    toggleBtn.setAttribute('aria-expanded','false');
-                }
-
-                details.style.height = '0px';
-                details.setAttribute('aria-hidden','true');
-
-                toggleBtn.addEventListener('click', function(){
-                    toggleDetails(project, details, toggleBtn);
-                });
-
-                toggleBtn.addEventListener('keydown', function(e){
-                    if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
-                        e.preventDefault(); this.click();
-                    }
-                });
-
-                window.addEventListener('resize', function(){
-                    if(details.classList.contains('open')){
-                        if(details.style.height !== 'auto') {
-                             details.style.height = details.scrollHeight + 'px';
-                        }
-                    }
-                });
-            }
-
-            function initAllProjects(){
-                document.querySelectorAll('.project').forEach(initProjectBlock);
-            }
-
-            if(window.$docsify){
-                window.$docsify.plugins = window.$docsify.plugins || [];
-                window.$docsify.plugins.push(function(hook, vm){
-                    hook.doneEach(function(){
-                        initAllProjects();
-                    });
-                });
-            } else {
-                document.addEventListener('DOMContentLoaded', initAllProjects);
-            }
-        })();
-        
-        // --- 新增：背景二进制代码生成逻辑 ---
-        (function() {
-            const container = document.getElementById('binaryStream');
-            if (!container) return;
-
-            function generateBinaryCode(length) {
-                let code = '';
-                for (let i = 0; i < length; i++) {
-                    code += Math.round(Math.random()) === 0 ? '0' : '1';
-                }
-                return code;
-            }
-
-            function fillContainer() {
-                const charWidth = 14; 
-                const charHeight = 16.8; 
-                const width = container.offsetWidth;
-                const height = container.offsetHeight;
-
-                if (width === 0 || height === 0) return; 
-
-                const cols = Math.floor(width / charWidth);
-                const rows = Math.ceil(height / charHeight) * 2; // 需要两倍高度来确保动画平滑
-
-                let streamContent = '';
-                for (let i = 0; i < rows; i++) {
-                    // 生成一行随机二进制代码
-                    streamContent += generateBinaryCode(cols) + '\n';
-                }
-
-                container.innerHTML = `<pre>${streamContent}</pre>`;
-            }
-
-            // 初次填充
-            fillContainer();
-
-            // 窗口大小变化时重新填充
-            window.addEventListener('resize', fillContainer);
-        })();
-
     </script>
+    <script src="init_proj.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 
 </body>

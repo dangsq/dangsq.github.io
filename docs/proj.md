@@ -1,6 +1,28 @@
+<style>
+
+  .project-details {
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
+            margin-top: 0;
+            padding-top: 0;
+            box-sizing: border-box;
+        }
+
+        .project-details.open {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 20px;
+            padding-top: 20px;
+            height: auto; 
+        }
+</style>
 <span id="project"></span>
 
 <!-- Project 1 -->
+
 <div class="project">
   <div class="project-header">
     <div class="project-meta">
