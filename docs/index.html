@@ -1,688 +1,753 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Shengqi Dang - Vaporwave Ultimate</title>
-  <link rel="icon" href="./1F34E.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
-  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
-  
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  
-  <style>
-    /* --- 核心变量 --- */
-    :root {
-      --bg-deep: #050011;       
-      --bg-mid: #180c2e;
-      --neon-cyan: #4aebf4;     
-      --neon-pink: #ff00ff;     
-      --neon-purple: #bc13fe;   
-      --sun-yellow: #ffd700;    
-      --text-main: #ffffff;     
-      --grid-line: rgba(255, 0, 255, 0.4);
-      
-      /* 玻璃面板变量 */
-      --panel-bg: rgba(13, 2, 33, 0.85); 
-      --panel-blur: 12px;                
-      --panel-border: 1px solid rgba(0, 243, 255, 0.5);
-      --panel-glow: 0 0 30px rgba(0, 243, 255, 0.15);
-    }
-
-    /* --- 全局基础 --- */
-    body {
-        background: linear-gradient(to bottom, var(--bg-deep) 0%, var(--bg-mid) 80%, #2b003b 100%);
-        min-height: 100vh;
-        margin: 0;
-        padding: 0;
-        font-family: 'Merriweather', serif;
-        color: var(--text-main);
-        overflow-x: hidden;
-    }
-
-    ::-webkit-scrollbar { width: 10px; }
-    ::-webkit-scrollbar-track { background: var(--bg-deep); }
-    ::-webkit-scrollbar-thumb { 
-        background: linear-gradient(var(--neon-purple), var(--neon-cyan)); 
-        border-radius: 5px;
-        border: 2px solid var(--bg-deep);
-    }
-    ::selection { background: var(--neon-pink); color: #fff; text-shadow: none; }
-
-    /* --- 背景视觉层 (Z-index < 0) --- */
-
-    /* 1. CRT 扫描线 */
-    .crt-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-        background-size: 100% 2px, 3px 100%;
-        z-index: 9999; pointer-events: none; opacity: 0.15;
-    }
-
-    /* 2. 复古夕阳 */
-    .retro-sun {
-        position: fixed; bottom: 20vh; left: 50%; transform: translateX(-50%);
-        width: 50vh; height: 50vh;
-        background: linear-gradient(to bottom, var(--sun-yellow), var(--neon-pink));
-        border-radius: 50%; z-index: -5; 
-        box-shadow: 0 0 80px var(--neon-pink);
-        -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 50%, transparent 55%, black 55%, black 65%, transparent 65%, transparent 68%, black 68%, black 75%, transparent 75%, transparent 77%, black 77%, black 82%, transparent 82%, transparent 83%, black 83%, black 88%, transparent 88%, transparent 89%, black 89%, black 100%);
-    }
-
-    /* 3. 3D 网格 */
-    .vaporwave-grid {
-        position: fixed; bottom: -20vh; left: -50%; width: 200%; height: 70vh;
-        background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-        background-size: 50px 50px; transform: perspective(300px) rotateX(60deg);
-        animation: gridMove 3s linear infinite; z-index: -2;
-        box-shadow: 0 0 50px rgba(255, 0, 255, 0.4);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
-    }
-    @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
-
-    /* 4. 星空 */
-    .stars {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px);
-        background-size: 500px 500px; z-index: -6; opacity: 0.6;
-    }
-
-    /* --- ✨ 新增元素：赛博城市剪影 ✨ --- */
-    .cyber-city {
-        position: fixed;
-        bottom: 15vh; /* 对齐地平线 */
-        left: 0;
-        width: 100%;
-        height: 15vh;
-        background: 
-            linear-gradient(to top, #000 0%, transparent 100%),
-            repeating-linear-gradient(90deg, 
-                #000 0px, #000 10px, 
-                transparent 10px, transparent 15px,
-                #000 15px, #000 25px,
-                transparent 25px, transparent 40px
-            );
-        z-index: -4;
-        opacity: 0.7;
-        /* 使用 clip-path 制作高低错落的楼房 */
-        clip-path: polygon(
-            0% 100%, 5% 100%, 5% 60%, 10% 60%, 10% 80%, 15% 80%, 15% 40%, 20% 40%, 20% 85%, 
-            25% 85%, 25% 50%, 30% 50%, 30% 70%, 35% 70%, 35% 30%, 40% 30%, 40% 90%, 
-            45% 90%, 45% 55%, 50% 55%, 50% 20%, 55% 20%, 55% 60%, 60% 60%, 60% 35%, 
-            65% 35%, 65% 75%, 70% 75%, 70% 45%, 75% 45%, 75% 80%, 80% 80%, 80% 50%, 
-            85% 50%, 85% 70%, 90% 70%, 90% 40%, 95% 40%, 95% 100%, 100% 100%
-        );
-    }
-
-    /* --- ✨ 新增元素：旋转的线框金字塔 ✨ --- */
-    .pyramid-container {
-        position: fixed;
-        width: 150px;
-        height: 150px;
-        z-index: -3;
-        perspective: 1000px;
-        opacity: 0.6;
-        pointer-events: none;
-    }
-    .p-left { top: 20%; left: 5%; }
-    .p-right { top: 40%; right: 5%; }
-
-    .pyramid {
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-        animation: spin 15s infinite linear;
-    }
-    .side {
-        position: absolute;
-        width: 0; height: 0;
-        border-left: 75px solid transparent;
-        border-right: 75px solid transparent;
-        border-bottom: 150px solid rgba(0, 243, 255, 0.1); /* 青色半透明填充 */
-        opacity: 0.7;
-    }
-    /* 描边效果 */
-    .side::after {
-        content: '';
-        position: absolute;
-        left: -75px; top: 0px;
-        width: 0; height: 0;
-        border-left: 75px solid transparent;
-        border-right: 75px solid transparent;
-        border-bottom: 150px solid transparent;
-    }
-    /* 金字塔四个面 */
-    .side:nth-child(1) { transform: rotateY(0deg) translateZ(30px) rotateX(30deg); border-bottom-color: rgba(0, 243, 255, 0.2); }
-    .side:nth-child(2) { transform: rotateY(90deg) translateZ(30px) rotateX(30deg); border-bottom-color: rgba(255, 0, 255, 0.2); }
-    .side:nth-child(3) { transform: rotateY(180deg) translateZ(30px) rotateX(30deg); border-bottom-color: rgba(0, 243, 255, 0.2); }
-    .side:nth-child(4) { transform: rotateY(270deg) translateZ(30px) rotateX(30deg); border-bottom-color: rgba(255, 0, 255, 0.2); }
+    <meta charset="UTF-8">
+    <title>Shengqi Dang - Digital Retro</title>
+    <link rel="icon" href="./1F34E.svg">
     
-    @keyframes spin {
-        from { transform: rotateY(0deg) rotateX(10deg); }
-        to { transform: rotateY(360deg) rotateX(10deg); }
-    }
-
-    /* --- ✨ 新增元素：流星/数据流 ✨ --- */
-    .shooting-star {
-        position: fixed;
-        top: 0; right: 0;
-        width: 200px; height: 2px;
-        background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-        transform: rotate(-45deg);
-        z-index: -4;
-        opacity: 0;
-        animation: shoot 6s infinite ease-in-out;
-    }
-    .shooting-star:nth-child(2) { top: 20%; right: -10%; animation-delay: 2s; width: 150px; background: linear-gradient(90deg, transparent, var(--neon-pink), transparent); }
-    .shooting-star:nth-child(3) { top: 40%; right: -20%; animation-delay: 4s; width: 250px; }
-
-    @keyframes shoot {
-        0% { transform: translate(100px, -100px) rotate(-45deg); opacity: 0; }
-        10% { opacity: 1; }
-        20% { transform: translate(-500px, 500px) rotate(-45deg); opacity: 0; }
-        100% { opacity: 0; }
-    }
-
-
-    /* --- 内容样式 --- */
-    .markdown-section {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px !important;
-      background-color: var(--panel-bg);
-      backdrop-filter: blur(var(--panel-blur));
-      -webkit-backdrop-filter: blur(var(--panel-blur));
-      border: var(--panel-border);
-      border-radius: 15px;
-      box-shadow: var(--panel-glow);
-      position: relative;
-      z-index: 5;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'Audiowide', cursive;
-      color: var(--neon-cyan);
-      text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
-      margin-top: 1.5em;
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
     
-    h1 {
-        background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: none;
-        filter: drop-shadow(0 0 5px rgba(255,0,255,0.5));
-    }
-
-    p, li, span, div {
-      text-shadow: none; 
-      color: #ffffff;
-      font-weight: 500; 
-      line-height: 1.8;
-      letter-spacing: 0.5px;
-    }
-
-    .markdown-section a {
-        color: var(--sun-yellow);
-        text-decoration: none;
-        position: relative;
-        font-weight: bold;
-        transition: 0.3s;
-        border-bottom: 2px solid transparent;
-    }
-    .markdown-section a:hover {
-        color: var(--neon-cyan);
-        text-shadow: 0 0 8px var(--neon-cyan);
-        border-bottom: 2px solid var(--neon-cyan);
-    }
-
-    .nav-container ul {
-        background: rgba(0, 0, 0, 0.8);
-        border: 1px solid var(--neon-purple);
-        box-shadow: 0 0 15px var(--neon-purple);
-        border-radius: 8px;
-        padding: 5px;
-        backdrop-filter: blur(5px);
-    }
-    li { color: #fff; }
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     
-    .nav-container li {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 10px !important;
-      line-height: 1.5;
-      color: var(--neon-cyan) !important;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: 0.2s;
-    }
-    
-    .nav-container li:hover {
-      background: var(--neon-pink);
-      color: #000 !important;
-      box-shadow: 0 0 20px var(--neon-pink);
-      transform: scale(1.05);
-    }
+    <style>
+        /* --- 核心变量 (Win98/Cyber-Retro Style) --- */
+        :root {
+            /* Win98/System Colors */
+            --win-bg-deep: #5a5a80; /* 更深的背景底色 */
+            --win-bg-light: #a5e1e1; /* 经典 Win95/98 桌面色 (青色) */
+            --win-system-gray: #C0C0C0; /* 经典系统灰色 */
+            --win-dark-shadow: #808080; /* 阴影色 */
+            --win-light-highlight: #FFFFFF; /* 高光色 */
+            
+            /* Cyber Retro Accents (减少纯霓虹，增加复古未来感) */
+            --cyber-accent-blue: #00C0FF; /* 赛博蓝色，清冷但明亮 */
+            --cyber-accent-orange: #FF8C00; /* 赛博橙色，温暖强调 */
+            --cyber-accent-green: #00FFC0; /* 赛博青绿色，数据感 */
+            --text-main: #000000; /* 内容区域文字改为黑色或深色 */
+            --text-on-accent: #FFFFFF;
+            
+            /* 窗口面板变量 (Classic Win Dialog) */
+            --panel-bg: var(--win-system-gray); 
+            --panel-border-top: 2px solid var(--win-light-highlight);
+            --panel-border-left: 2px solid var(--win-light-highlight);
+            --panel-border-bottom: 2px solid var(--win-dark-shadow);
+            --panel-border-right: 2px solid var(--win-dark-shadow);
 
-    .glitch-text {
-        position: relative;
-        font-family: 'Audiowide', cursive;
-        color: white;
-        font-size: 35pt;
-    }
-    .glitch-text::before, .glitch-text::after {
-        content: attr(data-text);
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: var(--bg-deep);
-    }
-    .glitch-text::before {
-        left: 2px;
-        text-shadow: -2px 0 var(--neon-pink);
-        clip: rect(44px, 450px, 56px, 0);
-        animation: glitch-anim 5s infinite linear alternate-reverse;
-    }
-    .glitch-text::after {
-        left: -2px;
-        text-shadow: -2px 0 var(--neon-cyan);
-        clip: rect(44px, 450px, 56px, 0);
-        animation: glitch-anim2 5s infinite linear alternate-reverse;
-    }
-    @keyframes glitch-anim {
-        0% { clip: rect(12px, 9999px, 32px, 0); }
-        50% { clip: rect(64px, 9999px, 80px, 0); }
-        100% { clip: rect(4px, 9999px, 20px, 0); }
-    }
-    @keyframes glitch-anim2 {
-        0% { clip: rect(52px, 9999px, 82px, 0); }
-        50% { clip: rect(2px, 9999px, 15px, 0); }
-        100% { clip: rect(34px, 9999px, 64px, 0); }
-    }
+            /* 增强背景变量 (更深邃、更有层次感的赛博天空) */
+            --sky-start: #9a9aad; /* 近乎黑色的深空 */
+            --sky-mid: #dedef0; /* 深蓝紫过渡 */
+            --sky-horizon: #fdfdfd; /* 蓝紫色地平线 */
+            --sky-glow: rgba(0, 192, 255, 0.2); /* 地平线蓝色辉光 */
 
-    @keyframes typing {
-      0% { width: 0; border-color: var(--neon-pink); }
-      50% { border-color: var(--neon-cyan); }
-      100% { width: 0; border-color: var(--neon-pink); }
-    }
+            --grid-line-color: rgba(0, 255, 192, 0.4); /* 赛博青绿网格线 */
+            --grid-shadow-color: rgba(0, 255, 192, 0.2);
+            --data-cube-color: rgba(0, 192, 255, 0.1); /* 赛博蓝色半透明 */
+            --binary-code-color: #00a078; /* 动态二进制代码颜色 */
+            --geometric-glow-color: #FF8C00; /* 几何体发光色 */
+        }
 
-    font[size="+3"] {
-      cursor: pointer;
-      color: var(--neon-pink) !important;
-      text-shadow: 2px 2px 0px var(--neon-cyan);
-      filter: drop-shadow(0 0 10px var(--neon-purple));
-    }
-    font[size="+3"]:hover {
-       transform: rotate(15deg) scale(1.3);
-    }
-
-    .project {
-        background-color: var(--card-bg);
-        backdrop-filter: blur(var(--card-blur)); 
-        -webkit-backdrop-filter: blur(var(--card-blur));
-        border: var(--card-border);
-        border-left: 4px solid var(--neon-cyan);
-        border-radius: 6px;
-        padding: 25px;
-        margin: 40px 0;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .project:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 15px 40px rgba(0, 243, 255, 0.15);
-        border-color: var(--neon-cyan);
-    }
-
-    .project-title {
-        margin: 0 0 10px 0;
-        font-family: 'Audiowide', sans-serif;
-        font-size: 1.4rem;
-        line-height: 1.4;
-        color: #fff;
-        text-transform: uppercase;
-        text-shadow: 0 0 0px rgba(0, 243, 255, 0.8);
-    }
-    .project-title h3{
-        margin: 0 0 10px 0;
-        font-family: 'Audiowide', sans-serif;
-        font-size: 1.4rem;
-        line-height: 1.4;
-        color: #fff;
-        text-transform: uppercase;
-        text-shadow: 0 0 0px rgba(0, 243, 255, 0.8);
-    }
-    .project-sub {
-        font-family: 'Merriweather', serif;
-        font-size: 0.9rem;
-        color: #ccc;
-        margin-bottom: 15px;
-        font-style: italic;
-    }
-
-    .project-summary {
-        color: #eee;
-        line-height: 1.8;
-        font-size: 1rem;
-        margin-bottom: 15px;
-        font-family: 'Merriweather', serif;
-    }
-
-    .project-summary span {
-        display: inline-block;
-        background: rgba(255, 0, 255, 0.15);
-        border: 1px solid var(--neon-pink);
-        color: var(--neon-pink);
-        font-family:'Audiowide', sans-serif;
-        font-size: 0.8rem;
-        padding: 6px 8px;
-        margin-right: 6px;
-        margin-bottom: 6px;
-        border-radius: 2px;
-    }
-
-    .project-details {
-        height: 0;
-        overflow: hidden;
-        opacity: 0;
-        visibility: hidden;
-        transition: height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
-        margin-top: 0;
-        border-top: 1px solid transparent;
-    }
-
-    .project-details.open {
-        opacity: 1;
-        visibility: visible;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .project-toggle {
-        background: transparent;
-        border: 1px solid var(--neon-cyan);
-        color: var(--neon-cyan);
-        font-family: 'Audiowide', sans-serif;
-        font-size: 0.7rem;
-        padding: 10px 15px;
-        cursor: pointer;
-        transition: 0.2s;
-        margin-top: 10px;
-    }
-    .project-toggle:hover {
-        background: var(--neon-cyan);
-        color: #000;
-        box-shadow: 0 0 15px var(--neon-cyan);
-    }
-    
-    .sidebar-toggle { display: none !important; }
-    
-/* 图片样式 - 修复清晰度版 */
-    .markdown-section img {
-        border: 2px solid var(--neon-purple);
-        box-shadow: 0 0 10px var(--neon-purple);
-        border-radius: 6px;
-        max-width: 100%;
-        transition: 0.3s;
+        /* --- 全局基础 --- */
+        body {
+            background-color: var(--win-bg-light);
+            background-image: 
+                /* 细微噪声/点阵 */
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="3" height="3"><filter id="a"><feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="1" result="b"/><feColorMatrix in="b" type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23a)" opacity="0.15"/></svg>'),
+                /* 新渐变天空：更具赛博感和深度的蓝紫到黑 */
+                radial-gradient(ellipse at bottom, var(--sky-horizon) 0%, var(--sky-mid) 50%, var(--sky-start) 100%);
+            
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto Mono', monospace; 
+            color: var(--text-main);
+            overflow-x: hidden;
+            image-rendering: pixelated; 
+        }
         
-        /* 关键修改：增加对比度，弥补扫描线带来的变暗 */
-        filter: contrast(1.1) brightness(1.1); 
+        ::selection { background: var(--cyber-accent-blue); color: #FFF; text-shadow: none; }
 
-        /* 核心修复：
-           1. #000 (黑色) 代表完全显示 (Alpha 1.0)
-           2. rgba(0,0,0, 0.7) 代表 70% 不透明度 (形成淡淡的扫描线)
-           这样图片主体是清晰的，只有细线处稍微透一点背景色 */
-        -webkit-mask-image: repeating-linear-gradient(
-            0deg,
-            #000 0px,
-            #000 4px,               /* 4px 的清晰区域 */
-            rgba(0, 0, 0, 0.7) 4px, /* 开始变淡 */
-            rgba(0, 0, 0, 0.7) 5px  /* 1px 的扫描线 */
-        );
-        mask-image: repeating-linear-gradient(
-            0deg,
-            #000 0px,
-            #000 4px,
-            rgba(0, 0, 0, 0.7) 4px,
-            rgba(0, 0, 0, 0.7) 5px
-        );
-    }
+        /* --- 背景视觉层 (Cyber-Retro Scenery) --- */
+        
+        /* 1. 低多边形地景 (更深邃的剪影) */
+        .low-poly-scenery {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 50vh;
+            z-index: -6; /* 更远的背景 */
+            background: linear-gradient(to top, 
+                #000000 0%, #000000 5%, 
+                #000010 5%, #000010 15%, 
+                #000020 15%, #000020 25%, 
+                #000040 25%, #000040 35%, 
+                transparent 35%
+            );
+            -webkit-mask-image: linear-gradient(135deg, transparent 0%, transparent 5%, black 5%, black 15%, transparent 15%, transparent 25%, black 25%, black 35%, transparent 35%, transparent 45%, black 45%, black 55%, transparent 55%, transparent 65%, black 65%, black 75%, transparent 75%, transparent 85%, black 85%, black 100%);
+            -webkit-mask-size: 30% 100%;
+            -webkit-mask-repeat: repeat-x;
+            opacity: 0.8; 
+            filter: drop-shadow(0 -5px 15px rgba(0, 0, 0, 0.7)); 
+        }
 
-    /* 悬停效果 - 扫描线变细或消失，高亮 */
-    .markdown-section img:hover {
-        transform: scale(1.02);
-        box-shadow: 0 0 25px var(--neon-cyan);
-        border-color: var(--neon-cyan);
-        filter: contrast(1.2) brightness(1.2); /* 悬停时更亮 */
+        /* 2. 噪声/扫描线 (更细微) */
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.04) 0px,
+                rgba(0, 0, 0, 0.04) 1px,
+                transparent 1px,
+                transparent 2px /* 更细密的扫描线 */
+            );
+            z-index: 9999; pointer-events: none; 
+            opacity: 0.15; 
+            mix-blend-mode: normal; 
+        }
+        
+        /* 3. 动态低多边形网格地板 (增强深度和动画) */
+        .dynamic-grid-floor {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 30vh; /* 进一步增高 */
+            background-image: 
+                linear-gradient(to top, var(--grid-line-color) 1px, transparent 1px), 
+                linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px);
+            background-size: 70px 70px; /* 调整网格大小 */
+            transform: perspective(250px) rotateX(70deg); /* 调整视角 */
+            transform-origin: bottom center;
+            z-index: -4;
+            opacity: 0.7;
+            animation: gridPulse 8s infinite linear alternate, gridScroll 25s linear infinite; 
+            filter: drop-shadow(0 0 10px var(--grid-shadow-color)); /* 增强发光 */
+            -webkit-mask-image: linear-gradient(to top, black 60%, transparent 100%); /* 渐变过渡更平滑 */
+        }
+        @keyframes gridPulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.6; }
+        }
+        @keyframes gridScroll {
+            from { background-position: 0 0; }
+            to { background-position: 70px 0; }
+        }
 
-        /* 悬停时让扫描线几乎消失，或者变得更细，方便查看细节 */
-        -webkit-mask-image: repeating-linear-gradient(
-            0deg,
-            #000 0px,
-            #000 16px,                 /* 间隔变宽，看得更清 */
-            rgba(0, 0, 0, 0.9) 8px,   /* 线条非常淡 */
-            rgba(0, 0, 0, 0.9) 9px
-        );
-        mask-image: repeating-linear-gradient(
-            0deg,
-            #000 0px,
-            #000 16px,
-            rgba(0, 0, 0, 0.9) 8px,
-            rgba(0, 0, 0, 0.9) 9px
-        );
-    }
-    /* 移动端优化：金字塔缩小 */
-    @media (max-width: 768px) {
-        .pyramid-container { width: 80px; height: 80px; }
-        .side { border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 80px solid rgba(0, 243, 255, 0.1); }
-    }
+        /* 4. 动态漂浮数据方块/几何体 (多样化和发光) */
+        .floating-data-cube, .floating-geometric-shard {
+            position: fixed;
+            background: var(--data-cube-color); 
+            border: 1px solid var(--cyber-accent-blue);
+            z-index: -4;
+            animation: floatCube 25s infinite ease-in-out, rotateCube 20s infinite linear;
+            box-shadow: 0 0 12px var(--cyber-accent-blue);
+            pointer-events: none;
+            will-change: transform, opacity;
+            border-radius: 2px; /* 略微圆角 */
+        }
+        .floating-data-cube:nth-child(1) { top: 15%; left: 10%; width: 90px; height: 90px; transform: scale(0.9); animation-delay: 0s; }
+        .floating-data-cube:nth-child(2) { top: 30%; right: 15%; width: 60px; height: 60px; animation-delay: 10s; background: rgba(0, 255, 192, 0.1); border-color: var(--cyber-accent-green); box-shadow: 0 0 10px var(--cyber-accent-green); }
+        .floating-data-cube:nth-child(3) { bottom: 25%; left: 5%; width: 100px; height: 100px; animation-delay: 5s; transform: scale(0.7); opacity: 0.4; background: rgba(0, 0, 128, 0.15); border-color: var(--sky-horizon); box-shadow: 0 0 18px var(--sky-horizon); }
+        
+        /* 几何体碎片 - 更多形状和发光 */
+        .floating-geometric-shard {
+            background: none;
+            border: none;
+            box-shadow: none;
+            opacity: 0.6;
+            animation: floatShard 30s infinite ease-in-out, rotateShard 20s infinite linear;
+        }
+        .floating-geometric-shard::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, rgba(0,192,255,0.3), rgba(255,140,0,0.3)); /* 渐变色 */
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); /* 三角形 */
+            box-shadow: 0 0 10px var(--geometric-glow-color); /* 发光 */
+            filter: blur(1px); /* 略微模糊 */
+        }
+        .floating-geometric-shard:nth-child(4) { top: 20%; right: 5%; width: 80px; height: 80px; animation-delay: 3s; transform: scale(0.8) rotateZ(30deg); }
+        .floating-geometric-shard:nth-child(4)::before { clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* 菱形 */ box-shadow: 0 0 15px var(--cyber-accent-orange); }
+        .floating-geometric-shard:nth-child(5) { bottom: 10%; right: 20%; width: 120px; height: 120px; animation-delay: 12s; transform: scale(1.1) rotateZ(-10deg); opacity: 0.4; }
+        .floating-geometric-shard:nth-child(5)::before { clip-path: polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%); /* 梯形 */ background: linear-gradient(45deg, rgba(0,255,192,0.3), rgba(0,192,255,0.3)); box-shadow: 0 0 10px var(--cyber-accent-green); }
 
-  </style>
+        @keyframes floatCube {
+            0% { transform: translateY(0) rotateX(0deg) rotateY(0deg); opacity: 0.5; }
+            30% { transform: translateY(-20px) rotateX(30deg) rotateY(15deg); opacity: 0.6; }
+            70% { transform: translateY(10px) rotateX(-15deg) rotateY(-20deg); opacity: 0.7; }
+            100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); opacity: 0.5; }
+        }
+        @keyframes rotateCube {
+            from { transform: rotate3d(0,0,1,0deg); }
+            to { transform: rotate3d(0,0,1,360deg); }
+        }
+        @keyframes floatShard {
+            0% { transform: translateY(0) translateX(0) rotateZ(0deg); opacity: 0.6; }
+            25% { transform: translateY(-15px) translateX(10px) rotateZ(45deg); opacity: 0.7; }
+            50% { transform: translateY(5px) translateX(-5px) rotateZ(90deg); opacity: 0.5; }
+            75% { transform: translateY(-10px) translateX(15px) rotateZ(135deg); opacity: 0.8; }
+            100% { transform: translateY(0) translateX(0) rotateZ(0deg); opacity: 0.6; }
+        }
+        @keyframes rotateShard {
+            from { transform: rotateY(0deg) rotateX(0deg); }
+            to { transform: rotateY(360deg) rotateX(360deg); }
+        }
+
+        /* 5. 动态二进制代码流 */
+        .binary-code-stream {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden;
+            z-index: -7; /* 位于最底层 */
+            pointer-events: none;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            line-height: 1.2;
+            color: var(--binary-code-color);
+            opacity: 0.05; /* 非常细微的透明度 */
+            animation: binaryScroll 60s linear infinite;
+        }
+        .binary-code-stream pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0;
+            padding: 0;
+        }
+        @keyframes binaryScroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100%); } /* 向上滚动 */
+        }
+
+        /* 6. 远景赛博城市剪影 */
+        .cyber-city-silhouette {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 40vh; /* 略高一些 */
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+            z-index: -5;
+            pointer-events: none;
+            /* 模拟城市建筑的简单剪影 */
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300"><path fill="%23000" d="M0 300L0 150L50 100L100 180L150 120L200 200L250 100L300 250L350 80L400 220L450 140L500 260L550 90L600 210L650 160L700 230L750 110L800 200L850 130L900 240L950 170L1000 250L1000 300L0 300Z"/></svg>');
+            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300"><path fill="%23000" d="M0 300L0 150L50 100L100 180L150 120L200 200L250 100L300 250L350 80L400 220L450 140L500 260L550 90L600 210L650 160L700 230L750 110L800 200L850 130L900 240L950 170L1000 250L1000 300L0 300Z"/></svg>');
+            -webkit-mask-size: cover;
+            mask-size: cover;
+            animation: cityGlow 15s ease-in-out infinite alternate;
+            filter: blur(0.5px); /* 远景模糊 */
+        }
+        @keyframes cityGlow {
+            0% { filter: drop-shadow(0 0 5px var(--cyber-accent-blue)) blur(0.5px); opacity: 0.6; }
+            50% { filter: drop-shadow(0 0 15px var(--cyber-accent-orange)) blur(1px); opacity: 0.8; }
+            100% { filter: drop-shadow(0 0 5px var(--cyber-accent-blue)) blur(0.5px); opacity: 0.6; }
+        }
+
+        /* 7. 动态星空/数据粒子 (更多粒子) */
+        .stars-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -8;
+            background: transparent;
+            pointer-events: none;
+            animation: starFieldScroll 120s linear infinite; /* 缓慢滚动 */
+        }
+        .stars-background::before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 120px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 150px 20px, #fff, rgba(0,0,0,0));
+            background-size: 150px 150px; /* 控制粒子密度 */
+            opacity: 0.1;
+        }
+        .stars-background::after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 10px 110px, #fff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 100px 10px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 60px 60px, #fff, rgba(0,0,0,0));
+            background-size: 120px 120px;
+            opacity: 0.08;
+            filter: blur(0.5px);
+            animation: starFieldScroll 90s linear infinite reverse; /* 另一层反向滚动 */
+        }
+        @keyframes starFieldScroll {
+            from { background-position: 0 0; }
+            to { background-position: 10000px 5000px; } /* 模拟无限滚动 */
+        }
+
+        /* 移除原有的 Vaporwave 背景元素 (再次确认) */
+        .crt-overlay, .retro-sun, .vaporwave-grid {
+            display: none !important;
+        }
+
+        /* --- 内容样式 (模拟 Win98 窗口) --- */
+        .markdown-section {
+            max-width: 800px;
+            margin: 60px auto; 
+            padding: 20px !important;
+            
+            background-color: var(--panel-bg);
+            border-top: var(--panel-border-top);
+            border-left: var(--panel-border-left);
+            border-right: var(--panel-border-bottom);
+            border-bottom: var(--panel-border-bottom);
+            box-shadow: 4px 4px 0 var(--win-dark-shadow); 
+            border-radius: 0; 
+            position: relative;
+            z-index: 5;
+        }
+        
+        .markdown-section:before {
+            content: '💻 SYSTEM - README.TXT';
+            display: block;
+            background-color: #000080; 
+            color: var(--win-light-highlight);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            padding: 5px 10px;
+            margin: -20px -20px 20px -20px; 
+            cursor: move;
+            text-shadow: 1px 1px 0 #000;
+            border-bottom: 2px solid var(--win-dark-shadow); 
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--text-main);
+            text-shadow: none;
+            margin-top: 1.5em;
+            border-bottom: 2px solid var(--cyber-accent-blue); /* H1/H2使用赛博蓝 */
+            padding-bottom: 5px;
+        }
+        h1 { border-color: var(--cyber-accent-orange); color: var(--cyber-accent-orange); font-size: 2.5em; } /* H1使用赛博橙 */
+
+        p, li, span, div {
+            color: var(--text-main);
+            font-weight: 400; 
+            line-height: 1.6;
+            letter-spacing: 0;
+            text-shadow: none; 
+        }
+
+        .markdown-section a {
+            color: #0000FF; 
+            text-decoration: underline;
+            font-weight: bold;
+            transition: color 0.1s;
+            border-bottom: none;
+        }
+        .markdown-section a:hover {
+            color: var(--cyber-accent-blue); /* 强调色高亮 */
+            text-shadow: none;
+            border-bottom: 2px solid var(--cyber-accent-blue);
+        }
+
+        .nav-container ul {
+            background: var(--win-system-gray);
+            border-top: 2px solid var(--win-light-highlight);
+            border-left: 2px solid var(--win-light-highlight);
+            border-right: 2px solid var(--win-dark-shadow);
+            border-bottom: 2px solid var(--win-dark-shadow);
+            box-shadow: 2px 2px 0 var(--win-dark-shadow);
+            padding: 2px;
+            backdrop-filter: none;
+            border-radius: 0;
+        }
+        
+        .nav-container li {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem !important;
+            line-height: 1.2;
+            color: var(--text-main) !important;
+            text-transform: uppercase;
+            letter-spacing: 0;
+            padding: 8px 12px !important;
+            border-radius: 0;
+            cursor: pointer;
+            border: 1px solid transparent; 
+        }
+        
+        .nav-container li:hover {
+            background: #000080;
+            color: var(--win-light-highlight) !important;
+            box-shadow: none;
+            transform: none;
+        }
+        
+        font[size="+3"] {
+            cursor: pointer; 
+            color: var(--cyber-accent-orange) !important; /* 图标使用赛博橙 */
+            text-shadow: 2px 2px 0px #000;
+            filter: drop-shadow(0 0 0);
+            font-size: 40px !important; 
+            transition: transform 0.1s;
+        }
+        font[size="+3"]:active {
+            transform: translateY(2px) scale(0.95);
+        }
+        
+        .glitch-text {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--cyber-accent-green); /* 主标题使用赛博青绿 */
+            font-size: 30pt;
+            text-shadow: 4px 4px 0px #000; 
+        }
+        .glitch-text::before, .glitch-text::after { display: none; }
+        
+        span[style*="Press Start 2P"] {
+            font-family: 'Press Start 2P', cursive !important;
+            font-size: 20pt !important;
+            color: var(--cyber-accent-blue) !important; /* 副标题使用赛博蓝 */
+            border-right: 5px solid var(--cyber-accent-blue) !important;
+            padding-right: 10px !important;
+            animation: typing 0.5s steps(1) infinite alternate !important; 
+            text-shadow: 2px 2px 0px #000;
+        }
+        @keyframes typing {
+            from { border-color: transparent; }
+            to { border-color: var(--cyber-accent-blue); }
+        }
+
+        .project {
+            background-color: var(--win-system-gray);
+            border-top: var(--panel-border-top);
+            border-left: var(--panel-border-left);
+            border-right: var(--panel-border-bottom);
+            border-bottom: var(--panel-border-bottom);
+            border-radius: 0;
+            padding: 15px;
+            margin: 30px 0;
+            box-shadow: 2px 2px 0 var(--win-dark-shadow);
+            transition: box-shadow 0.1s;
+        }
+        .project:hover {
+            transform: none;
+            box-shadow: 2px 2px 0 var(--win-dark-shadow), 0 0 0 2px var(--cyber-accent-green); /* 悬停时添加赛博青绿外框 */
+            border-color: var(--win-system-gray);
+        }
+
+        .project-details {
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
+            margin-top: 0;
+            border-top: 2px dashed var(--cyber-accent-green); /* 细节分隔线使用赛博青绿 */
+            padding-top: 0;
+            box-sizing: border-box;
+        }
+
+        .project-details.open {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 20px;
+            padding-top: 20px;
+            height: auto; 
+        }
+        
+        /* 技能标签 (Tags) - 模拟按钮或选项卡 */
+        .project-summary span {
+            display: inline-block;
+            background: var(--win-system-gray);
+            border-top: 1px solid var(--win-light-highlight);
+            border-left: 1px solid var(--win-light-highlight);
+            border-right: 1px solid var(--win-dark-shadow);
+            border-bottom: 1px solid var(--win-dark-shadow);
+            color: var(--text-main);
+            font-family:'Roboto Mono', monospace;
+            font-size: 0.7rem;
+            padding: 4px 6px;
+            margin-right: 4px;
+            margin-bottom: 4px;
+            border-radius: 0;
+            cursor: default;
+        }
+
+
+        .project-toggle {
+            background: var(--win-system-gray);
+            border-top: 2px solid var(--win-light-highlight);
+            border-left: 2px solid var(--win-light-highlight);
+            border-right: 2px solid var(--win-dark-shadow);
+            border-bottom: 2px solid var(--win-dark-shadow);
+            color: var(--text-main);
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.7rem;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: none;
+            margin-top: 10px;
+            text-transform: uppercase;
+            box-shadow: 1px 1px 0 var(--win-dark-shadow);
+        }
+        .project-toggle:hover {
+            background: var(--win-system-gray);
+            border-top: 2px solid var(--win-dark-shadow);
+            border-left: 2px solid var(--win-dark-shadow);
+            border-right: 2px solid var(--win-light-highlight);
+            border-bottom: 2px solid var(--win-light-highlight);
+            color: #000;
+            box-shadow: none;
+            transform: translate(1px, 1px); 
+        }
+        
+        .markdown-section img {
+            border-top: 2px solid var(--win-light-highlight);
+            border-left: 2px solid var(--win-light-highlight);
+            border-right: 2px solid var(--win-dark-shadow);
+            border-bottom: 2px solid var(--win-dark-shadow);
+            
+            background-color: #000; 
+            box-shadow: 2px 2px 0 var(--win-dark-shadow);
+            border-radius: 0;
+            max-width: 100%;
+            transition: all 0.1s;
+            
+            filter: none;
+            image-rendering: pixelated; 
+        }
+        .markdown-section img:hover {
+            transform: none;
+            box-shadow: 2px 2px 0 var(--win-dark-shadow), 0 0 0 2px var(--cyber-accent-blue) inset; /* 强调色双重边框 */
+            border-color: var(--win-system-gray);
+            filter: none;
+        }
+
+    </style>
 </head>
 <body>
-  
-  <div class="crt-overlay"></div>
-  <div class="stars"></div>
-  
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  
-  <div class="pyramid-container p-left">
-    <div class="pyramid">
-        <div class="side"></div>
-        <div class="side"></div>
-        <div class="side"></div>
-        <div class="side"></div>
-    </div>
-  </div>
-  
-  <div class="pyramid-container p-right">
-    <div class="pyramid">
-        <div class="side"></div>
-        <div class="side"></div>
-        <div class="side"></div>
-        <div class="side"></div>
-    </div>
-  </div>
-
-  <div class="cyber-city"></div>
-  <div class="retro-sun"></div>
-  <div class="vaporwave-grid"></div>
-
-  <br/>
-<div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px;">
-  <font size="+3" style="z-index: 100; transition: all 0.3s; display: inline-block; margin-left: 20px;">🦋</font>
-  
-  <div style="margin-left: auto; position: relative; z-index: 10; margin-right: 20px;">
-    <div class="nav-container">
-        <ul style="display: flex; list-style-type: none; margin: 0; padding: 0; gap: 10px;">
-          <a href="#/README.md#pub" style="text-decoration: none;">
-            <li style="padding: 10px 15px; border-radius: 4px;"> 
-                <center>About<br/><span style="font-size: 16px; font-family: 'Press Start 2P';">关于我</span></center>
-            </li>
-          </a>
-          <a href="#/pub.md#pub" style="text-decoration: none;">
-            <li style="padding: 10px 15px; border-radius: 4px;">    
-                <center>Academic<br/><span style="font-size: 16px; font-family: 'Press Start 2P';">学术</span></center>      
-            </li>
-          </a>
-         <a href="#/proj.md#project" style="text-decoration: none;">
-            <li style="padding: 10px 15px; border-radius: 4px;">       
-                <center>Designs<br/><span style="font-size: 16px; font-family: 'Press Start 2P';">设计</span></center>    
-            </li>
-        </a>
-          <a href="#/works.md#" style="text-decoration: none;">
-            <li style="padding: 10px 15px; border-radius: 4px;">      
-                <center>Artworks<br/><span style="font-size: 16px; font-family: 'Press Start 2P';">作品</span></center>      
-            </li>
-        </a>
-        </ul>
-    </div>
-  </div>
-</div>
-
-<br/><br/><br/>
-
-  <center>
-    <div style="display: flex; align-items: center; justify-content: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 10;">
-      <div style="flex: 0 0 100%; text-align: center;">
-        
-        <div style="margin-bottom: 30px;">
-            <font class="glitch-text" data-text="To Feel, and" style="font-size: 40pt; letter-spacing: 3px;">
-                To Feel, and
-            </font>
-        </div>
-        
-        <span style="display: inline-block; font-family: 'Press Start 2P'; font-size: 30pt; color: var(--neon-cyan); border-right: 10px solid var(--neon-pink); padding-right: 15px; animation: typing 2s steps(10) infinite alternate; text-shadow: 0 0 10px var(--neon-cyan);">
-            To Create.
-        </span>
-
-      </div>
-    </div>
-  </center>
-  
-  <br/><br/><br/><br/><br/><br/><br/><br/>
-
-  <div id="app"></div>
-
-  <script>
-    window.$docsify = {
-      name: "shengqi dang",
-      themeColor: "#00f3ff", 
-      hideSidebar: true,
-      name: '',
-      repo: '',
-      executeScript: true,
-    }
+    <div class="stars-background"></div> 
+    <div class="binary-code-stream" id="binaryStream"></div> 
+    <!-- <div class="cyber-city-silhouette"></div>  -->
+    <div class="low-poly-scenery"></div>
+    <div class="noise-overlay"></div>
     
-    const title = document.querySelector('font[size="+3"]');
-    title.addEventListener('click', () => {
-        title.style.transform = "rotate(360deg) scale(1.5)";
-        setTimeout(() => {
-            title.style.transform = "rotate(0deg) scale(1)";
-        }, 1000);
-    });
+    <div class="dynamic-grid-floor"></div>
+    <div class="floating-data-cube"></div>
+    <div class="floating-data-cube"></div>
+    <div class="floating-data-cube"></div> 
+    <div class="floating-geometric-shard"></div> <div class="floating-geometric-shard"></div> <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; max-width: 840px; margin: 0 auto; padding: 20px;">
+        <font size="+3" style="z-index: 100; display: inline-block;">💾</font>
+        
+        <div style="margin-left: auto; position: relative; z-index: 10;">
+            <div class="nav-container">
+                <ul style="display: flex; list-style-type: none; margin: 0; padding: 2px; gap: 5px;">
+                    <a href="#/README.md#pub" style="text-decoration: none;">
+                        <li style="padding: 10px 15px;"> 
+                            <center>INFO<br/><span style="font-size: 10px; font-family: 'Roboto Mono';">关于我</span></center>
+                        </li>
+                    </a>
+                    <a href="#/pub.md#pub" style="text-decoration: none;">
+                        <li style="padding: 10px 15px;">   
+                            <center>ACADEMIC<br/><span style="font-size: 10px; font-family: 'Roboto Mono';">学术</span></center>     
+                        </li>
+                    </a>
+                   <a href="#/proj.md#project" style="text-decoration: none;">
+                        <li style="padding: 10px 15px;">      
+                            <center>DESIGNS<br/><span style="font-size: 10px; font-family: 'Roboto Mono';">设计</span></center>   
+                        </li>
+                    </a>
+                    <a href="#/works.md#" style="text-decoration: none;">
+                        <li style="padding: 10px 15px;">      
+                            <center>ARTWORKS<br/><span style="font-size: 10px; font-family: 'Roboto Mono';">作品</span></center>     
+                        </li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br/>
 
-    // 项目卡片展开逻辑
-    (function(){
-      function openDetails(el){
-        el.classList.add('open');
-        el.style.height = el.scrollHeight + 'px';
-        el.setAttribute('aria-hidden','false');
-      }
-      function closeDetails(el){
-        el.style.height = el.scrollHeight + 'px';
-        void el.offsetHeight;
-        el.style.height = '0px';
-        el.classList.remove('open');
-        el.setAttribute('aria-hidden','true');
-      }
+    <center>
+        <div style="display: flex; align-items: center; justify-content: center; max-width: 900px; margin: 0 auto; position: relative; z-index: 10;">
+            <div style="flex: 0 0 100%; text-align: center;">
+                
+                <div style="margin-bottom: 20px;">
+                    <font class="glitch-text" data-text="To Feel, and" style="font-size: 30pt; letter-spacing: 0;">
+                        > to_feel
+                    </font>
+                </div>
+                
+                <span style="display: inline-block; font-family: 'Press Start 2P'; font-size: 20pt; color: var(--cyber-accent-blue); border-right: 5px solid var(--cyber-accent-blue); padding-right: 10px;">
+                    To Create.
+                </span>
 
-      function toggleDetails(container, details, toggleBtn){
-        const isOpen = details.classList.contains('open');
-        if(isOpen){
-          closeDetails(details);
-          toggleBtn.setAttribute('aria-expanded','false');
-          toggleBtn.textContent = 'ACCESS DATA / 详情';
-        } else {
-          document.querySelectorAll('.project-details.open').forEach(openEl=>{
-            const parent = openEl.closest('.project');
-            const btn = parent && parent.querySelector('.project-toggle');
-            if(openEl !== details){ 
-                closeDetails(openEl); 
-                if(btn){ btn.setAttribute('aria-expanded','false'); btn.textContent = 'ACCESS DATA / 详情'; } 
+            </div>
+        </div>
+    </center>
+    
+    <br/><br/><br/><br/>
+
+    <div id="app"></div>
+
+    <script>
+        // Docsify 配置
+        window.$docsify = {
+            name: "shengqi dang",
+            themeColor: "#000080", // 经典蓝色标题栏
+            hideSidebar: true,
+            name: '',
+            repo: '',
+            executeScript: true,
+        }
+        
+        // --- 核心功能保留：图标点击效果 ---
+        const title = document.querySelector('font[size="+3"]');
+        title.addEventListener('click', () => {
+            title.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                title.style.transform = "scale(1)";
+            }, 300);
+        });
+
+        // --- 核心功能保留：项目卡片展开逻辑 ---
+        (function(){
+            function openDetails(el){
+                el.style.height = el.scrollHeight + 'px';
+                el.classList.add('open');
+                el.setAttribute('aria-hidden','false');
+                setTimeout(() => {
+                    if(el.classList.contains('open')) {
+                        el.style.height = 'auto';
+                    }
+                }, 400); 
             }
-          });
-          openDetails(details);
-          toggleBtn.setAttribute('aria-expanded','true');
-          toggleBtn.textContent = 'MINIMIZE / 收起 ';
-        }
-      }
+            function closeDetails(el){
+                el.style.height = el.scrollHeight + 'px';
+                void el.offsetHeight;
+                el.style.height = '0px';
+                el.classList.remove('open');
+                el.setAttribute('aria-hidden','true');
+            }
 
-      function initProjectBlock(project){
-        if(project.dataset._initProject) return;
-        project.dataset._initProject = '1';
+            function toggleDetails(container, details, toggleBtn){
+                const isOpen = details.classList.contains('open');
+                if(isOpen){
+                    closeDetails(details);
+                    toggleBtn.setAttribute('aria-expanded','false');
+                    toggleBtn.textContent = 'ACCESS DATA / 详情';
+                } else {
+                    document.querySelectorAll('.project-details.open').forEach(openEl=>{
+                        const parent = openEl.closest('.project');
+                        const btn = parent && parent.querySelector('.project-toggle');
+                        if(openEl !== details){ 
+                            closeDetails(openEl); 
+                            if(btn){ btn.setAttribute('aria-expanded','false'); btn.textContent = 'ACCESS DATA / 详情'; } 
+                        }
+                    });
+                    openDetails(details);
+                    toggleBtn.setAttribute('aria-expanded','true');
+                    toggleBtn.textContent = 'MINIMIZE / 收起 ';
+                }
+            }
 
-        const details = project.querySelector('.project-details');
-        if(!details) return;
-        if(!details.id){
-          details.id = 'proj-' + Math.random().toString(36).slice(2,9);
-        }
+            function initProjectBlock(project){
+                if(project.dataset._initProject) return;
+                project.dataset._initProject = '1';
 
-        let toggleBtn = project.querySelector('.project-toggle');
-        if(!toggleBtn){
-          toggleBtn = document.createElement('button');
-          toggleBtn.className = 'project-toggle';
-          toggleBtn.textContent = 'ACCESS DATA / 详情';
-          toggleBtn.setAttribute('aria-expanded','false');
-          toggleBtn.setAttribute('aria-controls', details.id);
-          project.querySelector('.project-header').appendChild(toggleBtn);
-        } else {
-          toggleBtn.setAttribute('aria-controls', details.id);
-          toggleBtn.setAttribute('aria-expanded','false');
-        }
+                const details = project.querySelector('.project-details');
+                if(!details) return;
+                if(!details.id){
+                    details.id = 'proj-' + Math.random().toString(36).slice(2,9);
+                }
 
-        details.style.height = '0px';
-        details.setAttribute('aria-hidden','true');
+                let toggleBtn = project.querySelector('.project-toggle');
+                if(!toggleBtn){
+                    toggleBtn = document.createElement('button');
+                    toggleBtn.className = 'project-toggle';
+                    toggleBtn.textContent = 'ACCESS DATA / 详情';
+                    toggleBtn.setAttribute('aria-expanded','false');
+                    toggleBtn.setAttribute('aria-controls', details.id);
+                    let header = project.querySelector('.project-header');
+                    if(!header){ 
+                        header = document.createElement('div');
+                        header.className = 'project-header';
+                        project.insertBefore(header, details);
+                    }
+                    header.appendChild(toggleBtn);
+                } else {
+                    toggleBtn.setAttribute('aria-controls', details.id);
+                    toggleBtn.setAttribute('aria-expanded','false');
+                }
 
-        toggleBtn.addEventListener('click', function(){
-          toggleDetails(project, details, toggleBtn);
-        });
+                details.style.height = '0px';
+                details.setAttribute('aria-hidden','true');
 
-        toggleBtn.addEventListener('keydown', function(e){
-          if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
-            e.preventDefault(); this.click();
-          }
-        });
+                toggleBtn.addEventListener('click', function(){
+                    toggleDetails(project, details, toggleBtn);
+                });
 
-        window.addEventListener('resize', function(){
-          if(details.classList.contains('open')){
-            details.style.height = details.scrollHeight + 'px';
-          }
-        });
-      }
+                toggleBtn.addEventListener('keydown', function(e){
+                    if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+                        e.preventDefault(); this.click();
+                    }
+                });
 
-      function initAllProjects(){
-        document.querySelectorAll('.project').forEach(initProjectBlock);
-      }
+                window.addEventListener('resize', function(){
+                    if(details.classList.contains('open')){
+                        if(details.style.height !== 'auto') {
+                             details.style.height = details.scrollHeight + 'px';
+                        }
+                    }
+                });
+            }
 
-      if(window.$docsify){
-        window.$docsify.plugins = window.$docsify.plugins || [];
-        window.$docsify.plugins.push(function(hook, vm){
-          hook.doneEach(function(){
-            initAllProjects();
-          });
-        });
-      } else {
-        document.addEventListener('DOMContentLoaded', initAllProjects);
-      }
-    })();
-  </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+            function initAllProjects(){
+                document.querySelectorAll('.project').forEach(initProjectBlock);
+            }
+
+            if(window.$docsify){
+                window.$docsify.plugins = window.$docsify.plugins || [];
+                window.$docsify.plugins.push(function(hook, vm){
+                    hook.doneEach(function(){
+                        initAllProjects();
+                    });
+                });
+            } else {
+                document.addEventListener('DOMContentLoaded', initAllProjects);
+            }
+        })();
+        
+        // --- 新增：背景二进制代码生成逻辑 ---
+        (function() {
+            const container = document.getElementById('binaryStream');
+            if (!container) return;
+
+            function generateBinaryCode(length) {
+                let code = '';
+                for (let i = 0; i < length; i++) {
+                    code += Math.round(Math.random()) === 0 ? '0' : '1';
+                }
+                return code;
+            }
+
+            function fillContainer() {
+                const charWidth = 14; 
+                const charHeight = 16.8; 
+                const width = container.offsetWidth;
+                const height = container.offsetHeight;
+
+                if (width === 0 || height === 0) return; 
+
+                const cols = Math.floor(width / charWidth);
+                const rows = Math.ceil(height / charHeight) * 2; // 需要两倍高度来确保动画平滑
+
+                let streamContent = '';
+                for (let i = 0; i < rows; i++) {
+                    // 生成一行随机二进制代码
+                    streamContent += generateBinaryCode(cols) + '\n';
+                }
+
+                container.innerHTML = `<pre>${streamContent}</pre>`;
+            }
+
+            // 初次填充
+            fillContainer();
+
+            // 窗口大小变化时重新填充
+            window.addEventListener('resize', fillContainer);
+        })();
+
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 
 </body>
 </html>
