@@ -15,8 +15,8 @@
         /* --- 核心变量 (Y2K Kawaii Aesthetic) --- */
         :root {
             /* 💿 Y2K 金属与全息色板 */
-            --y2k-bg-deep: #8457c8; /* 深空紫底色 */
-            --y2k-chrome: #e0e5ec; /* 铬金属色 */
+            --y2k-bg-deep: #f2d1fe; /* 深空紫底色 */
+            --y2k-chrome: #69737f; /* 铬金属色 */
             --y2k-holo-gradient: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 25%, #a1c4fd 50%, #c2e9fb 75%, #d4fc79 100%); /* 全息渐变 */
             --y2k-pink-glow: rgba(255, 105, 180, 0.6);
             --y2k-blue-glow: rgba(135, 206, 235, 0.6);
@@ -27,17 +27,17 @@
             --kawaii-purple: #DDA0DD; /* 薰衣草 */
 
             /* 🔲 玻璃与金属面板 */
-            --panel-bg: rgba(255, 255, 255, 0.15); /* 更通透的玻璃 */
-            --panel-border: 2px solid rgba(255, 255, 255, 0.5); /* 半透明白边框 */
+            --panel-bg: rgba(255, 255, 255, 0.5); /* 更通透的玻璃 */
+            --panel-border: 2px solid rgba(255, 255, 255, 0.7); /* 半透明白边框 */
             --panel-chrome-border: 3px solid var(--y2k-chrome); /* 金属边框 */
             --panel-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
             --panel-blur: blur(12px);
-            --text-main: #E0E0FF; /* 亮色文本以适应深背景 */
+            --text-main: #390360; /* 亮色文本以适应深背景 */
             --text-highlight: #FFFFFF;
 
             /* 🌌 背景变量 */
-            --grid-line-color: rgba(255, 105, 180, 0.3); /* 粉色网格 */
-            --star-color: #FFF;
+            --grid-line-color: rgba(255, 0, 191, 1.0); /* 粉色网格 */
+            --star-color: #ff0000;
         }
 
         /* --- 全局基础 --- */
@@ -172,10 +172,10 @@
         }
         .nav-pills li center {
             font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--y2k-chrome);
-            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+            /* text-shadow: 0 0 5px rgba(255,255,255,0.5); */
         }
         .nav-pills li span {
-            font-family: 'Roboto Mono', monospace; font-size: 0.7rem; color: var(--kawaii-pink); display: block; margin-top: 2px;
+            font-family: 'Roboto Mono', monospace; font-size: 0.7rem; color: var(--y2k-chrome); display: block; margin-top: 2px;
         }
         /* 导航悬停效果 - 全息光泽 */
         .nav-pills li:hover {
