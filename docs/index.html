@@ -2,326 +2,690 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Shengqi Dang - Y2K Kawaii Realm</title>
+    <title>Shengqi Dang - Daydreaming</title>
     <link rel="icon" href="./1F34E.svg">
     
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Press+Start+2P&family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet"> 
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     
     <style>
-        /* --- 核心变量 (Y2K Kawaii Aesthetic) --- */
+        /* --- 核心变量 (Doudou / Dream Pop Aesthetic) --- */
         :root {
-            /* 💿 Y2K 金属与全息色板 */
-            --y2k-bg-deep: #f2d1fe; /* 深空紫底色 */
-            --y2k-chrome: #69737f; /* 铬金属色 */
-            --y2k-holo-gradient: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 25%, #a1c4fd 50%, #c2e9fb 75%, #d4fc79 100%); /* 全息渐变 */
-            --y2k-pink-glow: rgba(255, 105, 180, 0.6);
-            --y2k-blue-glow: rgba(135, 206, 235, 0.6);
+            /* 🎨 迷幻白日梦色板 - 默认 (Palette 1) */
+            --bg-base: #fdfbf7; /* 米白纸张色 */
+            --dream-pink: #fbc2eb;
+            --dream-blue: #a6c1ee;
+            --dream-green: #e0c3fc; /* 紫丁香色 */
+            
+            /* 🧀 新增 Doudou 元素：柔和奶酪色 */
+            --doudou-cream: #ffe9a6;
+            --doudou-shadow: 0 10px 20px rgba(166, 193, 238, 0.2);
 
-            /* 🎀 Kawaii 强调色 */
-            --kawaii-pink: #FF69B4; /* 热粉 */
-            --kawaii-blue: #87CEFA; /* 天蓝 */
-            --kawaii-purple: #DDA0DD; /* 薰衣草 */
+            /* 🌫 模糊与光晕 */
+            --glass-bg: rgba(255, 255, 255, 0.6); /* 增加一点透明度 */
+            --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+            --glass-shadow: var(--doudou-shadow);
+            --blur-amount: blur(15px); /* 稍微降低模糊度，让内容更清晰 */
 
-            /* 🔲 玻璃与金属面板 */
-            --panel-bg: rgba(255, 255, 255, 0.5); /* 更通透的玻璃 */
-            --panel-border: 2px solid rgba(255, 255, 255, 0.7); /* 半透明白边框 */
-            --panel-chrome-border: 3px solid var(--y2k-chrome); /* 金属边框 */
-            --panel-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
-            --panel-blur: blur(12px);
-            --text-main: #390360; /* 亮色文本以适应深背景 */
-            --text-highlight: #FFFFFF;
-
-            /* 🌌 背景变量 */
-            --grid-line-color: rgba(255, 0, 191, 1.0); /* 粉色网格 */
-            --star-color: #ff0000;
+            /* 🖋 字体颜色 */
+            --text-main: #4a4a4a; /* 柔和的深灰，不是纯黑 */
+            --text-accent: #7b6c96; /* 薰衣草紫 */
+            --link-color: #e67e22; /* 暖橙色点缀 */
+            
+            /* 平滑过渡 */
+            transition: 
+                background-color 0.8s ease-in-out,
+                color 0.8s ease-in-out,
+                border-color 0.8s ease-in-out,
+                box-shadow 0.8s ease-in-out;
         }
+
+        /* Palette 2: 青绿黄调 Doudou */
+        .theme-2 {
+            --bg-base: #e0ffe0; /* 淡绿色 */
+            --dream-pink: #a8e0d0; /* 淡薄荷绿 */
+            --dream-blue: #add8e6; /* 浅天蓝 */
+            --dream-green: #fffacd; /* 柠檬雪纺 */
+            
+            --doudou-cream: #fafaae; /* 淡黄色 */
+            --doudou-shadow: 0 10px 20px rgba(173, 216, 230, 0.2);
+
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.9);
+
+            --text-main: #3a5050; /* 深青色 */
+            --text-accent: #669999; /* 柔和青色 */
+            --link-color: #6aab9c;
+        }
+
+        /* Palette 3: 黑白灰 Doudou (带一点点暖调) */
+        .theme-3 {
+            --bg-base: #f8f8f8; /* 浅灰 */
+            --dream-pink: #e0e0e0; /* 浅灰 */
+            --dream-blue: #c0c0c0; /* 中灰 */
+            --dream-green: #f5f5f5; /* 更浅的灰 */
+            
+            --doudou-cream: #e6e6e6; /* 略带暖意的灰 */
+            --doudou-shadow: 0 10px 20px rgba(192, 192, 192, 0.3);
+
+            --glass-bg: rgba(255, 255, 255, 0.5);
+            --glass-border: 1px solid rgba(240, 240, 240, 0.8);
+
+            --text-main: #333333; /* 经典深灰 */
+            --text-accent: #666666; /* 中度灰 */
+            --link-color: #888888;
+        }
+
 
         /* --- 全局基础 --- */
         body {
-            background-color: var(--y2k-bg-deep);
-            background-image: 
-                /* 数码噪声纹理 */
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="100%" height="100%" fill="%232b213a"/><rect width="2" height="2" fill="%233b314a"/></svg>'),
-                radial-gradient(circle at center, #4a3563 0%, var(--y2k-bg-deep) 100%);
-            background-blend-mode: soft-light;
-            
+            background-color: var(--bg-base);
             min-height: 100vh;
             margin: 0;
             padding: 0;
-            font-family: 'Roboto Mono', monospace; /* 默认代码字体 */
+            font-family: 'Montserrat', sans-serif; /* 正文用干净的无衬线 */
             color: var(--text-main);
             overflow-x: hidden;
-        }
-        
-        ::selection { background: var(--kawaii-pink); color: #FFF; text-shadow: 0 0 5px #FFF; }
-
-        /* --- 背景视觉层 (Y2K Cyber Scenery) --- */
-        .dynamic-grid-floor {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 55vh;
-            background-image: 
-                linear-gradient(to top, var(--grid-line-color) 2px, transparent 2px), 
-                linear-gradient(to right, var(--grid-line-color) 2px, transparent 2px);
-            background-size: 50px 50px;
-            transform: perspective(400px) rotateX(75deg);
-            transform-origin: bottom center;
-            z-index: -5;
-            opacity: 0.5;
-            animation: gridScroll 20s linear infinite; 
-            filter: drop-shadow(0 0 10px var(--y2k-pink-glow));
-            -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%); 
-        }
-        @keyframes gridScroll {
-            from { background-position: 0 0; }
-            to { background-position: 0 100px; }
+            transition: background-color 0.8s ease-in-out, color 0.8s ease-in-out;
         }
 
-        /* ✨ Y2K 漂浮元素 (星星, 环, 像素心) */
-        .floating-element {
-            position: fixed; z-index: -3; pointer-events: none;
-            will-change: transform; opacity: 0.8;
-            filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
-        }
-        
-        /* 像素星星 */
-        .pixel-star {
-            color: var(--y2k-chrome);
-            font-family: 'Press Start 2P'; font-size: 25px;
-            animation: twinkle 3s infinite alternate, floatY 15s infinite ease-in-out alternate;
-        }
-        /* 数码环 */
-        .cyber-ring {
-            width: 80px; height: 80px;
-            border: 4px solid var(--kawaii-blue); border-radius: 50%;
-            box-shadow: 0 0 15px var(--kawaii-blue);
-            animation: rotateRing 10s linear infinite, floatX 20s infinite ease-in-out alternate;
-        }
-        .cyber-ring::after {
-            content: ''; position: absolute; top: 50%; left: 50%;
-            width: 110%; height: 110%; border: 2px dashed var(--kawaii-pink);
-            border-radius: 50%; transform: translate(-50%, -50%);
-        }
-        /* 像素心 */
-        .pixel-heart {
-            font-family: 'Press Start 2P'; color: var(--kawaii-pink); font-size: 30px;
-            animation: pulseHeart 2s infinite, floatY 12s infinite ease-in-out alternate-reverse;
-            text-shadow: 0 0 10px var(--kawaii-pink);
+        /* 🎞 胶片噪点层 (保持不变，这是 Dream Pop 的灵魂) */
+        .film-grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.07;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        @keyframes twinkle { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2) rotate(180deg); } }
-        @keyframes rotateRing { from { transform: rotate(0deg) rotateX(45deg); } to { transform: rotate(360deg) rotateX(45deg); } }
-        @keyframes pulseHeart { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        @keyframes floatY { 0% { transform: translateY(0); } 100% { transform: translateY(-30px); } }
-        @keyframes floatX { 0% { transform: translateX(0); } 100% { transform: translateX(40px); } }
-
-        .stars-background {
-            position: fixed; top:0; left:0; width: 100%; height: 100%; z-index: -6;
-            background-image: radial-gradient(2px 2px at 50% 50%, var(--star-color), transparent),
-                              radial-gradient(2px 2px at 20% 80%, var(--star-color), transparent),
-                              radial-gradient(2px 2px at 80% 20%, var(--star-color), transparent);
-            background-size: 200px 200px;
-            animation: starScroll 60s linear infinite; opacity: 0.3;
+        /* 🌈 动态极光背景 (保持不变) */
+        .aurora-bg {
+            position: fixed;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, var(--dream-pink), transparent 60%),
+                        radial-gradient(circle at 20% 80%, var(--dream-blue), transparent 50%),
+                        radial-gradient(circle at 80% 20%, var(--dream-green), transparent 50%);
+            filter: blur(80px);
+            z-index: -1;
+            animation: auroraFlow 20s ease-in-out infinite alternate;
+            opacity: 0.6;
+            transition: background 0.8s ease-in-out, filter 0.8s ease-in-out;
         }
-        @keyframes starScroll { from {background-position: 0 0;} to {background-position: 1000px 1000px;} }
+        @keyframes auroraFlow {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(10deg) scale(1.1); }
+            100% { transform: rotate(-5deg) scale(1); }
+        }
 
+        /* ☁️ 漂浮的光斑 (保持不变，但增加一个 Doudou 颜色) */
+        .dream-blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: -1;
+            opacity: 0.8;
+            animation: floatBlob 15s infinite ease-in-out;
+            transition: background 0.8s ease-in-out, filter 0.8s ease-in-out;
+        }
+        .blob-1 { width: 300px; height: 300px; background: var(--dream-pink); top: 10%; left: 20%; animation-delay: 0s; }
+        .blob-2 { width: 400px; height: 400px; background: var(--dream-blue); bottom: 10%; right: 10%; animation-delay: -5s; }
+        .blob-3 { width: 200px; height: 200px; background: var(--doudou-cream); top: 40%; left: 60%; animation-delay: -8s; } /* 换成奶油色 */
 
-        /* --- 布局与导航 (修复空白问题) --- */
-        /* 创建一个紧凑的头部容器 */
+        @keyframes floatBlob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* --- 导航栏 (极简、透明) --- */
         .header-container {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* 以前是 space-between */
             align-items: center;
-            padding: 15px 25px;
+            padding: 20px 40px;
             max-width: 900px;
-            height: 120px;
-            margin: 20px auto 10px auto; /* 减少底部边距 */
-            background: var(--panel-bg);
-            backdrop-filter: var(--panel-blur);
-            border-radius: 20px;
-            border: var(--panel-border);
-            box-shadow: var(--panel-shadow), inset 0 0 10px rgba(255,255,255,0.2);
+            margin: 0 auto;
             position: relative;
             z-index: 20;
         }
 
-        /* 头部图标区 */
-        .header-icons span {
-            font-size: 32px; margin-right: 10px; cursor: pointer;
-            filter: drop-shadow(0 0 5px var(--kawaii-pink));
-            transition: transform 0.2s;
-            display: inline-block;
+        /* 🎀 新增：圆点 Logo (Doudou 元素) - 用于主题切换 */
+        .doudou-dot {
+            width: 30px; height: 30px;
+            background-color: var(--text-accent);
+            border-radius: 50%;
+            opacity: 0.8;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 10px var(--text-accent);
+            cursor: pointer; /* 添加光标指示可点击 */
         }
-        .header-icons span:hover { transform: scale(1.2) rotate(10deg); }
+        .doudou-dot:hover {
+            transform: scale(1.5);
+            opacity: 1;
+            box-shadow: 0 0 20px var(--text-accent);
+        }
 
-        /* 导航胶囊 */
         .nav-pills ul {
-            display: flex; list-style: none; margin: 0; padding: 0; gap: 10px;
+            display: flex; list-style: none; margin: 0; padding: 0; gap: 30px;
         }
         .nav-pills li {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--y2k-chrome);
-            padding: 8px 16px;
-            border-radius: 30px; /* 胶囊形状 */
-            text-align: center;
-            transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
+            /* 💥 增加 hover/active 时的动画效果基准 */
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .nav-pills li center {
-            font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--y2k-chrome);
-            /* text-shadow: 0 0 5px rgba(255,255,255,0.5); */
-        }
-        .nav-pills li span {
-            font-family: 'Roboto Mono', monospace; font-size: 0.7rem; color: var(--y2k-chrome); display: block; margin-top: 2px;
-        }
-        /* 导航悬停效果 - 全息光泽 */
-        .nav-pills li:hover {
-            background: var(--y2k-holo-gradient);
-            border-color: transparent;
-            box-shadow: 0 0 15px var(--y2k-pink-glow);
-            transform: translateY(-3px);
-        }
-        .nav-pills li:hover center, .nav-pills li:hover span { color: #FFF !important; text-shadow: none; }
         
+        /* 💥 导航按钮的动画：Q弹效果 */
+        .nav-pills li:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+        .nav-pills li:active {
+            transform: translateY(1px) scale(0.98);
+        }
 
-        /* 标题区域 (紧凑) */
+        .nav-pills a {
+            text-decoration: none;
+        }
+        .nav-pills center {
+            font-family: 'Cormorant Garamond', serif; 
+            font-weight: 600; 
+            font-size: 1.1rem;
+            color: var(--text-main);
+            letter-spacing: 2px;
+            font-style: italic;
+            transition: color 0.3s;
+        }
+        .nav-pills span {
+            display: none; /* 隐藏中文，保持极简 */
+        }
+        
+        /* 导航下划线动画 (改为圆润的胶囊效果，更 Doudou) */
+        .nav-pills li::after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 5px; /* 变厚 */
+            bottom: -8px; left: 0;
+            background-color: var(--doudou-cream); /* 使用奶油色 */
+            border-radius: 50px; /* 增加圆角 */
+            opacity: 0;
+            transform: scaleX(0.5); /* 初始状态是扁平的 */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弹性动画 */
+        }
+        .nav-pills li:hover::after { 
+            width: 100%; 
+            opacity: 1;
+            transform: scaleX(1);
+        }
+        .nav-pills li:hover center { 
+            color: var(--text-accent); 
+            text-shadow: 0 0 10px rgba(123, 108, 150, 0.5); /* 增强光晕 */
+        }
+
+        /* --- 标题区域 (迷幻风格 + Doudou 改进) --- */
         .hero-title {
-            text-align: center; margin: 20px auto 30px auto; position: relative; z-index: 10;
+            text-align: center; 
+            margin: 80px auto 60px auto; 
+            position: relative; 
+            z-index: 10;
         }
-        .glitch-text {
-            font-family: 'Press Start 2P', cursive;
-            color: var(--y2k-chrome);
-            font-size: 32pt;
-            text-shadow: 3px 3px 0px var(--kawaii-pink), -3px -3px 0px var(--kawaii-blue);
+        .main-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4.5rem; /* 字体增大一点 */
+            font-weight: 600; /* 变粗，更像奶油手写体 */
+            color: var(--text-main);
             letter-spacing: -2px;
-            animation: holographicText 3s infinite alternate;
-        }
-        @keyframes holographicText {
-            0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); }
+            /* 迷幻重影效果 + 柔和的 Doudou 阴影 */
+            text-shadow: 
+                5px 5px 0px rgba(251, 194, 235, 0.4), /* 梦幻粉 */
+                -5px -5px 0px rgba(166, 193, 238, 0.4), /* 梦幻蓝 */
+                0 0 20px var(--doudou-cream); /* 奶油色光晕 */
+            animation: breathe 6s infinite ease-in-out;
+            transition: text-shadow 0.8s ease-in-out, color 0.8s ease-in-out;
         }
         .subtitle-text {
-            font-family: 'Orbitron', sans-serif; letter-spacing: 2px;
-            background: var(--y2k-holo-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-weight: 900; font-size: 20pt;
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem; /* 略微增大 */
+            letter-spacing: 5px; /* 略微增大 */
+            text-transform: uppercase;
+            color: var(--text-accent);
+            margin-top: 15px;
+            opacity: 0.8;
+            font-weight: 400;
+            transition: color 0.8s ease-in-out;
         }
 
+        @keyframes breathe {
+            0%, 100% { opacity: 0.9; filter: blur(0px); transform: scale(1); }
+            50% { opacity: 0.7; filter: blur(1px); transform: scale(1.01); } /* 增加微小缩放，更“活泼” */
+        }
 
-        /* --- 主内容区域 (Docsify) --- */
-        /* 修复空白的关键：移除不必要的 margin-top */
+        /* --- 内容区域 (磨砂玻璃 - Doudou 优化) --- */
         .markdown-section {
-            max-width: 850px;
-            margin: 0 auto 60px auto !important; /* 移除巨大的顶部边距 */
-            padding: 30px !important;
-            background: var(--panel-bg);
-            backdrop-filter: var(--panel-blur);
-            border: var(--panel-chrome-border); /* 金属边框 */
-            border-radius: 25px;
-            box-shadow: 0 0 30px var(--y2k-pink-glow), inset 0 0 20px rgba(255,255,255,0.1);
-            position: relative; z-index: 5;
+            max-width: 800px;
+            margin: 0 auto 80px auto !important;
+            padding: 50px !important;
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur-amount);
+            -webkit-backdrop-filter: var(--blur-amount);
+            border: var(--glass-border);
+            border-radius: 20px; /* **Doudou 核心：更大的圆角** */
+            box-shadow: var(--glass-shadow);
+            position: relative; 
+            z-index: 5;
+            transition: all 0.5s ease; /* 增加过渡效果 */
         }
-        
-        /* Y2K 风格标题栏 */
+        .markdown-section:hover {
+             box-shadow: 0 15px 40px rgba(166, 193, 238, 0.3); /* 鼠标悬停时阴影变大 */
+        }
+
+
+        /* 装饰性线条 (改为圆点) */
         .markdown-section:before {
-            content: '💿 Y2K_KAWAII_SYSTEM // ONLINE';
-            display: block;
-            background: var(--y2k-holo-gradient);
-            color: #FFF;
-            font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 1px;
-            font-size: 12px; padding: 8px 20px;
-            margin: -33px -33px 25px -33px; /* 调整位置以适应新边框 */
-            border-radius: 22px 22px 0 0;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-            border-bottom: 3px solid var(--y2k-chrome);
+            content: '•'; /* 换成圆点 */
+            position: absolute;
+            top: 15px; left: 50%; transform: translateX(-50%);
+            width: auto; height: auto;
+            font-size: 1.5rem;
+            color: var(--text-accent);
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .markdown-section:hover:before {
+            opacity: 0.8;
         }
 
-        /* 内容样式 */
+        /* 标题样式 (保持不变) */
         h1, h2, h3 {
-            font-family: 'Orbitron', sans-serif; text-transform: uppercase;
-            color: var(--y2k-chrome); text-shadow: 0 0 10px var(--y2k-blue-glow);
-            border-bottom: 2px dashed var(--kawaii-pink); padding-bottom: 10px; margin-top: 1.5em;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-main);
+            font-weight: 600;
+            border-bottom: none;
+            margin-top: 2em;
+            transition: color 0.8s ease-in-out, text-shadow 0.8s ease-in-out;
         }
-        h1 { font-size: 2.5em; border-bottom: 3px solid var(--y2k-chrome); }
-        
-        p, li { font-family: 'Roboto Mono', monospace; line-height: 1.8; color: var(--text-main); }
-
-        a { color: var(--kawaii-pink); text-decoration: none; font-weight: bold; transition: all 0.3s; }
-        a:hover { color: var(--kawaii-blue); text-shadow: 0 0 10px var(--kawaii-blue); }
-
-        /* 项目卡片 */
-        .project {
-            background: rgba(255,255,255,0.08); border: 1px solid var(--y2k-chrome);
-            border-radius: 15px; padding: 20px; margin: 30px 0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 弹性过渡 */
+        h1 { 
+            font-size: 2.8em; 
+            text-align: center; 
+            font-style: italic;
+            margin-bottom: 1em;
+            text-shadow: 2px 2px 0px var(--doudou-cream); /* 给 h1 增加奶酪阴影 */
         }
-        .project:hover {
-            transform: scale(1.03); box-shadow: 0 0 20px var(--y2k-pink-glow);
-            background: rgba(255,255,255,0.12);
+        h2 {
+            font-size: 1.8em;
+            position: relative;
+            padding-left: 15px;
+        }
+        h2::before {
+            content: '✦';
+            position: absolute; left: 0; top: 2px;
+            font-size: 0.6em; color: var(--text-accent);
+            transition: color 0.8s ease-in-out;
         }
 
-        /* 按钮 (像糖果/果冻) */
-        .project-toggle {
-            background: linear-gradient(135deg, var(--kawaii-pink), var(--kawaii-purple));
-            border: 2px solid #fff; color: #fff;
-            font-family: 'Orbitron', sans-serif; font-size: 0.9rem; padding: 10px 20px;
-            border-radius: 50px; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4), inset 0 2px 5px rgba(255,255,255,0.4);
+        p, li {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.9;
+            font-weight: 300;
+            color: #555;
+            transition: color 0.8s ease-in-out;
+        }
+
+        /* 链接样式 */
+        a {
+            color: var(--text-accent);
+            text-decoration: none;
+            border-bottom: 2px solid var(--doudou-cream); /* 使用更厚、更柔和的底线 */
             transition: all 0.3s;
         }
-        .project-toggle:hover {
-            transform: translateY(-3px); box-shadow: 0 8px 20px rgba(135, 206, 235, 0.6);
-            background: linear-gradient(135deg, var(--kawaii-blue), var(--kawaii-purple));
+        a:hover {
+            color: var(--dream-blue);
+            border-bottom: 2px solid var(--dream-blue);
+            background: rgba(255,255,255,0.7);
+            border-radius: 4px; /* 轻微圆角 */
         }
 
-        /* 图片样式 */
+        /* 🖼️ 图片样式 - 优化为 Doudou 拍立得风格 */
         .markdown-section img {
-            border: 3px solid var(--y2k-chrome); border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3); transition: all 0.3s;
+            /* 1. 拍立得白色边框 */
+            border: 8px solid #fff;
+            /* 2. 柔和的阴影 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12); 
+            /* 3. 增加过渡效果 */
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
+            display: block;
+            margin: 30px auto;
+            max-width: 90%;
+            /* 4. **核心：更明显的圆角**，模拟拍立得或贴纸的圆润边角 */
+            border-radius: 18px; 
+            /* 确保图片本身也遵守圆角 */
+            overflow: hidden; 
         }
         .markdown-section img:hover {
-            box-shadow: 0 0 25px var(--y2k-holo-gradient); border-color: var(--kawaii-pink);
+            /* 悬停动画：Q弹旋转 */
+            transform: scale(1.05) rotate(2deg); /* 略微夸张的放大和旋转 */
+            box-shadow: 0 15px 45px rgba(0,0,0,0.2); /* 阴影变深 */
         }
+
+        /* 按钮 - 柔和胶囊 (保持不变，已是 Doudou 风格) */
+        .project-toggle {
+            background: #fff;
+            border: 1px solid var(--text-accent);
+            color: var(--text-accent);
+            font-family: 'Montserrat', sans-serif;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        .project-toggle:hover {
+            background: var(--text-accent);
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(123, 108, 150, 0.3);
+        }
+        
+        ::selection {
+            background: var(--dream-pink);
+            color: #fff;
+        }
+        /* --- Preloader 样式修改 --- */
+
+/* --- 🌟 全屏 Doudou 加载遮罩样式 --- */
+
+/* 1. 全屏容器：完全遮挡网页 */
+#doudou-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-base); /* 与网页背景一致，或者用 var(--doudou-cream) */
+    z-index: 9999; /* 确保在最顶层 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, background-color 0.8s ease-in-out;
+}
+
+/* 2. 核心豆豆容器 */
+.doudou-wrapper {
+    text-align: center;
+    position: relative;
+}
+
+/* 3. 大豆豆主体 (云朵般柔软的形状) */
+.big-doudou {
+    width: 120px;
+    height: 100px;
+    background: linear-gradient(135deg, #fff 0%, var(--dream-pink) 100%);
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; /* 不规则圆润形状 */
+    box-shadow: 
+        0 10px 30px rgba(251, 194, 235, 0.4),
+        inset -5px -5px 10px rgba(0,0,0,0.05);
+    margin: 0 auto 30px auto;
+    position: relative;
+    animation: doudouFloat 3s infinite ease-in-out, doudouSquish 4s infinite ease-in-out;
+    transition: background 0.8s ease-in-out, box-shadow 0.8s ease-in-out;
+}
+
+/* 4. 豆豆的表情 (Face) */
+.doudou-face {
+    position: relative;
+    top: 40%;
+    width: 100%;
+    height: 100%;
+}
+
+/* 眼睛 */
+.eye {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-accent);
+    border-radius: 50%;
+    top: 0;
+    animation: blink 4s infinite;
+    transition: background-color 0.8s ease-in-out;
+}
+.eye.left { left: 35px; }
+.eye.right { right: 35px; }
+
+/* 腮红 */
+.blush {
+    position: absolute;
+    width: 12px;
+    height: 6px;
+    background-color: var(--dream-pink); /* 使用 dream-pink */
+    border-radius: 50%;
+    top: 12px;
+    opacity: 0.6;
+    transition: background-color 0.8s ease-in-out;
+}
+.blush.left { left: 28px; }
+.blush.right { right: 28px; }
+
+/* 嘴巴 (微笑) */
+.mouth {
+    position: absolute;
+    width: 10px;
+    height: 5px;
+    border-bottom: 2px solid var(--text-accent);
+    border-radius: 0 0 10px 10px; /* 半圆 */
+    left: 50%;
+    transform: translateX(-50%);
+    top: 8px;
+    transition: border-color 0.8s ease-in-out;
+}
+
+/* 5. 加载文字 */
+.loading-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--text-accent);
+    letter-spacing: 2px;
+    font-style: italic;
+    opacity: 0;
+    animation: textFadeIn 2s ease-in-out infinite alternate;
+    transition: color 0.8s ease-in-out;
+}
+
+/* --- 动画定义 --- */
+
+/* 漂浮 */
+@keyframes doudouFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* 柔软挤压 (Q弹感) */
+@keyframes doudouSquish {
+    0%, 100% { border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; }
+    50% { border-radius: 45% 45% 50% 50% / 55% 55% 45% 45%; } /* 稍微变扁一点 */
+}
+
+/* 眨眼 */
+@keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+}
+
+/* 文字淡入淡出 */
+@keyframes textFadeIn {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+/* --- 消失时的状态类 --- */
+#doudou-overlay.hide-overlay {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    /* 可选：添加一个向上移动消失的效果 */
+    /* transform: translateY(-20px); */ 
+}
+
+/* --- 🧸 Doudou 浮动玩偶 (右下角) --- */
+
+.doudou-float-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100; /* 确保在内容之上 */
+    display: flex; /* 允许并排放置多个玩偶 */
+    gap: 15px;
+    pointer-events: none; /* 防止遮挡鼠标事件 */
+}
+
+/* 单个玩偶样式 */
+.doudou-float-item {
+    width: 60px; /* 尺寸比加载动画的小 */
+    height: 50px;
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    background: var(--doudou-cream); /* 使用奶油色作为底色 */
+    box-shadow: 
+        5px 5px 15px rgba(0, 0, 0, 0.05), /* 底部阴影 */
+        -5px -5px 15px rgba(255, 255, 255, 0.8), /* 顶部高光 */
+        0 0 15px var(--text-accent); /* 柔和的外发光 */
+    position: relative;
+    opacity: 0.9;
+    /* 新的自然漂浮动画 floatBob */
+    animation: floatBob 6s infinite ease-in-out, doudouSquish 4s infinite ease-in-out; 
+    transition: all 0.8s ease-in-out;
+    pointer-events: auto; /* 玩偶本身可以被点击 */
+    cursor: pointer;
+}
+
+/* 玩偶 2 (可选，用于颜色变化或不同形态) */
+.doudou-float-item.doudou-2 {
+    width: 55px;
+    height: 65px;
+    background: var(--dream-pink); /* 另一个主题色 */
+    border-radius: 45% 45% 50% 50% / 55% 55% 45% 45%;
+    animation: floatBob 5s infinite ease-in-out reverse, doudouSquish 4s infinite ease-in-out reverse;
+    opacity: 0.8;
+}
+
+/* 小玩偶的表情 */
+.doudou-float-item .doudou-face {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+}
+
+.doudou-float-item .eye {
+    width: 4px;
+    height: 4px;
+    /* 继承全局眨眼动画 */
+}
+.doudou-float-item .eye.left { left: 10px; top: 10px; }
+.doudou-float-item .eye.right { right: 10px; top: 10px; }
+
+.doudou-float-item .blush {
+    width: 8px;
+    height: 4px;
+    top: 15px;
+}
+.doudou-float-item .blush.left { left: 5px; }
+.doudou-float-item .blush.right { right: 5px; }
+
+.doudou-float-item .mouth {
+    width: 6px;
+    height: 3px;
+    top: 15px;
+    border-bottom: 1.5px solid var(--text-accent);
+}
+
+/* 新的自然漂浮动画 */
+@keyframes floatBob {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+/* 可选：鼠标悬停时的互动效果 */
+.doudou-float-item:hover {
+    transform: scale(1.1) rotate(-2deg);
+    opacity: 1;
+    box-shadow: 
+        5px 5px 20px rgba(0, 0, 0, 0.1),
+        0 0 25px var(--dream-blue);
+}
+
     </style>
 </head>
 <body>
-    <div class="stars-background"></div>
-    <div class="dynamic-grid-floor"></div>
+    <div id="doudou-overlay">
+        <div class="doudou-wrapper">
+            <div class="big-doudou">
+                <div class="doudou-face">
+                    <div class="eye left"></div>
+                    <div class="eye right"></div>
+                    <div class="blush left"></div>
+                    <div class="blush right"></div>
+                    <div class="mouth"></div>
+                </div>
+            </div>
+            <div class="loading-text">dreaming...</div>
+        </div>
+    </div>
 
-    <div class="floating-element pixel-star" style="top: 15%; left: 10%;">✦</div>
-    <div class="floating-element cyber-ring" style="top: 25%; right: 15%; animation-delay: -5s;"></div>
-    <div class="floating-element pixel-heart" style="bottom: 30%; left: 8%;">♥</div>
-    <div class="floating-element pixel-star" style="bottom: 20%; right: 25%; font-size: 15px; animation-delay: -2s;">✨</div>
-    <div class="floating-element cyber-ring" style="bottom: 10%; left: -5%; width: 120px; height: 120px; border-color: var(--kawaii-pink); opacity: 0.4;"></div>
-
+    <div class="aurora-bg"></div>
+    <div class="film-grain"></div>
+    <div class="dream-blob blob-1"></div>
+    <div class="dream-blob blob-2"></div>
+    <div class="dream-blob blob-3"></div>
 
     <header class="header-container">
-        <div class="header-icons">
-            <span>👾</span><span>💿</span>
-        </div>
+        <div class="doudou-dot" id="theme-switcher"></div> 
         <nav class="nav-pills">
             <ul>
-                <a href="#/README.md#pub"><li><center>INFO</center><span>关于我</span></li></a>
-                <a href="#/pub.md#pub"><li><center>ACADEMIC</center><span>学术</span></li></a>
-                <a href="#/proj.md#project"><li><center>DESIGNS</center><span>设计</span></li></a>
-                <a href="#/works.md#"><li><center>ARTWORKS</center><span>作品</span></li></a>
+                <a href="#/README.md#pub"><li><center>About me</center></li></a>
+                <a href="#/pub.md#pub"><li><center>~ My academics</center></li></a>
+                <a href="#/proj.md#project"><li><center>~ Designs</center></li></a>
+                <a href="#/works.md#"><li><center>~ Artworks</center></li></a>
             </ul>
         </nav>
     </header>
-    <br/><br/><br/><br/>
+
     <div class="hero-title">
-        <div class="glitch-text">To_Feel_&_To_Create</div>
-        <div class="subtitle-text">///  ///</div>
+        <div class="main-title"> To feel; To dream; To create</div>
+        <div class="subtitle-text">///^_^///</div>
     </div>
 
     <div id="app"></div>
 
+    <div class="doudou-float-container">
+        <div class="doudou-float-item doudou-1">
+            <div class="doudou-face">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="blush left"></div>
+                <div class="blush right"></div>
+                <div class="mouth"></div>
+            </div>
+        </div>
+        <div class="doudou-float-item doudou-2">
+             <div class="doudou-face">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="blush left"></div>
+                <div class="blush right"></div>
+                <div class="mouth"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         window.$docsify = {
-            name: "Y2K CORE",
-            themeColor: "#FF69B4",
+            name: "Daydream",
+            themeColor: "#7b6c96",
             hideSidebar: true,
             name: '',
             repo: '',
@@ -330,6 +694,41 @@
     </script>
     <script src="init_proj.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    
+    <script>
+        // Theme switching logic
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const body = document.body;
+        let currentTheme = 1; // Start with the default theme
 
+        themeSwitcher.addEventListener('click', () => {
+            currentTheme++;
+            if (currentTheme > 3) {
+                currentTheme = 1; // Loop back to the first theme
+            }
+
+            // Remove existing theme classes
+            body.classList.remove('theme-1', 'theme-2', 'theme-3');
+            // Add the new theme class
+            body.classList.add(`theme-${currentTheme}`);
+
+            // CSS variables (like --doudou-cream) for the floating dolls will automatically update
+        });
+
+        // Preloader logic
+        window.addEventListener('load', function() {
+            const overlay = document.getElementById('doudou-overlay');
+            
+            if (overlay) {
+                setTimeout(() => {
+                    overlay.classList.add('hide-overlay');
+                    
+                    setTimeout(() => {
+                        overlay.remove();
+                    }, 500); // This time should match CSS transition time (0.5s)
+                }, 500); 
+            }
+        });
+    </script>
 </body>
 </html>

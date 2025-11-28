@@ -14,9 +14,9 @@ Reviewer: AAAI2026, CVPR2026
     <font size="+1"><a href = "./">DensiCrafter: Physically-Constrained Generation and Fabrication of Self-Supporting Hollow Structures</a></font>
     <br />    <br />
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-      <span style="border: 1px solid var(--win-dark-shadow); padding: 4px 8px; border-radius: 0px;">3D生成</span>
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">物理条件嵌入</span>
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">可打印物体生成</span>
+      <span style="border: 1px solid var(--doudou-cream); padding: 4px 8px; border-radius: 0px;">3D生成</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">物理条件嵌入</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">可打印物体生成</span>
     </div>
     <br />    <br />
     
@@ -29,9 +29,9 @@ Reviewer: AAAI2026, CVPR2026
     <font size="+1"><a href = "./">Designed to Spread: Generative Approaches to Enhance Information Diffusion</a></font>
     <br />    <br />
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">动态信息设计</span>
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">信息传播</span>
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">互联网营销</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">动态信息设计</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">信息传播</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">互联网营销</span>
     </div>
     <br />    <br />
     
@@ -46,9 +46,9 @@ Reviewer: AAAI2026, CVPR2026
     <font size="+1"><a href = "https://openaccess.thecvf.com/content/ICCV2025/html/Dang_EmotiCrafter_Text-to-Emotional-Image_Generation_based_on_Valence-Arousal_Model_ICCV_2025_paper.html">EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model</a></font>
     <br />    <br />
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">情感图像生成</span>
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">图像生成模型</span>
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">情感计算</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">情感图像生成</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">图像生成模型</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">情感计算</span>
     </div>
     <br />    <br />
     
@@ -63,8 +63,8 @@ Reviewer: AAAI2026, CVPR2026
     <font size="+1"><a href="https://dl.acm.org/doi/abs/10.1145/3613904.3642391"> Supporting Product Personalization through Stylized Head Portraits</a></font>
     <br />    <br />
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">个性化产品</span>
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">卡通头像生成</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">个性化产品</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">卡通头像生成</span>
     </div>
     <br />    <br />
     Conference on Human Factors in Computing Systems (CHI), 2024 <br /> <br />
@@ -82,9 +82,9 @@ Reviewer: AAAI2026, CVPR2026
   <div>
     <font size="+1"><a href="https://openaccess.thecvf.com/content/ICCV2023/html/Zhao_Bring_Clipart_to_Life_ICCV_2023_paper.html">Bring Clipart to Life</a></font>
     <br />    <br />
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">照片编辑</span>
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">StyleGAN图像生成</span>
-      <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">交互方式设计</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">照片编辑</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">StyleGAN图像生成</span>
+      <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">交互方式设计</span>
     <br />
     <br />
         <br />
@@ -107,8 +107,8 @@ Reviewer: AAAI2026, CVPR2026
   <div>
     <font size="+1"><a href = "https://dl.acm.org/doi/10.1145/3748515"> MV-Crafter: An Intelligent System for Music-guided Video Generation</a></font>
     <br /><br />
-          <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">音乐视频生成</span>
-          <span style="border: 1px solid var(--win-dark-shadow);  padding: 4px 8px; border-radius: 0px;">智能体</span>
+          <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">音乐视频生成</span>
+          <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">智能体</span>
     <br /><br />
     ACM Transactions on Interactive Intelligent Systems, 2025  <br /> <br />
     Chuer Chen, Shengqi Dang, Yuqi Liu, Nanxuan Zhao, Yang Shi, Nan Cao  <br /> <br />

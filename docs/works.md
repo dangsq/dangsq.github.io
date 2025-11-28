@@ -1,133 +1,170 @@
 <style>
-/* 强制重置容器样式，防止被 docsify 样式覆盖 */
-.custom-gallery-wrapper {
-  width: 100%;
-  margin: 2rem auto;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  box-sizing: border-box;
-}
+/* --- 画廊定制样式：融入 Doudou / Dream Pop Aesthetic --- */
 
-.custom-gallery-wrapper * {
+/* 容器和重置 */
+.doudou-gallery-wrapper {
+  width: 100%;
+  margin: 3rem auto;
+  font-family: 'Montserrat', sans-serif;
   box-sizing: border-box;
 }
 
 .gallery-container {
-  max-width: 1000px; /*稍微调小一点以适应文档流*/
+  max-width: 900px; 
   margin: 0 auto;
   text-align: center;
   position: relative;
+  padding: 0; 
+  border-radius: 0;
+  box-shadow: none;
 }
 
-/* 主图区域 */
+/* 主图容器 */
 .main-image-container {
   position: relative;
-  margin-bottom: 20px;
-  background: rgba(0,0,0,0.02); /* 添加轻微背景以便在图片加载前占位 */
-  border-radius: 16px;
+  margin-bottom: 25px;
+  padding: 30px 15px 15px 15px;
+  height: 600px;
+  background: color(var(--glass-bg) alpha(0.0));
+  backdrop-filter: var(--blur-amount);
+  -webkit-backdrop-filter: var(--blur-amount);
+  border: var(--glass-border);
+  border-radius: 25px;
+  box-shadow: var(--doudou-shadow);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  transition: all 0.5s ease;
+  overflow: hidden; /* 防止放大时溢出 */
 }
 
+/* --- 核心修改：主图样式 --- */
 .main-image {
   max-width: 100%;
-  max-height: 65vh; /* 稍微减小高度以免在小屏占满 */
+  max-height: 70vh;
   object-fit: contain;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  transition: opacity 0.3s ease;
-  display: block; /* 修复 Docsify 图片可能的 inline 属性 */
+  border-radius: 18px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+  display: block;
   margin: 0 auto;
+  
+  /* 初始状态：完全显示 */
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px); /* 清晰 */
+  
+  /* 
+     修改点：使用 ease-in-out 让开始和结束都变慢，更柔和。
+     时间统一设定为 0.6s 
+  */
+  transition: opacity 0.6s ease-in-out, 
+              transform 0.6s ease-in-out, 
+              filter 0.6s ease-in-out;
+}
+
+/* --- 新增：图片隐藏状态（淡出+模糊+微缩） --- */
+.main-image.image-hidden {
+  opacity: 0;
+  transform: scale(0.96); /* 稍微缩小一点点，增加呼吸感 */
+  filter: blur(10px);     /* 梦幻模糊效果 */
 }
 
 .image-title {
-  margin-top: 15px;
-  font-size: 18px;
-  color: #666;
-  font-weight: 500;
-  padding: 8px 16px;
-  background: #f8f9fa;
-  border-radius: 20px;
+  margin-top: 20px;
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--text-main);
+  background: var(--doudou-cream);
+  padding: 8px 24px;
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: inline-block;
+  
+  /* 标题也跟随渐变 */
+  opacity: 1;
+  transition: opacity 0.6s ease-in-out;
 }
 
-/* 导航按钮 - 增加 !important 覆盖 docsify 默认样式 */
+.image-title.title-hidden {
+  opacity: 0;
+}
+
+/* 导航按钮 */
 .gallery-nav-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.8) !important;
-  border: 1px solid rgba(0,0,0,0.1) !important;
+  background: var(--doudou-cream) !important;
+  border: none !important;
   border-radius: 50% !important;
   width: 50px !important;
   height: 50px !important;
-  font-size: 24px !important;
-  line-height: 1 !important;
+  font-size: 26px !important;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 100; /* 确保在最上层 */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333 !important;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  color: var(--text-accent) !important;
   outline: none;
-  padding: 0 !important;
-  margin: 0 !important;
+  opacity: 0.9;
 }
 
 .gallery-nav-button:hover {
   background: white !important;
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-50%) scale(1.2); 
+  box-shadow: 0 6px 20px rgba(123, 108, 150, 0.3);
+  color: var(--link-color) !important;
+  opacity: 1;
 }
 
-.gallery-nav-button.prev { left: 10px; }
-.gallery-nav-button.next { right: 10px; }
+.gallery-nav-button.prev { left: 15px; }
+.gallery-nav-button.next { right: 15px; }
 
 /* 缩略图区域 */
 .thumbnail-scroll-area {
   width: 100%;
   overflow-x: auto;
-  padding: 10px 0;
-  /* 隐藏滚动条但保留功能 */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE */
+  padding: 15px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-.thumbnail-scroll-area::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
-}
+.thumbnail-scroll-area::-webkit-scrollbar { display: none; }
 
 .thumbnail-container {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  min-width: min-content; /* 确保内容撑开 */
-  padding: 0 10px;
+  gap: 12px;
+  min-width: min-content;
+  padding: 0 20px;
 }
 
 .thumbnail {
-  width: 80px;
-  height: 80px;
+  width: 75px;
+  height: 75px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   opacity: 0.6;
-  transition: all 0.2s ease;
-  border: 2px solid transparent;
-  flex-shrink: 0; /* 防止缩略图被压缩 */
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  border: 3px solid transparent;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 
-.thumbnail:hover { opacity: 0.9; }
+.thumbnail:hover { 
+  opacity: 0.9; 
+  transform: scale(1.1); 
+}
 
 .thumbnail.active {
-  border-color: #42b983; /* Docsify 绿色风格 */
+  border-color: var(--dream-pink); 
   opacity: 1;
-  transform: scale(1.05);
+  transform: scale(1.15); 
+  box-shadow: 0 5px 15px rgba(251, 194, 235, 0.5); 
 }
 
-/* 响应式调整 */
 @media (max-width: 768px) {
   .gallery-nav-button {
     width: 40px !important;
@@ -141,74 +178,155 @@
 }
 </style>
 
-<div class="custom-gallery-wrapper">
-  <div class="main-image-container">
-    <button class="gallery-nav-button prev" onclick="window.galleryPrev()">&#8249;</button>
-    <img id="mainImage" class="main-image" src="figs/artworks/b496380d49a63fcf3e8a6df65988fd1f.jpg" alt="立姿展翅1"/>
-    <button class="gallery-nav-button next" onclick="window.galleryNext()">&#8250;</button>
-    <div id="imageTitle" class="image-title">立姿展翅1</div>
-  </div>
-  
-  <div class="thumbnail-scroll-area">
-    <div class="thumbnail-container">
-      <img class="thumbnail active" src="figs/artworks/b496380d49a63fcf3e8a6df65988fd1f.jpg" onclick="window.galleryShow(0)"/>
-      <img class="thumbnail" src="figs/artworks/6FC7E738-0AC9-45B9-BC0F-7D8EDDD2CB4F_1_105_c.jpeg" onclick="window.galleryShow(1)"/>
-      <img class="thumbnail" src="figs/artworks/EB4A3E87-0A18-4392-AE7A-5CC1A134A662_1_105_c.jpeg" onclick="window.galleryShow(2)"/>
-      <img class="thumbnail" src="figs/artworks/微信图片_20251125212941_37_331.jpg" onclick="window.galleryShow(3)"/>
-      <img class="thumbnail" src="figs/artworks/微信图片_20251125212942_38_331.jpg" onclick="window.galleryShow(4)"/>
+<div class="doudou-gallery-wrapper">
+  <div class="gallery-container">
+    <div class="main-image-container">
+      <button class="gallery-nav-button prev" onclick="window.galleryPrev()">&#8249;</button>
+      <img id="mainImage" class="main-image" src="" alt=""/>
+      <button class="gallery-nav-button next" onclick="window.galleryNext()">&#8250;</button>
+      <div id="imageTitle" class="image-title"></div>
+    </div>
+    
+    <div class="thumbnail-scroll-area">
+      <div id="thumbnailContainer" class="thumbnail-container">
+        </div>
     </div>
   </div>
 </div>
 
 <script>
-// 使用立即执行函数包裹配置，但将功能函数挂载到 window
 (function() {
   var images = [
-    { src: 'figs/artworks/b496380d49a63fcf3e8a6df65988fd1f.jpg', title: '立姿展翅1' },
-    { src: 'figs/artworks/6FC7E738-0AC9-45B9-BC0F-7D8EDDD2CB4F_1_105_c.jpeg', title: '顿感' },
-    { src: 'figs/artworks/EB4A3E87-0A18-4392-AE7A-5CC1A134A662_1_105_c.jpeg', title: '后花园' },
-    { src: 'figs/artworks/微信图片_20251125212941_37_331.jpg', title: '机械蝴蝶' },
-    { src: 'figs/artworks/微信图片_20251125212942_38_331.jpg', title: '玫瑰青凤蝶？' }
+    { src: 'figs/artworks/b496380d49a63fcf3e8a6df65988fd1f.jpg', title: '立姿展翅 · Daydream I' },
+    { src: 'figs/artworks/6FC7E738-0AC9-45B9-BC0F-7D8EDDD2CB4F_1_105_c.jpeg', title: '顿感 · Soft Flow' },
+    { src: 'figs/artworks/EB4A3E87-0A18-4392-AE7A-5CC1A134A662_1_105_c.jpeg', title: '后花园 · Fading Memory' },
+    { src: 'figs/artworks/微信图片_20251125212941_37_331.jpg', title: '机械蝴蝶 · Dream Machine' },
+    { src: 'figs/artworks/微信图片_20251125212942_38_331.jpg', title: '玫瑰青凤蝶？ · Hazy Bloom' },
+    { src: 'figs/artworks/眼.jpeg', title: '眼 · Eye' },
+    { src: 'figs/artworks/被刺穿的.jpeg', title: '被刺穿的 · Buried' },
   ];
 
   var currentIndex = 0;
+  var visibleThumbnailsCount = 7;
+  var mainImage = document.getElementById('mainImage');
+  var imageTitle = document.getElementById('imageTitle');
+  var thumbnailContainer = document.getElementById('thumbnailContainer');
+  var thumbnailScrollArea = document.querySelector('.thumbnail-scroll-area');
+  
+  // 标记当前是否正在切换中，防止狂点按钮导致动画错乱
+  var isAnimating = false; 
 
-  // 挂载到 window 对象，这样 HTML 里的 onclick 才能找到它们
-  window.galleryShow = function(index) {
-    currentIndex = index;
-    var mainImage = document.getElementById('mainImage');
-    var imageTitle = document.getElementById('imageTitle');
-    var thumbnails = document.querySelectorAll('.thumbnail');
-    
-    if (mainImage && images[index]) {
-      // 简单的淡入淡出效果
-      mainImage.style.opacity = '0.5';
-      setTimeout(function() {
-        mainImage.src = images[index].src;
-        mainImage.alt = images[index].title;
-        imageTitle.textContent = images[index].title;
-        mainImage.style.opacity = '1';
-      }, 150);
+  function generateVisibleThumbnails() {
+    if (!thumbnailContainer || images.length === 0) return;
+    thumbnailContainer.innerHTML = ''; 
+    const total = images.length;
+    let start = Math.max(0, currentIndex - Math.floor(visibleThumbnailsCount / 2));
+    let end = start + visibleThumbnailsCount;
+
+    if (end > total) {
+      end = total;
+      start = Math.max(0, total - visibleThumbnailsCount);
+    }
+    if (total <= visibleThumbnailsCount) {
+        start = 0;
+        end = total;
+    }
+
+    for (let i = start; i < end; i++) {
+      const img = images[i];
+      var thumb = document.createElement('img');
+      thumb.className = 'thumbnail';
+      thumb.src = img.src; 
+      thumb.alt = img.title;
+      thumb.dataset.index = i; 
       
-      // 更新缩略图状态
-      thumbnails.forEach(function(thumb, i) {
-        if (i === index) thumb.classList.add('active');
-        else thumb.classList.remove('active');
-      });
+      thumb.onclick = function() {
+        const clickedIndex = parseInt(this.dataset.index);
+        // 如果点击的是当前图，不执行动作
+        if (clickedIndex !== currentIndex) {
+            window.galleryShow(clickedIndex);
+        }
+      };
+      
+      if (i === currentIndex) {
+        thumb.classList.add('active');
+      }
+      thumbnailContainer.appendChild(thumb);
+    }
+
+    setTimeout(() => {
+        const activeThumb = document.querySelector('.thumbnail.active');
+        if (activeThumb && thumbnailScrollArea) {
+            const scrollCenter = activeThumb.offsetLeft + activeThumb.offsetWidth / 2 - thumbnailScrollArea.offsetWidth / 2;
+            thumbnailScrollArea.scrollTo({ left: scrollCenter, behavior: 'smooth' });
+        }
+    }, 50);
+  }
+
+  window.galleryShow = function(index) {
+    // 如果正在动画中，忽略新的请求（防止快速点击造成的闪烁）
+    if (isAnimating) return;
+    isAnimating = true;
+
+    currentIndex = index;
+    var currentImage = images[index];
+    
+    // 1. 立即更新缩略图状态
+    generateVisibleThumbnails(); 
+    
+    if (mainImage && currentImage) {
+      // 2. 开始淡出（添加 CSS 类）
+      // 添加 .image-hidden 类，触发 CSS 的 opacity: 0 和 filter: blur
+      mainImage.classList.add('image-hidden');
+      imageTitle.classList.add('title-hidden');
+      
+      // 3. 等待 CSS 动画完成 (600ms)
+      setTimeout(function() {
+        // 4. 切换图片源和文字
+        mainImage.src = currentImage.src;
+        mainImage.alt = currentImage.title;
+        imageTitle.textContent = currentImage.title;
+        
+        // 5. 确保浏览器渲染了新图片源后，再移除隐藏类
+        // 使用 requestAnimationFrame 确保平滑
+        requestAnimationFrame(() => {
+            mainImage.classList.remove('image-hidden');
+            imageTitle.classList.remove('title-hidden');
+            
+            // 动画结束，解锁
+            // 再给一点点缓冲时间，确保 transitionend 逻辑
+            setTimeout(() => {
+                isAnimating = false;
+            }, 600); 
+        });
+        
+      }, 600); // 这个时间必须匹配 CSS 中的 transition duration (0.6s)
+    } else {
+        isAnimating = false;
     }
   };
 
   window.galleryPrev = function() {
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    window.galleryShow(currentIndex);
+    if (isAnimating) return;
+    const newIndex = (currentIndex - 1 + images.length) % images.length;
+    window.galleryShow(newIndex);
   };
 
   window.galleryNext = function() {
-    currentIndex = (currentIndex + 1) % images.length;
-    window.galleryShow(currentIndex);
+    if (isAnimating) return;
+    const newIndex = (currentIndex + 1) % images.length;
+    window.galleryShow(newIndex);
   };
 
-  // 键盘事件 - 仅当画廊在视口中时或简单绑定
+  // 初始化：不带动画直接显示第一张
+  (function init() {
+      if(images.length > 0) {
+          mainImage.src = images[0].src;
+          imageTitle.textContent = images[0].title;
+          generateVisibleThumbnails();
+      }
+  })();
+
   document.addEventListener('keydown', function(e) {
     if (e.key === 'ArrowLeft') window.galleryPrev();
     if (e.key === 'ArrowRight') window.galleryNext();
