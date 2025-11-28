@@ -14,26 +14,26 @@
     <style>
         /* --- 核心变量 (Doudou / Dream Pop Aesthetic) --- */
         :root {
-            /* 🎨 迷幻白日梦色板 - 默认 (Palette 1) */
-            --bg-base: #fdfbf7; /* 米白纸张色 */
-            --dream-pink: #fbc2eb;
-            --dream-blue: #a6c1ee;
-            --dream-green: #e0c3fc; /* 紫丁香色 */
+            /* 🎨 咖啡森林梦境 - 默认 (Palette 1) */
+            --bg-base: #f0f9f0; /* 新芽嫩绿 */
+            --dream-pink: #ff7b54; /* 朝阳珊瑚 */
+            --dream-blue: #00b894; /* 森林新叶 */
+            --dream-green: #55efc4; /* 生命清泉 */
             
-            /* 🧀 新增 Doudou 元素：柔和奶酪色 */
-            --doudou-cream: #ffe9a6;
-            --doudou-shadow: 0 10px 20px rgba(166, 193, 238, 0.2);
+            /* 🧀 新增 Doudou 元素：暖奶酪色 */
+            --doudou-cream: #ffeaa7; /* 向日葵黄 */
+            --doudou-shadow: 0 10px 20px rgba(0, 184, 148, 0.25);
 
             /* 🌫 模糊与光晕 */
-            --glass-bg: rgba(255, 255, 255, 0.6); /* 增加一点透明度 */
-            --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(240, 249, 240, 0.7); /* 新芽嫩绿 */
+            --glass-border: 1px solid rgba(255, 255, 255, 0.85);
             --glass-shadow: var(--doudou-shadow);
-            --blur-amount: blur(15px); /* 稍微降低模糊度，让内容更清晰 */
+            --blur-amount: blur(15px); /* 保持柔和清晰 */
 
             /* 🖋 字体颜色 */
-            --text-main: #4a4a4a; /* 柔和的深灰，不是纯黑 */
-            --text-accent: #7b6c96; /* 薰衣草紫 */
-            --link-color: #e67e22; /* 暖橙色点缀 */
+            --text-main: #2d3436; /* 生命深绿 */
+            --text-accent: #00b894; /* 森林新叶 */
+            --link-color: #ff7b54; /* 朝阳珊瑚 */
             
             /* 平滑过渡 */
             transition: 
@@ -63,20 +63,26 @@
 
         /* Palette 3: 黑白灰 Doudou (带一点点暖调) */
         .theme-3 {
-            --bg-base: #f8f8f8; /* 浅灰 */
-            --dream-pink: #e0e0e0; /* 浅灰 */
-            --dream-blue: #c0c0c0; /* 中灰 */
-            --dream-green: #f5f5f5; /* 更浅的灰 */
+            /* 🎨 迷幻白日梦色板 - 默认 (Palette 1) */
+            --bg-base: #fdfbf7; /* 米白纸张色 */
+            --dream-pink: #fbc2eb;
+            --dream-blue: #a6c1ee;
+            --dream-green: #e0c3fc; /* 紫丁香色 */
             
-            --doudou-cream: #e6e6e6; /* 略带暖意的灰 */
-            --doudou-shadow: 0 10px 20px rgba(192, 192, 192, 0.3);
+            /* 🧀 新增 Doudou 元素：柔和奶酪色 */
+            --doudou-cream: #ffe9a6;
+            --doudou-shadow: 0 10px 20px rgba(166, 193, 238, 0.2);
 
-            --glass-bg: rgba(255, 255, 255, 0.5);
-            --glass-border: 1px solid rgba(240, 240, 240, 0.8);
+            /* 🌫 模糊与光晕 */
+            --glass-bg: rgba(255, 255, 255, 0.6); /* 增加一点透明度 */
+            --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+            --glass-shadow: var(--doudou-shadow);
+            --blur-amount: blur(15px); /* 稍微降低模糊度，让内容更清晰 */
 
-            --text-main: #333333; /* 经典深灰 */
-            --text-accent: #666666; /* 中度灰 */
-            --link-color: #888888;
+            /* 🖋 字体颜色 */
+            --text-main: #4a4a4a; /* 柔和的深灰，不是纯黑 */
+            --text-accent: #7b6c96; /* 薰衣草紫 */
+            --link-color: #e67e22; /* 暖橙色点缀 */
         }
 
 
@@ -296,6 +302,111 @@
         .markdown-section:hover:before {
             opacity: 0.8;
         }
+        /* --- 💤 趴在内容框上的瞌睡 Doudou --- */
+.doudou-perched {
+    position: absolute;
+    top: -45px; /* 让它刚好坐在框的顶端 */
+    right: 60px; /* 距离右边的位置，你可以调整这个值 */
+    width: 80px;
+    height: 50px;
+    background: var(--doudou-cream);
+    /* 形状：上面圆润，下面平坦，像一个馒头趴着 */
+    border-radius: 50px 50px 10px 10px; 
+    box-shadow: 
+        inset -5px -5px 10px rgba(0,0,0,0.05), /* 内部立体感 */
+        0 -5px 15px rgba(255, 255, 255, 0.5); /* 顶部高光 */
+    z-index: 20; /* 保证在内容框之上 */
+    transform-origin: bottom center;
+    animation: doudouSleepBreathe 4s infinite ease-in-out;
+    cursor: pointer; /* 鼠标放上去变小手 */
+    transition: transform 0.3s ease;
+}
+
+/* 鼠标悬停时，它会惊醒一下 */
+.doudou-perched:hover {
+    animation: doudouWakeUp 0.5s forwards;
+}
+.doudou-perched:hover .snot-bubble {
+    opacity: 0; /* 惊醒时鼻涕泡破掉 */
+    transform: scale(0);
+}
+.doudou-perched:hover .eye {
+    height: 8px; /* 眼睛睁开 */
+    border-radius: 50%;
+    transform: scaleY(1);
+    border: none;
+    background-color: var(--text-main);
+}
+
+/* 脸部定位 */
+.doudou-perched .doudou-face {
+    position: absolute;
+    top: 55%; /* 脸稍微靠下，显得慵懒 */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+}
+
+/* 闭着的眼睛 (弧线) */
+.doudou-perched .eye {
+    position: absolute;
+    width: 10px;
+    height: 6px;
+    background: transparent;
+    border-bottom: 2px solid var(--text-accent); /* 用边框做闭眼效果 */
+    border-radius: 0;
+    top: 15px;
+    transition: all 0.3s;
+}
+.doudou-perched .eye.left { left: 22px; }
+.doudou-perched .eye.right { right: 22px; }
+
+/* 腮红 */
+.doudou-perched .blush {
+    top: 22px;
+    width: 10px;
+    height: 5px;
+}
+.doudou-perched .blush.left { left: 18px; }
+.doudou-perched .blush.right { right: 18px; }
+
+/* 💤 鼻涕泡 (Snot Bubble) */
+.snot-bubble {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 0px;
+    height: 0px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    z-index: 25;
+    /* 泡泡变大变小的动画 */
+    animation: bubbleGrow 4s infinite ease-in-out;
+    transform-origin: bottom left;
+}
+
+/* --- 动画关键帧 --- */
+
+/* 呼吸：身体微微起伏 */
+@keyframes doudouSleepBreathe {
+    0%, 100% { transform: scaleY(1) translateY(0); }
+    50% { transform: scaleY(1.05) translateY(-2px); } /* 吸气时变高一点 */
+}
+
+/* 鼻涕泡忽大忽小 */
+@keyframes bubbleGrow {
+    0%, 100% { width: 5px; height: 5px; transform: translate(0, 0); opacity: 0.8; }
+    50% { width: 25px; height: 25px; transform: translate(10px, -10px); opacity: 0.9; }
+}
+
+/* 惊醒动画 */
+@keyframes doudouWakeUp {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1) translateY(-10px); }
+    100% { transform: scale(1) translateY(0); }
+}
 
         /* 标题样式 (保持不变) */
         h1, h2, h3 {
@@ -531,15 +642,176 @@
 
 /* --- 🧸 Doudou 浮动玩偶 (右下角) --- */
 
+/* --- 🧸 右下角拿花的 Doudou --- */
+
 .doudou-float-container {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 100; /* 确保在内容之上 */
-    display: flex; /* 允许并排放置多个玩偶 */
-    gap: 15px;
-    pointer-events: none; /* 防止遮挡鼠标事件 */
+    bottom: 30px;
+    right: 30px;
+    z-index: 100;
+    pointer-events: none; /* 容器不挡鼠标 */
 }
+
+/* 这里的样式大部分继承自之前的 float-item，但做了针对性修改 */
+.doudou-holding-flower {
+    width: 70px;
+    height: 60px;
+    background: var(--doudou-cream);
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    box-shadow: 
+        5px 5px 15px rgba(0, 0, 0, 0.05),
+        inset -5px -5px 10px rgba(0,0,0,0.05),
+        0 -5px 10px rgba(255,255,255,0.8);
+    position: relative;
+    pointer-events: auto; /* Doudou 可以被点击 */
+    cursor: pointer;
+    /* 身体轻微上下浮动 */
+    animation: floatBob 5s infinite ease-in-out;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 悬停时稍微放大并歪头 */
+.doudou-holding-flower:hover {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* --- 脸部微调 --- */
+.doudou-holding-flower .doudou-face {
+    position: absolute;
+    top: 45%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; height: 100%;
+}
+.doudou-holding-flower .eye {
+    position: absolute;
+    width: 5px; height: 5px;
+    background: var(--text-main);
+    border-radius: 50%;
+    top: 15px;
+    animation: blink 4s infinite;
+}
+.doudou-holding-flower .eye.left { left: 20px; }
+.doudou-holding-flower .eye.right { right: 20px; }
+
+.doudou-holding-flower .blush {
+    position: absolute;
+    width: 8px; height: 4px;
+    background: var(--dream-pink);
+    border-radius: 50%;
+    top: 22px;
+    opacity: 0.5;
+}
+.doudou-holding-flower .blush.left { left: 15px; }
+.doudou-holding-flower .blush.right { right: 15px; }
+
+.doudou-holding-flower .mouth {
+    position: absolute;
+    width: 6px; height: 3px;
+    border-bottom: 2px solid var(--text-main);
+    border-radius: 50%;
+    left: 50%; transform: translateX(-50%);
+    top: 22px;
+}
+
+/* --- ✏️ 简笔画手臂 --- */
+.arm-left, .arm-right {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-bottom: 2px solid var(--text-main); /* 只有底边，像个U型 */
+    border-left: 2px solid var(--text-main);   /* 和左边 */
+    border-radius: 0 0 0 10px; /* 圆角 */
+    opacity: 0.6;
+    bottom: 15px;
+}
+
+.arm-left {
+    left: 18px;
+    bottom:10px;
+    transform: rotate(-20deg); /* 左手自然下垂 */
+}
+
+.arm-right {
+    right: 14px;
+    bottom: 16px;
+    transform: rotate(160deg); /* 右手举起来拿花 */
+    width: 10px; height: 10px;
+}
+
+/* --- 🌻 小花束 --- */
+.flower-bouquet {
+    position: absolute;
+    right: 8px; /* 花的位置在右手附近 */
+    bottom: 25px;
+    width: 20px; height: 30px;
+    transform-origin: bottom center;
+    animation: flowerSway 3s infinite ease-in-out; /* 花朵独立摇摆 */
+}
+
+/* 花茎 */
+.flower-stem {
+    position: absolute;
+    bottom: 0; left: 50%;
+    width: 2px; height: 15px;
+    background-color: #6ab04c; /* 茎的绿色 */
+    transform: translateX(-50%);
+}
+/* 叶子 */
+.flower-stem::after {
+    content: '';
+    position: absolute;
+    top: 5px; right: -4px;
+    width: 4px; height: 2px;
+    background-color: #6ab04c;
+    border-radius: 50%;
+    transform: rotate(-30deg);
+}
+
+/* 花蕊 */
+.flower-center {
+    position: absolute;
+    top: 0; left: 50%;
+    width: 6px; height: 6px;
+    background-color: #f9ca24; /* 黄色花蕊 */
+    border-radius: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+/* 花瓣 (利用 box-shadow 生成一圈) */
+.flower-petals {
+    position: absolute;
+    top: -2px; left: 50%;
+    width: 4px; height: 4px;
+    background-color: var(--dream-pink); /* 花瓣颜色跟随主题 */
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 
+        0 -5px 0 var(--dream-pink),
+        4px -3px 0 var(--dream-pink),
+        4px 3px 0 var(--dream-pink),
+        0 5px 0 var(--dream-pink),
+        -4px 3px 0 var(--dream-pink),
+        -4px -3px 0 var(--dream-pink);
+    z-index: 1;
+}
+
+/* --- 动画定义 --- */
+@keyframes floatBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes flowerSway {
+    0%, 100% { transform: rotate(15deg); }
+    50% { transform: rotate(30deg); } /* 花轻轻摇晃 */
+}
+
+@keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+}
+
 
 /* 单个玩偶样式 */
 .doudou-float-item {
@@ -560,15 +832,6 @@
     cursor: pointer;
 }
 
-/* 玩偶 2 (可选，用于颜色变化或不同形态) */
-.doudou-float-item.doudou-2 {
-    width: 55px;
-    height: 65px;
-    background: var(--dream-pink); /* 另一个主题色 */
-    border-radius: 45% 45% 50% 50% / 55% 55% 45% 45%;
-    animation: floatBob 5s infinite ease-in-out reverse, doudouSquish 4s infinite ease-in-out reverse;
-    opacity: 0.8;
-}
 
 /* 小玩偶的表情 */
 .doudou-float-item .doudou-face {
@@ -661,8 +924,10 @@
 
     <div id="app"></div>
 
+        <!-- 右下角手拿鲜花的 Doudou -->
     <div class="doudou-float-container">
-        <div class="doudou-float-item doudou-1">
+        <div class="doudou-float-item doudou-holding-flower">
+            <!-- 脸部 -->
             <div class="doudou-face">
                 <div class="eye left"></div>
                 <div class="eye right"></div>
@@ -670,19 +935,22 @@
                 <div class="blush right"></div>
                 <div class="mouth"></div>
             </div>
-        </div>
-        <div class="doudou-float-item doudou-2">
-             <div class="doudou-face">
-                <div class="eye left"></div>
-                <div class="eye right"></div>
-                <div class="blush left"></div>
-                <div class="blush right"></div>
-                <div class="mouth"></div>
+            
+            <!-- 简笔画手臂 -->
+            <div class="arm-left"></div>
+            <div class="arm-right"></div>
+
+            <!-- 手里的小花 -->
+            <div class="flower-bouquet">
+                <div class="flower-stem"></div>
+                <div class="flower-petals"></div>
+                <div class="flower-center"></div>
             </div>
         </div>
     </div>
 
-    <script>
+
+        <script>
         window.$docsify = {
             name: "Daydream",
             themeColor: "#7b6c96",
@@ -690,8 +958,42 @@
             name: '',
             repo: '',
             executeScript: true,
+            // --- ✨ 新增：插件配置 ---
+            plugins: [
+                function(hook, vm) {
+                    hook.doneEach(function() {
+                        // 1. 定义 Doudou 的 HTML 结构
+                        const doudouHTML = `
+                            <div class="doudou-perched" title="Zzz...">
+                                <div class="snot-bubble"></div>
+                                <div class="doudou-face">
+                                    <div class="eye left"></div>
+                                    <div class="eye right"></div>
+                                    <div class="blush left"></div>
+                                    <div class="blush right"></div>
+                                </div>
+                            </div>
+                        `;
+
+                        // 2. 找到文章的主体容器
+                        const contentBox = document.querySelector('.markdown-section');
+
+                        // 3. 如果找到了容器，就把 Doudou 插入进去
+                        if (contentBox) {
+                            // 创建一个临时容器来转换 HTML 字符串
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = doudouHTML;
+                            const doudouElement = tempDiv.firstElementChild;
+
+                            // 将 Doudou 插入到 contentBox 的最前面
+                            contentBox.insertBefore(doudouElement, contentBox.firstChild);
+                        }
+                    });
+                }
+            ]
         }
     </script>
+
     <script src="init_proj.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
     
