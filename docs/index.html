@@ -2,714 +2,378 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Shengqi Dang - Daydreaming</title>
+    <title>Shengqi Dang - BOLD & GENESIS</title>
     <link rel="icon" href="./1F34E.svg">
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet"> 
+    <!-- 字体升级：更粗、更清晰、更有力量 -->
+    <!-- Playfair Display: 优雅且厚重的衬线体 (用于标题) -->
+    <!-- Space Grotesk: 现代科技感无衬线体 (用于正文) -->
+    <!-- JetBrains Mono: 代码风格 (用于装饰) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@700&family=Rock+Salt&display=swap" rel="stylesheet">
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     
     <style>
- /* --- 核心变量 --- */
+    /* --- 核心变量：高对比度白昼模式 --- */
     :root {
-        /* Theme 1: 晨曦云端 */
-        --bg-base: #f4fbf4;
-        --dream-pink: #ff9a7b;
-        --dream-blue: #55efc4;
-        --dream-green: #81ecec;
-        --orb-1: #ff7b54;
-        --orb-2: #55efc4;
-        
-        --doudou-cream: #ffeaa7;
-        --glass-bg: rgba(255, 255, 255, 0.4);
-        --glass-border: 1px solid rgba(255, 255, 255, 0.7);
-        --glass-shadow: 0 15px 35px rgba(0, 184, 148, 0.15);
-        --blur-amount: blur(25px);
-        --text-main: #2d3436;
-        --text-accent: #00b894;
-        --switcher-glow: 0 0 15px rgba(0, 184, 148, 0.6);
-    }
-
-    /* Theme 2: 深海微光 */
-    .theme-2 {
-        --bg-base: #e0f7fa;
-        --dream-pink: #4dd0e1;
-        --dream-blue: #00bcd4;
-        --dream-green: #26c6da;
-        --orb-1: #00acc1;
-        --orb-2: #80deea;
-
-        --doudou-cream: #fff9c4;
-        --glass-bg: rgba(255, 255, 255, 0.3);
-        --text-main: #006064;
-        --text-accent: #0097a7;
-        --switcher-glow: 0 0 15px rgba(0, 188, 212, 0.6);
-    }
-
-    /* Theme 3: 迷幻宇宙 */
-    .theme-3 {
-        --bg-base: #f3e5f5;
-        --dream-pink: #ab47bc;
-        --dream-blue: #7e57c2;
-        --dream-green: #5e35b1;
-        --orb-1: #ba68c8;
-        --orb-2: #9575cd;
-
-        --doudou-cream: #fff59d;
-        --glass-bg: rgba(255, 255, 255, 0.3);
-        --text-main: #4a148c;
-        --text-accent: #673ab7;
-        --switcher-glow: 0 0 15px rgba(103, 58, 183, 0.6);
+        --bg-color: #ffffff;
+        --ink-black: #000000; /* 纯黑，极致对比 */
+        --text-gray: #222222; /* 深灰，用于正文 */
+        --accent-purple: #8e44ad; 
+        --accent-acid: #b8e994;
+        --line-color: rgba(0, 0, 0, 0.08); /* 网格淡一点，不抢戏 */
+        --glass-bg: rgba(255, 255, 255, 0.96);
     }
 
     /* --- 全局基础 --- */
     body {
-        background-color: var(--bg-base);
+        background-color: var(--bg-color);
         min-height: 100vh;
         margin: 0; padding: 0;
-        font-family: 'Montserrat', sans-serif;
-        color: var(--text-main);
+        /* 正文改用 Space Grotesk，字重 400，非常清晰 */
+        font-family: 'Space Grotesk', sans-serif;
+        color: var(--text-gray);
+        font-size: 18px; /* 基础字号加大 */
         overflow-x: hidden;
-        transition: background-color 1.2s ease-in-out, color 0.8s ease;
+        
+        /* 背景：极淡的方格纸纹理 */
+        background-image: 
+            linear-gradient(var(--line-color) 1px, transparent 1px),
+            linear-gradient(90deg, var(--line-color) 1px, transparent 1px);
+        background-size: 40px 40px;
     }
 
-    /* 🎞 胶片噪点 */
-    .film-grain {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        pointer-events: none; z-index: 999; opacity: 0.05;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
+    /* =========================================
+       背景装饰 (保持酷感，但退后一步)
+       ========================================= */
 
-    /* 🔮 背景渐变大光球 */
-    .gradient-orb {
+    /* 1. 页面边框框架 */
+    .frame-border {
         position: fixed;
-        border-radius: 50%;
-        filter: blur(100px);
-        z-index: -2;
-        opacity: 0.5;
-        animation: floatOrb 15s infinite alternate ease-in-out;
-        transition: background 1.5s ease;
+        top: 15px; left: 15px; right: 15px; bottom: 15px;
+        border: 2px solid var(--ink-black); /* 边框加粗 */
+        pointer-events: none;
+        z-index: 100;
     }
-    .orb-1 {
-        top: -20%; left: -20%; width: 70vw; height: 70vw;
-        background: var(--orb-1);
+    /* 四角装饰块 */
+    .frame-corner {
+        position: fixed; width: 20px; height: 20px; background: var(--ink-black); z-index: 101;
     }
-    .orb-2 {
-        bottom: -20%; right: -20%; width: 60vw; height: 60vw;
-        background: var(--orb-2);
-        animation-delay: -5s;
+    .fc-tl { top: 15px; left: 15px; }
+    .fc-tr { top: 15px; right: 15px; }
+    .fc-bl { bottom: 15px; left: 15px; }
+    .fc-br { bottom: 15px; right: 15px; background: var(--accent-purple); }
+
+    /* 2. 巨大的背景数字 */
+    .bg-number {
+        position: fixed;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 30vw;
+        line-height: 0.8;
+        color: rgba(0,0,0,0.03);
+        z-index: -5;
+        pointer-events: none;
+        user-select: none;
     }
-    @keyframes floatOrb {
-        0% { transform: translate(0, 0) scale(1); }
-        100% { transform: translate(40px, 60px) scale(1.1); }
+    .num-01 { top: -5%; right: -5%; }
+    .num-02 { bottom: -5%; left: -2%; color: rgba(142, 68, 173, 0.04); }
+
+    /* 3. 创世纪线稿 */
+    .genesis-sketch {
+        position: fixed;
+        top: 50%; left: 50%;
+        width: 60vw; height: 60vh;
+        transform: translate(-50%, -50%);
+        background: url('https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg') center/contain no-repeat;
+        opacity: 0.12; /* 稍微淡一点，保证文字清晰 */
+        filter: grayscale(100%) contrast(1.2);
+        mix-blend-mode: multiply;
+        z-index: -10;
     }
 
+    /* 4. 侧边装饰信息 */
+    .side-info {
+        position: fixed;
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700; /* 加粗 */
+        font-size: 14px;
+        color: #000;
+        z-index: 90;
+        background: #fff;
+        padding: 5px 10px;
+        border: 1px solid #000;
+    }
+    .info-left {
+        top: 50%; left: -60px;
+        transform: rotate(-90deg);
+    }
+    .info-right {
+        top: 50%; right: -50px;
+        transform: rotate(90deg);
+    }
 
-    /* ========================================= */
-    /* 🌌 梦境场景 (Dream Scenes) */
-    /* ========================================= */
-    .dream-scene {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: -1; pointer-events: none; overflow: hidden;
-        opacity: 0; transition: opacity 1.5s ease-in-out;
+    /* 5. 几何装饰块 */
+    .deco-line {
+        position: fixed; top: 0; left: 20%; width: 2px; height: 100vh;
+        background: rgba(0,0,0,0.1); z-index: -2;
+    }
+    .deco-circle {
+        position: fixed; top: 15%; left: 12%; width: 150px; height: 150px;
+        border: 3px solid var(--accent-purple); border-radius: 50%;
+        opacity: 0.3; z-index: -2;
+    }
+
+    /* =========================================
+       UI 样式 (强调清晰度)
+       ========================================= */
+
+    /* --- 导航栏 --- */
+    .header-container {
+        display: flex; justify-content: center;
+        padding: 60px 0; position: relative; z-index: 20;
+    }
+
+    .nav-pills ul { 
+        display: flex; gap: 20px; list-style: none; 
+        background: #fff; padding: 10px 20px;
+        border: 2px solid var(--ink-black);
+        box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
     }
     
-    body.theme-1 .scene-sky { opacity: 1; }
-    body.theme-2 .scene-ocean { opacity: 1; }
-    body.theme-3 .scene-cosmos { opacity: 1; }
-    body:not(.theme-2):not(.theme-3) .scene-sky { opacity: 1; }
+    .nav-pills li { position: relative; }
 
-    .blur-far { filter: blur(15px); opacity: 0.6; }
-    .blur-mid { filter: blur(5px); opacity: 0.8; }
-    .blur-near { filter: blur(1px); opacity: 0.95; }
-
-    /* ☁️ Scene 1: 晨曦云端 */
-    .cloud-puff {
-        position: absolute; 
-        width: 180px; height: 70px;
-        background: #fff; border-radius: 100px;
-        box-shadow: 60px 15px 0 -15px #fff, 120px 0 0 -10px #fff, 50px -30px 0 -15px #fff;
-        animation: floatCloud 40s infinite linear;
-    }
-    .c-1 { top: 10%; left: -20%; transform: scale(2.5); animation-duration: 50s; opacity: 0.8; }
-    .c-2 { top: 50%; right: -20%; transform: scale(2.0); animation-duration: 60s; animation-direction: reverse; opacity: 0.6; }
-    
-    .paper-plane {
-        position: absolute; top: 60%; left: 10%;
-        width: 0; height: 0;
-        border-left: 20px solid transparent; border-right: 20px solid transparent;
-        border-bottom: 50px solid rgba(255,255,255,0.9);
-        transform: rotate(70deg);
-        animation: flyPlane 18s infinite ease-in-out;
-    }
-    .paper-plane::after {
-        content:''; position: absolute; top: 10px; left: -20px;
-        width: 0; height: 0;
-        border-left: 20px solid transparent; border-right: 20px solid transparent;
-        border-bottom: 50px solid rgba(255,255,255,0.5);
-        transform: rotateY(40deg);
-    }
-
-    /* 🌿 Scene 2: 深海微光 */
-    .light-ray {
-        position: absolute; top: -20%; left: 20%;
-        width: 200px; height: 150%;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-        transform: rotate(25deg);
-        transform-origin: top center;
-        animation: raySway 8s infinite ease-in-out alternate;
-        mix-blend-mode: overlay;
-    }
-    .ray-2 { left: 55%; width: 300px; animation-delay: -2s; opacity: 0.5; }
-
-    .jellyfish {
-        position: absolute; top: 30%; left: 10%;
-        width: 100px; height: 70px;
-        background: rgba(255,255,255,0.25);
-        border-radius: 50% 50% 0 0;
-        border: 2px solid rgba(255,255,255,0.6);
-        box-shadow: 0 0 20px rgba(255,255,255,0.2);
-        animation: swim 12s infinite ease-in-out;
-    }
-    .jellyfish::before {
-        content: ''; position: absolute; bottom: -20px; left: 20%; width: 5px; height: 30px;
-        background: rgba(255,255,255,0.5); box-shadow: 20px 0 0 rgba(255,255,255,0.5), 40px 0 0 rgba(255,255,255,0.5);
-    }
-
-    /* 🪐 Scene 3: 迷幻宇宙 */
-    .planet-ring {
-        position: absolute; top: 15%; left: 5%;
-        width: 350px; height: 350px;
-        border: 3px solid rgba(255,255,255,0.15);
-        border-top: 4px solid var(--dream-pink);
-        border-radius: 50%;
-        animation: spinPlanet 25s infinite linear;
-        box-shadow: inset 0 0 50px rgba(255,255,255,0.05);
+    .nav-pills center {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700; /* 导航文字加粗 */
+        font-size: 1.1rem;
+        text-transform: uppercase; color: var(--ink-black);
+        padding: 5px 10px;
+        transition: 0.2s;
     }
     
-    .shooting-star {
-        position: absolute; top: 20%; left: 60%;
-        width: 200px; height: 4px;
-        background: linear-gradient(to right, rgba(255,255,255,0), #fff);
-        animation: shoot 5s infinite ease-in-out;
-        opacity: 0;
-    }
-
-    /* --- 动画定义 --- */
-    @keyframes floatCloud { from { transform: translateX(-20vw) scale(2.5); } to { transform: translateX(120vw) scale(2.5); } }
-    @keyframes flyPlane { 
-        0% { transform: translate(0,0) rotate(70deg) scale(1); opacity: 0; } 
-        20% { opacity: 1; }
-        100% { transform: translate(80vw, -50vh) rotate(30deg) scale(0.5); opacity: 0; } 
-    }
-    @keyframes raySway { from { transform: rotate(20deg); opacity: 0.4; } to { transform: rotate(30deg); opacity: 0.7; } }
-    @keyframes swim { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
-    @keyframes spinPlanet { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    @keyframes shoot { 
-        0% { transform: translate(0,0) rotate(-35deg); opacity: 1; width: 0; }
-        15% { width: 250px; }
-        30% { transform: translate(-300px, 200px) rotate(-35deg); opacity: 0; width: 0; }
-        100% { opacity: 0; }
-    }
-
-
-    /* ========================================= */
-    /* 🕹️ 交互引导：主题切换器 */
-    /* ========================================= */
-    .switcher-container {
-        position: relative;
-        display: flex; align-items: center;
-        cursor: pointer;
-        z-index: 50;
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        padding: 8px 12px 8px 8px;
-        border-radius: 50px;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
-    }
-    .switcher-container:hover {
-        background: rgba(255, 255, 255, 0.4);
-        border-color: var(--text-accent);
+    .nav-pills a { text-decoration: none; }
+    
+    /* 导航 Hover：背景色块 */
+    .nav-pills li:hover center {
+        background: var(--ink-black);
+        color: var(--accent-acid);
         transform: translateY(-2px);
+        box-shadow: 3px 3px 0 var(--accent-purple);
+    }
+
+    /* --- 标题区域 --- */
+    .hero-title {
+        text-align: center; margin: 50px auto 80px auto; position: relative; z-index: 10;
     }
     
-    .switcher-orb {
-        width: 24px; height: 24px;
-        background: radial-gradient(circle at 30% 30%, #fff, var(--text-accent));
-        border-radius: 50%;
-        box-shadow: var(--switcher-glow);
-        transition: all 0.5s ease;
+    .main-title {
+        font-family: 'Playfair Display', serif; /* 极粗衬线体 */
+        font-weight: 900; /* 最粗字重 */
+        font-size: 6rem;
+        color: var(--ink-black);
+        line-height: 1.1;
+        letter-spacing: -2px;
     }
     
-    .switcher-label {
-        position: static; 
-        margin-left: 10px;
-        background: transparent;
-        padding: 0;
-        box-shadow: none;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--text-main);
-        opacity: 0.7;
-        transform: none;
-        pointer-events: auto;
+    /* 标题下的装饰线 */
+    .title-line {
+        width: 100px; height: 6px; background: var(--accent-purple);
+        margin: 20px auto;
     }
-    .switcher-container:hover .switcher-label { opacity: 1; color: var(--text-accent); }
 
+    .subtitle-text {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #000;
+        background: var(--accent-acid);
+        padding: 5px 15px;
+        display: inline-block;
+        border: 2px solid #000;
+    }
 
-        /* --- 导航栏 --- */
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 30px 50px;
-            max-width: 1000px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 20;
-        }
+    /* --- 内容区域 --- */
+    .markdown-section {
+        max-width: 850px;
+        margin: 0 auto 100px auto !important;
+        padding: 80px !important;
+        background: var(--glass-bg);
+        border: 3px solid var(--ink-black); /* 边框加粗 */
+        box-shadow: 15px 15px 0 rgba(0,0,0,0.15); /* 硬阴影增强立体感 */
+        position: relative; z-index: 5;
+    }
+    
+    /* 顶部标签 */
+    .markdown-section::before {
+        content: "/// READ_MODE: ON";
+        position: absolute; top: -15px; left: 20px;
+        background: var(--ink-black); color: #fff;
+        font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px;
+        padding: 5px 15px;
+    }
 
-        .nav-pills ul {
-            display: flex; list-style: none; margin: 0; padding: 0; gap: 30px;
-        }
-        .nav-pills li {
-            position: relative;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .nav-pills li:hover { transform: translateY(-3px) scale(1.05); }
-        .nav-pills a { text-decoration: none; }
-        .nav-pills center {
-            font-family: 'Cormorant Garamond', serif; 
-            font-weight: 600; 
-            font-size: 1.2rem;
-            color: var(--text-main);
-            letter-spacing: 1px;
-            font-style: italic;
-            transition: color 0.3s;
-        }
-        .nav-pills span { display: none; }
-        
-        .nav-pills li::after {
-            content: ''; position: absolute; width: 100%; height: 3px;
-            bottom: -5px; left: 0; background-color: var(--text-accent);
-            opacity: 0; transform: scaleX(0); transition: all 0.3s ease;
-        }
-        .nav-pills li:hover::after { opacity: 1; transform: scaleX(1); }
-        .nav-pills li:hover center { color: var(--text-accent); }
+    /* Typography (重点优化部分) */
+    h1 { 
+        font-family: 'Playfair Display', serif; 
+        font-weight: 900; 
+        font-size: 3.5em; 
+        text-align: center; 
+        color: var(--ink-black);
+        margin-bottom: 0.8em;
+        border-bottom: 4px solid var(--ink-black); /* 粗线条 */
+        padding-bottom: 10px;
+    }
+    
+    h2 { 
+        font-family: 'Space Grotesk', sans-serif; 
+        font-weight: 700;
+        font-size: 2.2em; 
+        color: var(--ink-black);
+        margin-top: 1.5em;
+        border-left: 8px solid var(--accent-purple);
+        padding-left: 15px;
+        background: linear-gradient(90deg, rgba(142, 68, 173, 0.1), transparent);
+    } 
+    
+    h3 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 1.5em;
+        color: #000;
+        border-bottom: 2px dashed #ccc;
+        padding-bottom: 5px;
+    }
 
-        /* --- 标题区域 (新：撕便利贴效果) --- */
-        .hero-title {
-            text-align: center; 
-            margin: 60px auto 50px auto; 
-            position: relative; 
-            z-index: 10;
-            height: 120px; /* 固定高度，防止布局跳动 */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        /* 标题容器，用于层叠 */
-        .title-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer; /* 提示可点击 */
-            user-select: none; /* 防止文字被选中 */
-        }
+    p, li {
+        font-family: 'Space Grotesk', sans-serif; 
+        font-weight: 400; /* 正常字重，Space Grotesk 即使 400 也很清晰 */
+        line-height: 1.8; /* 增加行高，更易读 */
+        font-size: 1.2rem; /* 加大正文字号 */
+        color: #111; /* 纯黑偏灰，不刺眼但清晰 */
+        margin-bottom: 1em;
+    }
+    
+    strong {
+        font-weight: 700;
+        color: var(--accent-purple);
+        background: rgba(142, 68, 173, 0.1);
+        padding: 0 2px;
+    }
+    
+    a {
+        color: var(--ink-black); 
+        text-decoration: none;
+        font-weight: 700;
+        border-bottom: 3px solid var(--accent-acid); /* 粗下划线 */
+        transition: 0.2s;
+    }
+    a:hover { background: var(--accent-acid); color: #000; }
 
-        .main-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 5rem;
-            font-weight: 600;
-            color: var(--text-main);
-            letter-spacing: -3px;
-            line-height: 1;
-            text-shadow: 3px 3px 0px rgba(255,255,255,0.5);
-            /* 呼吸动画只给底层，顶层有自己的交互动画 */
-            position: absolute;
-            top: 0;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
+    /* 引用块 */
+    blockquote {
+        border-left: 5px solid var(--ink-black);
+        background: #f4f4f4;
+        margin: 2em 0; padding: 20px 30px;
+        font-family: 'Playfair Display', serif; /* 引用用衬线体，更有格调 */
+        font-weight: 700;
+        font-style: italic;
+        font-size: 1.4rem; 
+        color: #333;
+    }
 
-        /* 底层标题：永远在下面 */
-        .title-layer-bottom {
-            z-index: 1;
-            animation: breathe 6s infinite ease-in-out;
-        }
+    /* 按钮 */
+    .project-toggle {
+        background: #fff;
+        border: 3px solid var(--ink-black);
+        color: var(--ink-black);
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        padding: 15px 35px;
+        cursor: pointer;
+        font-size: 1rem;
+        box-shadow: 5px 5px 0 var(--ink-black);
+        transition: 0.2s;
+        margin-top: 10px;
+    }
+    .project-toggle:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 8px 8px 0 var(--accent-purple);
+    }
 
-        /* 顶层标题：可以被撕掉 */
-        .title-layer-top {
-            z-index: 2;
-            transform-origin: top left; /* 从左上角开始撕 */
-        }
+    /* 图片 */
+    .markdown-section img {
+        border: 3px solid var(--ink-black);
+        display: block; margin: 50px auto; max-width: 100%;
+        box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+    }
 
-        /* 撕纸动画类 */
-        .peel-step-1 { transform: rotate(2deg) translateY(2px); opacity: 0.95; }
-        .peel-step-2 { transform: rotate(4deg) translateY(5px); opacity: 0.9; }
-        .peel-step-3 { transform: rotate(6deg) translateY(8px); opacity: 0.85; }
-        .peel-step-4 { transform: rotate(8deg) translateY(12px); opacity: 0.8; }
-        
-        /* 最终撕掉飞走的动画 */
-        .peel-off {
-            animation: flyOff 0.8s forwards ease-in;
-            pointer-events: none; /* 飞走过程中不可点 */
-        }
-
-        @keyframes flyOff {
-            0% { transform: rotate(8deg) translateY(12px); opacity: 0.8; }
-            100% { transform: rotate(45deg) translateY(150px) translateX(50px); opacity: 0; }
-        }
-
-        .subtitle-text {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: var(--text-accent);
-            margin-top: 20px;
-            opacity: 0.9;
-            font-weight: 500;
-            z-index: 10;
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); filter: blur(0); }
-            50% { transform: scale(1.02); filter: blur(0.5px); }
-        }
-
-        /* --- 内容区域 --- */
-        .markdown-section {
-            max-width: 850px;
-            margin: 0 auto 80px auto !important;
-            padding: 60px !important;
-            background: var(--glass-bg);
-            backdrop-filter: var(--blur-amount);
-            -webkit-backdrop-filter: var(--blur-amount);
-            border: var(--glass-border);
-            border-radius: 30px;
-            box-shadow: var(--glass-shadow);
-            position: relative; 
-            z-index: 5;
-            transition: all 0.5s ease;
-        }
-        .markdown-section:hover {
-             box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-             transform: translateY(-5px);
-        }
-
-        /* --- 💤 趴在内容框上的瞌睡 Doudou --- */
-        .doudou-perched {
-            position: absolute;
-            top: -45px; right: 80px;
-            width: 80px; height: 50px;
-            background: var(--doudou-cream);
-            border-radius: 50px 50px 10px 10px; 
-            box-shadow: 0 -5px 15px rgba(255, 255, 255, 0.6);
-            z-index: 20;
-            transform-origin: bottom center;
-            animation: doudouSleepBreathe 4s infinite ease-in-out;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .doudou-perched .eye {
-            position: absolute; width: 10px; height: 6px; background: transparent;
-            border-bottom: 2px solid var(--text-accent); border-radius: 0; top: 18px;
-            transition: all 0.2s;
-        }
-        .doudou-perched .eye.left { left: 22px; }
-        .doudou-perched .eye.right { right: 22px; }
-        
-        .snot-bubble {
-            position: absolute; top: 10px; right: 15px; width: 0px; height: 0px;
-            background: rgba(255, 255, 255, 0.7); border: 1px solid #fff;
-            border-radius: 50%; z-index: 25;
-            animation: bubbleGrow 4s infinite ease-in-out; transform-origin: bottom left;
-            transition: opacity 0.2s;
-        }
-
-        .doudou-perched.awake { animation: doudouWakeUp 0.3s forwards; }
-        .doudou-perched.awake .snot-bubble { opacity: 0; transform: scale(0); animation: none; }
-        .doudou-perched.awake .eye { height: 8px; border-radius: 50%; transform: scaleY(1); border: none; background-color: var(--text-main); top: 15px; }
-
-        @keyframes doudouSleepBreathe {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(1.08); }
-        }
-        @keyframes bubbleGrow {
-            0%, 100% { width: 5px; height: 5px; transform: translate(0, 0); opacity: 0; }
-            50% { width: 28px; height: 28px; transform: translate(12px, -12px); opacity: 0.9; }
-        }
-        @keyframes doudouWakeUp {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1) translateY(-10px); }
-            100% { transform: scale(1) translateY(0); }
-        }
-
-        /* Typography */
-        h1, h2, h3 {
-            font-family: 'Cormorant Garamond', serif;
-            color: var(--text-main);
-            font-weight: 600;
-            border-bottom: none;
-            margin-top: 1.5em;
-        }
-        h1 { 
-            font-size: 3em; text-align: center; font-style: italic; margin-bottom: 0.5em;
-            text-shadow: 2px 2px 0px rgba(255,255,255,0.6);
-        }
-        h2 { font-size: 2em; position: relative; padding-left: 20px; }
-        h2::before {
-            content: '✦'; position: absolute; left: 0; top: 5px;
-            font-size: 0.6em; color: var(--text-accent);
-        }
-        p, li {
-            font-family: 'Montserrat', sans-serif; line-height: 2; font-weight: 400; color: var(--text-main);
-            font-size: 1.05rem;
-        }
-        a {
-            color: var(--text-accent); text-decoration: none;
-            border-bottom: 2px solid rgba(0,0,0,0.1); transition: all 0.3s;
-        }
-        a:hover {
-            background: var(--text-accent); color: #fff; border-bottom-color: transparent;
-            padding: 0 5px; border-radius: 4px;
-        }
-        .project-toggle {
-            background: #fff;
-            border: 1px solid var(--text-accent);
-            color: var(--text-accent);
-            font-family: 'Montserrat', sans-serif;
-            padding: 10px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-        .project-toggle:hover {
-            background: var(--text-accent);
-            color: #fff;
-            box-shadow: 0 5px 15px rgba(123, 108, 150, 0.3);
-        }
-        .markdown-section img {
-            border: 8px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: block; margin: 40px auto; max-width: 100%; border-radius: 12px;
-        }
-        .markdown-section img:hover {
-            transform: scale(1.03);
-        }
-
-        /* --- 🌟 全屏 Doudou 加载遮罩 --- */
-        #doudou-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-base); z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-        .doudou-wrapper { text-align: center; }
-        .big-doudou {
-            width: 140px; height: 110px;
-            background: linear-gradient(135deg, #fff 0%, var(--dream-pink) 100%);
-            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            margin: 0 auto 40px auto; position: relative;
-            animation: doudouFloat 3s infinite ease-in-out;
-        }
-        .loading-face { position: relative; top: 40%; width: 100%; }
-        .loading-eye {
-            position: absolute; width: 15px; height: 8px; background: transparent;
-            border-bottom: 3px solid var(--text-accent); border-radius: 50%;
-        }
-        .loading-eye.l { left: 35px; } .loading-eye.r { right: 35px; }
-        .loading-bubble {
-            position: absolute; top: 10px; right: 25px; width: 20px; height: 20px;
-            background: rgba(255,255,255,0.8); border: 1px solid #fff; border-radius: 50%;
-            animation: bubbleGrow 2s infinite ease-in-out; transform-origin: bottom left;
-        }
-
-        .loading-text {
-            font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--text-accent);
-            letter-spacing: 3px; font-style: italic; opacity: 0;
-            animation: textFadeIn 2s ease-in-out infinite alternate;
-        }
-        @keyframes doudouFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        @keyframes textFadeIn { 0% { opacity: 0.3; } 100% { opacity: 1; } }
-        #doudou-overlay.hide-overlay { opacity: 0; visibility: hidden; }
-
-        /* --- 🧸 右下角拿花的 Doudou --- */
-        .doudou-float-container {
-            position: fixed; bottom: 40px; right: 40px; z-index: 100;
-        }
-        .doudou-holding-flower {
-            width: 80px; height: 70px; background: var(--doudou-cream);
-            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative; cursor: pointer;
-            animation: floatBob 6s infinite ease-in-out; 
-            transition: transform 0.3s;
-        }
-        .doudou-holding-flower:hover { transform: scale(1.15) rotate(-10deg); }
-        
-        .d-face { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; }
-        .d-eye { position: absolute; width: 6px; height: 6px; background: var(--text-main); border-radius: 50%; top: 20px; transition: all 0.2s;}
-        .d-eye.l { left: 22px; } .d-eye.r { right: 22px; }
-        .d-blush { position: absolute; width: 10px; height: 5px; background: var(--dream-pink); border-radius: 50%; top: 28px; opacity: 0.6; transition: opacity 0.3s; }
-        .d-blush.l { left: 16px; } .d-blush.r { right: 16px; }
-        
-        .flower-bouquet {
-            position: absolute; right: 5px; bottom: 25px; width: 20px; height: 30px;
-            transform-origin: bottom center; animation: flowerSway 3s infinite ease-in-out;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .f-stem { width: 2px; height: 20px; background: #6ab04c; margin: 0 auto; }
-        .f-petals { 
-            width: 8px; height: 8px; background: var(--dream-pink); border-radius: 50%; 
-            margin: -4px auto 0; box-shadow: 0 -6px 0 var(--dream-pink), 6px 0 0 var(--dream-pink), -6px 0 0 var(--dream-pink), 0 6px 0 var(--dream-pink);
-        }
-        
-        .doudou-holding-flower.happy { animation: jumpHappy 0.5s ease; }
-        .doudou-holding-flower.happy .d-blush { opacity: 1; background: #ff6b6b; }
-        .doudou-holding-flower.happy .flower-bouquet { transform: rotate(45deg) translateY(-5px); }
-        .doudou-holding-flower.happy .d-eye { height: 2px; top: 22px; width: 8px; border-radius: 0; }
-
-        @keyframes floatBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        @keyframes flowerSway { 0%, 100% { transform: rotate(10deg); } 50% { transform: rotate(25deg); } }
-        @keyframes jumpHappy { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.2); } 100% { transform: translateY(0) scale(1); } }
+    /* 移动端适配优化 */
+    @media screen and (max-width: 768px) {
+        .main-title { font-size: 3.5rem; }
+        .frame-border { display: none; } /* 手机上隐藏边框，增加空间 */
+        .markdown-section { padding: 30px !important; }
+        .bg-number { font-size: 50vw; opacity: 0.05; }
+    }
 
     </style>
 </head>
 <body>
-    <!-- 加载遮罩 -->
-    <div id="doudou-overlay">
-        <div class="doudou-wrapper">
-            <div class="big-doudou">
-                <div class="loading-face">
-                    <div class="loading-eye l"></div>
-                    <div class="loading-eye r"></div>
-                    <div class="loading-bubble"></div>
-                </div>
-            </div>
-            <div class="loading-text">dreaming...</div>
-        </div>
-    </div>
 
-    <!-- 背景层 -->
-    <div class="film-grain"></div>
-    <div class="gradient-orb orb-1"></div>
-    <div class="gradient-orb orb-2"></div>
+    <!-- 1. 页面边框框架 (加粗版) -->
+    <div class="frame-border"></div>
+    <div class="frame-corner fc-tl"></div>
+    <div class="frame-corner fc-tr"></div>
+    <div class="frame-corner fc-bl"></div>
+    <div class="frame-corner fc-br"></div>
 
-    <!-- ✨ 梦境场景层 -->
+    <!-- 2. 背景极大数字 -->
+    <div class="bg-number num-01">01</div>
+    <div class="bg-number num-02">89</div>
     
-    <!-- Scene 1: 晨曦云端 -->
-    <div class="dream-scene scene-sky">
-        <div class="cloud-puff c-1 blur-far"></div>
-        <div class="cloud-puff c-2 blur-far"></div>
-        <div class="floating-moon blur-mid" style="position:absolute; top:15%; right:20%; width:150px; height:150px; background:radial-gradient(circle at 30% 30%, #fff, var(--dream-pink)); border-radius:50%; opacity:0.8;"></div>
-        <div class="paper-plane blur-near"></div>
-    </div>
+    <!-- 3. 创世纪线稿 -->
+    <div class="genesis-sketch"></div>
+    <div class="deco-line"></div>
+    <div class="deco-circle"></div>
 
-    <!-- Scene 2: 深海微光 -->
-    <div class="dream-scene scene-ocean">
-        <div class="light-ray blur-far"></div>
-        <div class="light-ray ray-2 blur-far"></div>
-        <div class="jellyfish blur-mid"></div>
-    </div>
+    <!-- 4. 侧边信息 -->
+    <div class="side-info info-left"> EVERYTHING: WELL</div>
+    <div class="side-info info-right">STATUS: ONLINE</div>
 
-    <!-- Scene 3: 迷幻宇宙 -->
-    <div class="dream-scene scene-cosmos">
-        <div class="planet-ring blur-mid"></div>
-        <div class="shooting-star blur-near"></div>
-    </div>
-
-
-    <!-- 导航栏 -->
     <header class="header-container">
-        <div class="switcher-container" id="theme-switcher">
-            <div class="switcher-orb"></div>
-            <div class="switcher-label">Switch Dream</div>
-        </div>
-
         <nav class="nav-pills">
             <ul>
-                <a href="#/README.md#pub"><li><center>About me</center></li></a>
-                <a href="#/pub.md#pub"><li><center>~ My academics</center></li></a>
-                <a href="#/proj.md#project"><li><center>~ Designs</center></li></a>
-                <a href="#/works.md#"><li><center>~ Artworks</center></li></a>
+                <a href="#/README.md#pub"><li><center>About</center></li></a>
+                <a href="#/pub.md#pub"><li><center>Academics</center></li></a>
+                <a href="#/proj.md#project"><li><center>Designs</center></li></a>
+                <a href="#/works.md#"><li><center>Artworks</center></li></a>
             </ul>
         </nav>
     </header>
 
-    <!-- 标题 (新：撕纸交互) -->
     <div class="hero-title">
-        <div class="title-wrapper" id="title-interaction">
-            <!-- 底层：永远存在 -->
-            <div class="main-title title-layer-bottom">To feel; To dream; To create</div>
-            <!-- 顶层：可以被撕掉 -->
-            <div class="main-title title-layer-top" id="peel-text">To feel; To dream; To create</div>
+        <div class="title-wrapper">
+            <div class="main-title">To Feel<br>To Dream<br>To Create</div>
         </div>
-        <div class="subtitle-text">///^_^///</div>
+        <div class="title-line"></div>
+        <div class="subtitle-text">/// ///</div>
     </div>
 
-    <!-- 主内容区 -->
     <div id="app"></div>
-
-    <!-- 右下角 Doudou -->
-    <div class="doudou-float-container">
-        <div class="doudou-holding-flower" id="flower-doudou">
-            <div class="d-face">
-                <div class="d-eye l"></div><div class="d-eye r"></div>
-                <div class="d-blush l"></div><div class="d-blush r"></div>
-            </div>
-            <div class="flower-bouquet">
-                <div class="f-petals"></div>
-                <div class="f-stem"></div>
-            </div>
-        </div>
-    </div>
 
     <script>
         window.$docsify = {
-            name: "Daydream",
-            themeColor: "#7b6c96",
+            name: "Shengqi Dang",
+            themeColor: "#000000",
             hideSidebar: true,
             executeScript: true,
+            auto2top: true,
             plugins: [
                 function(hook, vm) {
                     hook.doneEach(function() {
-                        // 插入趴着的 Doudou
-                        const doudouHTML = `<div class="doudou-perched" id="sleepy-doudou" title="Zzz..."><div class="snot-bubble"></div><div class="eye left"></div><div class="eye right"></div></div>`;
-                        const contentBox = document.querySelector('.markdown-section');
-                        if (contentBox) {
-                            const tempDiv = document.createElement('div');
-                            tempDiv.innerHTML = doudouHTML;
-                            contentBox.insertBefore(tempDiv.firstElementChild, contentBox.firstChild);
-                            
-                            // 绑定点击事件
-                            const sleepyDoudou = document.getElementById('sleepy-doudou');
-                            if(sleepyDoudou) {
-                                sleepyDoudou.addEventListener('click', function() {
-                                    if(!this.classList.contains('awake')) {
-                                        this.classList.add('awake');
-                                        setTimeout(() => {
-                                            this.classList.remove('awake');
-                                        }, 2000);
-                                    }
-                                });
-                            }
-                        }
+                        // 可以在这里添加额外的 JS 逻辑
                     });
                 }
             ]
@@ -718,71 +382,5 @@
 
     <script src="init_proj.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-    
-    <script>
-        const themeSwitcher = document.getElementById('theme-switcher');
-        const body = document.body;
-        let currentTheme = 1; 
-
-        body.classList.add('theme-1');
-
-        themeSwitcher.addEventListener('click', () => {
-            currentTheme++;
-            if (currentTheme > 3) currentTheme = 1;
-            body.classList.remove('theme-1', 'theme-2', 'theme-3');
-            body.classList.add(`theme-${currentTheme}`);
-            
-            const label = themeSwitcher.querySelector('.switcher-label');
-            if(currentTheme === 1) label.textContent = "Sky Dream";
-            if(currentTheme === 2) label.textContent = "Ocean Dream";
-            if(currentTheme === 3) label.textContent = "Cosmos Dream";
-        });
-
-        window.addEventListener('load', function() {
-            const overlay = document.getElementById('doudou-overlay');
-            if (overlay) {
-                setTimeout(() => {
-                    overlay.classList.add('hide-overlay');
-                    setTimeout(() => overlay.remove(), 600); 
-                }, 600); 
-            }
-        });
-
-        // 右下角 Doudou 交互
-        const flowerDoudou = document.getElementById('flower-doudou');
-        flowerDoudou.addEventListener('click', function() {
-            this.classList.add('happy');
-            setTimeout(() => {
-                this.classList.remove('happy');
-            }, 600);
-        });
-
-        // 🌟 新增：标题撕纸交互逻辑
-        const titleWrapper = document.getElementById('title-interaction');
-        const peelText = document.getElementById('peel-text');
-        let clickCount = 0;
-        const maxClicks = 5; // 需要点击5次才能撕掉
-
-        titleWrapper.addEventListener('click', function() {
-            clickCount++;
-
-            // 移除之前的步骤类
-            peelText.classList.remove('peel-step-1', 'peel-step-2', 'peel-step-3', 'peel-step-4');
-
-            if (clickCount < maxClicks) {
-                // 还没撕掉，增加倾斜度
-                peelText.classList.add(`peel-step-${clickCount}`);
-            } else {
-                // 达到次数，彻底撕掉
-                peelText.classList.add('peel-off');
-                
-                // 动画结束后重置
-                setTimeout(() => {
-                    peelText.classList.remove('peel-off', 'peel-step-1', 'peel-step-2', 'peel-step-3', 'peel-step-4');
-                    clickCount = 0; // 重置计数器
-                }, 800); // 这里的800ms要对应CSS中flyOff的动画时间
-            }
-        });
-    </script>
 </body>
 </html>
