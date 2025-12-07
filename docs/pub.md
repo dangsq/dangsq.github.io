@@ -1,8 +1,5 @@
 <span id="pub"></span>
-<font size="+2">Service</font>
-<br /><br />
-Reviewer: AAAI2026, CVPR2026
-<br/><br /><br />
+
 <font size="+2">Publications</font>
 <br /><br /><br />
 <font size="+1">Conference</font>

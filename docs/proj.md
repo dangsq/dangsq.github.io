@@ -1,5 +1,21 @@
 <style>
-
+  .project-toggle {
+    background: #fff;
+    border: 3px solid var(--ink-black);
+    color: var(--ink-black);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    padding: 15px 35px;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 5px 5px 0 var(--ink-black);
+    transition: 0.2s;
+    margin-top: 10px;
+}
+.project-toggle:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 var(--accent-purple);
+}
   .project-details {
             height: 0;
             overflow: hidden;

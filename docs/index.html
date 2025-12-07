@@ -5,10 +5,7 @@
     <title>Shengqi Dang - BOLD & GENESIS</title>
     <link rel="icon" href="./1F34E.svg">
     
-    <!-- 字体升级：更粗、更清晰、更有力量 -->
-    <!-- Playfair Display: 优雅且厚重的衬线体 (用于标题) -->
-    <!-- Space Grotesk: 现代科技感无衬线体 (用于正文) -->
-    <!-- JetBrains Mono: 代码风格 (用于装饰) -->
+    <!-- 字体引入 -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@700&family=Rock+Salt&display=swap" rel="stylesheet">
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -16,152 +13,198 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     
     <style>
-    /* --- 核心变量：高对比度白昼模式 --- */
+    /* =========================================
+       THEME VARIABLES (主题变量系统)
+       ========================================= */
+    
+    /* --- 默认：学术模式 (Academic - Light) --- */
     :root {
         --bg-color: #ffffff;
-        --ink-black: #000000; /* 纯黑，极致对比 */
-        --text-gray: #222222; /* 深灰，用于正文 */
-        --accent-purple: #8e44ad; 
-        --accent-acid: #b8e994;
-        --line-color: rgba(0, 0, 0, 0.08); /* 网格淡一点，不抢戏 */
+        --ink-black: #000000;
+        --text-main: #222222;
+        --accent-color: #8e44ad; /* 学术紫 */
+        --accent-secondary: #f1c40f; 
+        --grid-color: rgba(0, 0, 0, 0.08);
         --glass-bg: rgba(255, 255, 255, 0.96);
+        --blend-mode: multiply; /* 图片混合模式 */
+        --img-opacity: 0.12;
+        --font-title: 'Playfair Display', serif; /* 优雅衬线 */
     }
 
-    /* --- 全局基础 --- */
+    /* --- 个人模式 (Personal - Dark) --- */
+    [data-theme="personal"] {
+        --bg-color: #0a0a0a;
+        --ink-black: #ffffff; /* 反转：边框变白 */
+        --text-main: #e0e0e0;
+        --accent-color: #b8e994; /* 赛博绿 */
+        --accent-secondary: #ff6b81;
+        --grid-color: rgba(255, 255, 255, 0.1);
+        --glass-bg: rgba(20, 20, 20, 0.96);
+        --blend-mode: screen; /* 变亮混合模式 */
+        --img-opacity: 0.2;
+        --font-title: 'Space Grotesk', sans-serif; /* 现代无衬线 */
+    }
+
+    /* =========================================
+       GLOBAL STYLES
+       ========================================= */
     body {
         background-color: var(--bg-color);
         min-height: 100vh;
         margin: 0; padding: 0;
-        /* 正文改用 Space Grotesk，字重 400，非常清晰 */
         font-family: 'Space Grotesk', sans-serif;
-        color: var(--text-gray);
-        font-size: 18px; /* 基础字号加大 */
+        color: var(--text-main);
+        font-size: 18px;
         overflow-x: hidden;
+        transition: background-color 0.5s ease, color 0.5s ease; /* 平滑过渡 */
         
-        /* 背景：极淡的方格纸纹理 */
+        /* 背景网格 */
         background-image: 
-            linear-gradient(var(--line-color) 1px, transparent 1px),
-            linear-gradient(90deg, var(--line-color) 1px, transparent 1px);
+            linear-gradient(var(--grid-color) 1px, transparent 1px),
+            linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
         background-size: 40px 40px;
     }
 
     /* =========================================
-       背景装饰 (保持酷感，但退后一步)
+       DECORATIONS
        ========================================= */
 
-    /* 1. 页面边框框架 */
+    /* 边框 */
     .frame-border {
-        position: fixed;
-        top: 15px; left: 15px; right: 15px; bottom: 15px;
-        border: 2px solid var(--ink-black); /* 边框加粗 */
-        pointer-events: none;
-        z-index: 100;
+        position: fixed; top: 15px; left: 15px; right: 15px; bottom: 15px;
+        border: 2px solid var(--ink-black);
+        pointer-events: none; z-index: 100;
+        transition: border-color 0.5s ease;
     }
-    /* 四角装饰块 */
     .frame-corner {
         position: fixed; width: 20px; height: 20px; background: var(--ink-black); z-index: 101;
+        transition: background-color 0.5s ease;
     }
     .fc-tl { top: 15px; left: 15px; }
     .fc-tr { top: 15px; right: 15px; }
     .fc-bl { bottom: 15px; left: 15px; }
-    .fc-br { bottom: 15px; right: 15px; background: var(--accent-purple); }
+    .fc-br { bottom: 15px; right: 15px; background: var(--accent-color); }
 
-    /* 2. 巨大的背景数字 */
+    /* 背景大数字 */
     .bg-number {
         position: fixed;
         font-family: 'Space Grotesk', sans-serif;
         font-weight: 700;
         font-size: 30vw;
         line-height: 0.8;
-        color: rgba(0,0,0,0.03);
+        color: var(--ink-black);
+        opacity: 0.03;
         z-index: -5;
         pointer-events: none;
         user-select: none;
+        transition: color 0.5s ease;
     }
     .num-01 { top: -5%; right: -5%; }
-    .num-02 { bottom: -5%; left: -2%; color: rgba(142, 68, 173, 0.04); }
+    .num-02 { bottom: -5%; left: -2%; }
 
-    /* 3. 创世纪线稿 */
+    /* 创世纪线稿 */
     .genesis-sketch {
         position: fixed;
         top: 50%; left: 50%;
         width: 60vw; height: 60vh;
         transform: translate(-50%, -50%);
         background: url('https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg') center/contain no-repeat;
-        opacity: 0.12; /* 稍微淡一点，保证文字清晰 */
+        opacity: var(--img-opacity);
         filter: grayscale(100%) contrast(1.2);
-        mix-blend-mode: multiply;
+        mix-blend-mode: var(--blend-mode); /* 关键：混合模式切换 */
         z-index: -10;
+        transition: opacity 0.5s ease, mix-blend-mode 0.5s ease;
     }
 
-    /* 4. 侧边装饰信息 */
+    /* 侧边信息 */
     .side-info {
         position: fixed;
         font-family: 'JetBrains Mono', monospace;
-        font-weight: 700; /* 加粗 */
+        font-weight: 700;
         font-size: 14px;
-        color: #000;
+        color: var(--ink-black);
         z-index: 90;
-        background: #fff;
+        background: var(--bg-color);
         padding: 5px 10px;
-        border: 1px solid #000;
+        border: 1px solid var(--ink-black);
+        transition: all 0.5s ease;
     }
-    .info-left {
-        top: 50%; left: -60px;
-        transform: rotate(-90deg);
-    }
-    .info-right {
-        top: 50%; right: -50px;
-        transform: rotate(90deg);
-    }
-
-    /* 5. 几何装饰块 */
-    .deco-line {
-        position: fixed; top: 0; left: 20%; width: 2px; height: 100vh;
-        background: rgba(0,0,0,0.1); z-index: -2;
-    }
-    .deco-circle {
-        position: fixed; top: 15%; left: 12%; width: 150px; height: 150px;
-        border: 3px solid var(--accent-purple); border-radius: 50%;
-        opacity: 0.3; z-index: -2;
-    }
+    .info-left { top: 50%; left: -60px; transform: rotate(-90deg); }
+    .info-right { top: 50%; right: -50px; transform: rotate(90deg); }
 
     /* =========================================
-       UI 样式 (强调清晰度)
+       UI COMPONENTS
        ========================================= */
+
+    /* --- 模式切换按钮 (右上角) --- */
+    .mode-switcher {
+        position: fixed;
+        top: 30px; right: 50px; /* 放在边框内 */
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .switch-btn {
+        background: var(--bg-color);
+        color: var(--ink-black);
+        border: 2px solid var(--ink-black);
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 700;
+        font-size: 14px;
+        padding: 8px 16px;
+        cursor: pointer;
+        box-shadow: 4px 4px 0 var(--accent-color);
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+    }
+
+    .switch-btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--accent-color);
+    }
+    
+    .switch-btn:active {
+        transform: translate(1px, 1px);
+        box-shadow: 2px 2px 0 var(--accent-color);
+    }
 
     /* --- 导航栏 --- */
     .header-container {
         display: flex; justify-content: center;
-        padding: 60px 0; position: relative; z-index: 20;
+        top: 60px; right: 30px; /* 放在边框内 */
+        /* padding: 60px 0; */
+         position: fixed; z-index: 199;
     }
 
     .nav-pills ul { 
         display: flex; gap: 20px; list-style: none; 
-        background: #fff; padding: 10px 20px;
+        background: var(--bg-color); padding: 10px 20px;
         border: 2px solid var(--ink-black);
         box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+        transition: all 0.5s ease;
     }
     
     .nav-pills li { position: relative; }
 
     .nav-pills center {
         font-family: 'Space Grotesk', sans-serif;
-        font-weight: 700; /* 导航文字加粗 */
+        font-weight: 700;
         font-size: 1.1rem;
-        text-transform: uppercase; color: var(--ink-black);
+        text-transform: uppercase; 
+        color: var(--ink-black);
         padding: 5px 10px;
         transition: 0.2s;
     }
     
     .nav-pills a { text-decoration: none; }
     
-    /* 导航 Hover：背景色块 */
     .nav-pills li:hover center {
         background: var(--ink-black);
-        color: var(--accent-acid);
+        color: var(--accent-color);
         transform: translateY(-2px);
-        box-shadow: 3px 3px 0 var(--accent-purple);
+        box-shadow: 3px 3px 0 var(--accent-secondary);
     }
 
     /* --- 标题区域 --- */
@@ -170,29 +213,34 @@
     }
     
     .main-title {
-        font-family: 'Playfair Display', serif; /* 极粗衬线体 */
-        font-weight: 900; /* 最粗字重 */
+        font-family: var(--font-title); /* 字体随模式变 */
+        font-weight: 900;
         font-size: 6rem;
+        padding: 60px;
+        top:120px;position: relative    ;
         color: var(--ink-black);
         line-height: 1.1;
         letter-spacing: -2px;
+        transition: color 0.5s ease;
     }
     
-    /* 标题下的装饰线 */
-    .title-line {
-        width: 100px; height: 6px; background: var(--accent-purple);
+    /* .title-line {
+        width: 100px; height: 6px; background: var(--accent-color);
         margin: 20px auto;
-    }
+        transition: background-color 0.5s ease;
+    } */
 
     .subtitle-text {
+        display: none;
         font-family: 'JetBrains Mono', monospace;
         font-weight: 700;
         font-size: 1rem;
-        color: #000;
-        background: var(--accent-acid);
+        color: #000; /* 始终黑字 */
+        background: var(--accent-color);
         padding: 5px 15px;
-        display: inline-block;
+        /* display: inline-block; */
         border: 2px solid #000;
+        transition: background-color 0.5s ease;
     }
 
     /* --- 内容区域 --- */
@@ -201,183 +249,229 @@
         margin: 0 auto 100px auto !important;
         padding: 80px !important;
         background: var(--glass-bg);
-        border: 3px solid var(--ink-black); /* 边框加粗 */
-        box-shadow: 15px 15px 0 rgba(0,0,0,0.15); /* 硬阴影增强立体感 */
+        border: 3px solid var(--ink-black);
+        box-shadow: 15px 15px 0 rgba(0,0,0,0.15);
         position: relative; z-index: 5;
+
+        transition: all 0.5s ease;
     }
     
-    /* 顶部标签 */
     .markdown-section::before {
-        content: "/// READ_MODE: ON";
+        content: attr(data-mode-label); /* 动态标签 */
         position: absolute; top: -15px; left: 20px;
-        background: var(--ink-black); color: #fff;
+        background: var(--ink-black); color: var(--bg-color);
         font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px;
         padding: 5px 15px;
+        transition: all 0.5s ease;
     }
 
-    /* Typography (重点优化部分) */
-    h1 { 
-        font-family: 'Playfair Display', serif; 
-        font-weight: 900; 
-        font-size: 3.5em; 
-        text-align: center; 
-        color: var(--ink-black);
-        margin-bottom: 0.8em;
-        border-bottom: 4px solid var(--ink-black); /* 粗线条 */
-        padding-bottom: 10px;
-    }
-    
-    h2 { 
-        font-family: 'Space Grotesk', sans-serif; 
-        font-weight: 700;
-        font-size: 2.2em; 
-        color: var(--ink-black);
-        margin-top: 1.5em;
-        border-left: 8px solid var(--accent-purple);
-        padding-left: 15px;
-        background: linear-gradient(90deg, rgba(142, 68, 173, 0.1), transparent);
-    } 
-    
-    h3 {
-        font-family: 'Space Grotesk', sans-serif;
-        font-weight: 700;
-        font-size: 1.5em;
-        color: #000;
-        border-bottom: 2px dashed #ccc;
-        padding-bottom: 5px;
-    }
-
-    p, li {
-        font-family: 'Space Grotesk', sans-serif; 
-        font-weight: 400; /* 正常字重，Space Grotesk 即使 400 也很清晰 */
-        line-height: 1.8; /* 增加行高，更易读 */
-        font-size: 1.2rem; /* 加大正文字号 */
-        color: #111; /* 纯黑偏灰，不刺眼但清晰 */
-        margin-bottom: 1em;
-    }
+    /* Typography Adjustments */
+    h1, h2, h3, h4, h5, h6 { color: var(--ink-black); transition: color 0.5s ease; }
+    h1 { font-family: var(--font-title); border-bottom-color: var(--ink-black); }
+    h2 { border-left-color: var(--accent-color); }
+    p, li { color: var(--text-main); }
     
     strong {
-        font-weight: 700;
-        color: var(--accent-purple);
-        background: rgba(142, 68, 173, 0.1);
-        padding: 0 2px;
+        color: var(--accent-color);
+        background: rgba(128, 128, 128, 0.1);
     }
     
     a {
         color: var(--ink-black); 
-        text-decoration: none;
-        font-weight: 700;
-        border-bottom: 3px solid var(--accent-acid); /* 粗下划线 */
-        transition: 0.2s;
+        border-bottom: 3px solid var(--accent-color);
     }
-    a:hover { background: var(--accent-acid); color: #000; }
+    a:hover { background: var(--accent-color); color: #000; }
 
-    /* 引用块 */
     blockquote {
-        border-left: 5px solid var(--ink-black);
-        background: #f4f4f4;
-        margin: 2em 0; padding: 20px 30px;
-        font-family: 'Playfair Display', serif; /* 引用用衬线体，更有格调 */
-        font-weight: 700;
-        font-style: italic;
-        font-size: 1.4rem; 
-        color: #333;
+        border-left-color: var(--ink-black);
+        background: rgba(128, 128, 128, 0.1); /* 适配深色模式 */
+        color: var(--text-main);
     }
 
-    /* 按钮 */
-    .project-toggle {
-        background: #fff;
-        border: 3px solid var(--ink-black);
-        color: var(--ink-black);
-        font-family: 'Space Grotesk', sans-serif;
-        font-weight: 700;
-        padding: 15px 35px;
-        cursor: pointer;
-        font-size: 1rem;
-        box-shadow: 5px 5px 0 var(--ink-black);
-        transition: 0.2s;
-        margin-top: 10px;
-    }
-    .project-toggle:hover {
-        transform: translate(-3px, -3px);
-        box-shadow: 8px 8px 0 var(--accent-purple);
-    }
-
-    /* 图片 */
-    .markdown-section img {
-        border: 3px solid var(--ink-black);
-        display: block; margin: 50px auto; max-width: 100%;
-        box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
-    }
-
-    /* 移动端适配优化 */
+    /* 移动端适配 */
     @media screen and (max-width: 768px) {
         .main-title { font-size: 3.5rem; }
-        .frame-border { display: none; } /* 手机上隐藏边框，增加空间 */
+        .frame-border { display: none; }
+        .mode-switcher { top: 10px; right: 10px; }
         .markdown-section { padding: 30px !important; }
         .bg-number { font-size: 50vw; opacity: 0.05; }
     }
-
+.personal-bg-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* 放在文字下方 */
+    overflow: hidden;
+    pointer-events: none; /* 确保不影响鼠标点击文字 */
+    opacity: 0; /* 默认隐藏，只在个人模式显示 */
+    transition: opacity 1s ease;
+}
+[data-theme="personal"] .personal-bg-animation {
+    opacity: 1;
+}
+[data-theme="personal"] .markdown-section {
+    background: rgba(20, 20, 20, 0.85); /* 比之前的 0.96 透明一点 */
+    backdrop-filter: blur(10px); /* 增加磨砂玻璃感 */
+}
     </style>
 </head>
 <body>
 
-    <!-- 1. 页面边框框架 (加粗版) -->
+    <!-- 1. 页面边框框架 -->
     <div class="frame-border"></div>
     <div class="frame-corner fc-tl"></div>
     <div class="frame-corner fc-tr"></div>
     <div class="frame-corner fc-bl"></div>
     <div class="frame-corner fc-br"></div>
 
-    <!-- 2. 背景极大数字 -->
+    <!-- 2. 模式切换按钮 (新增) -->
+    <div class="mode-switcher">
+        <a class="mode-link" href="#README-pers.md">
+            <button class="switch-btn" id="modeBtn" onclick="toggleMode()">
+            SWITCH MODE
+        </button>
+    </a>
+    </div>
+
+    <!-- 3. 背景装饰 -->
     <div class="bg-number num-01">01</div>
     <div class="bg-number num-02">89</div>
-    
-    <!-- 3. 创世纪线稿 -->
     <div class="genesis-sketch"></div>
-    <div class="deco-line"></div>
-    <div class="deco-circle"></div>
 
     <!-- 4. 侧边信息 -->
-    <div class="side-info info-left"> EVERYTHING: WELL</div>
+    <div class="side-info info-left" id="status-text">MODE: ACADEMIC</div>
     <div class="side-info info-right">STATUS: ONLINE</div>
 
+    <!-- 5. 导航栏 (内容由 JS 动态生成) -->
     <header class="header-container">
         <nav class="nav-pills">
-            <ul>
-                <a href="#/README.md#pub"><li><center>About</center></li></a>
-                <a href="#/pub.md#pub"><li><center>Academics</center></li></a>
-                <a href="#/proj.md#project"><li><center>Designs</center></li></a>
-                <a href="#/works.md#"><li><center>Artworks</center></li></a>
+            <ul id="nav-list">
+                <!-- Javascript will populate this -->
             </ul>
         </nav>
     </header>
 
+    <!-- 6. 标题 -->
     <div class="hero-title">
         <div class="title-wrapper">
-            <div class="main-title">To Feel<br>To Dream<br>To Create</div>
+            <div class="main-title" id="hero-text">To Feel<br>To Dream<br>To Create</div>
         </div>
         <div class="title-line"></div>
-        <div class="subtitle-text">/// ///</div>
+        <div class="subtitle-text" id="sub-text">/// ACADEMIC_VIEW ///</div>
     </div>
 
+    <!-- 7. Docsify 容器 -->
     <div id="app"></div>
 
     <script>
+        // --- 配置数据 ---
+        const config = {
+            academic: {
+                theme: 'academic',
+                heroText: 'To Discover<br>To Define<br>To Innovate',
+                subText: '/// RESEARCHER ///',
+                statusText: 'MODE: ACADEMIC',
+                readLabel: '/// READ_MODE: ACADEMIC',
+                menu: [
+                    { text: 'About', link: '#/README.md' },
+                    { text: 'Publications', link: '#/pub.md' },
+                    { text: 'Designs', link: '#/proj.md' },
+                    { text: 'Edu | Experience', link: '#/cv.md' }
+                ]
+            },
+            personal: {
+                theme: 'personal',
+                heroText: 'To Feel<br>To Dream<br>To Create',
+                subText: '/// CREATOR ///',
+                statusText: 'MODE: PERSONAL',
+                readLabel: '/// READ_MODE: PERSONAL',
+                menu: [
+                    { text: 'About Me', link: '#/README-pers.md' },
+                    { text: 'Artwork', link: '#/works.md' },
+                    { text: 'Blogs', link: '#/blogs.md' }
+                ]
+            }
+        };
+
+        let currentMode = 'academic'; // 默认模式
+
+        // --- 核心切换逻辑 ---
+        function toggleMode() {
+            // 切换状态
+            currentMode = currentMode === 'academic' ? 'personal' : 'academic';
+            renderInterface();
+        }
+
+        function renderInterface() {
+            const data = config[currentMode];
+            const body = document.body;
+            const navList = document.getElementById('nav-list');
+            const heroText = document.getElementById('hero-text');
+            const subText = document.getElementById('sub-text');
+            const statusText = document.getElementById('status-text');
+            const modeBtn = document.getElementById('modeBtn');
+            const contentBox = document.querySelector('.markdown-section');
+            const modeLink = document.querySelector('.mode-link');
+            // 1. 设置 CSS 变量主题
+            if (currentMode === 'personal') {
+                document.documentElement.setAttribute('data-theme', 'personal');
+                modeBtn.innerText = "SWITCH TO ACADEMIC";
+                modeLink.href = "#README-pers.md";
+
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                modeBtn.innerText = "SWITCH TO PERSONAL";
+                modeLink.href = "#README.md";
+            }
+
+            // 2. 更新文字内容
+            heroText.innerHTML = data.heroText;
+            subText.innerText = data.subText;
+            statusText.innerText = data.statusText;
+            
+            // 3. 更新内容框顶部的标签 (如果 Docsify 还没加载出来，可能找不到元素，加个判断)
+            if(contentBox) {
+                contentBox.setAttribute('data-mode-label', data.readLabel);
+            }
+
+            // 4. 重绘导航栏
+            navList.innerHTML = '';
+            data.menu.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${item.link}"><center>${item.text}</center></a>`;
+                navList.appendChild(li);
+            });
+        }
+
+        // --- Docsify 配置 ---
         window.$docsify = {
             name: "Shengqi Dang",
-            themeColor: "#000000",
+            themeColor: "#000000", // 这会影响 Docsify 默认的一些颜色
             hideSidebar: true,
             executeScript: true,
+            // el: '#README-acad',
             auto2top: true,
             plugins: [
                 function(hook, vm) {
+                    // Docsify 渲染完成后，确保内容框标签正确
                     hook.doneEach(function() {
-                        // 可以在这里添加额外的 JS 逻辑
+                        const contentBox = document.querySelector('.markdown-section');
+                        const data = config[currentMode];
+                        if(contentBox) {
+                            contentBox.setAttribute('data-mode-label', data.readLabel);
+                        }
                     });
                 }
             ]
         }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            renderInterface();
+        });
+        console.log(currentMode);
     </script>
 
     <script src="init_proj.js"></script>

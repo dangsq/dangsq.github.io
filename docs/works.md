@@ -197,13 +197,14 @@
 <script>
 (function() {
   var images = [
+        { src: 'figs/artworks/353A924B-F663-4C27-B523-0A877F758AD5_1_105_c.jpeg', title: 'Stairway to the heaven' },
     { src: 'figs/artworks/b496380d49a63fcf3e8a6df65988fd1f.jpg', title: '立姿展翅 · Daydream I' },
-    { src: 'figs/artworks/6FC7E738-0AC9-45B9-BC0F-7D8EDDD2CB4F_1_105_c.jpeg', title: '顿感 · Soft Flow' },
     { src: 'figs/artworks/EB4A3E87-0A18-4392-AE7A-5CC1A134A662_1_105_c.jpeg', title: '后花园 · Fading Memory' },
     { src: 'figs/artworks/微信图片_20251125212941_37_331.jpg', title: '机械蝴蝶 · Dream Machine' },
-    { src: 'figs/artworks/微信图片_20251125212942_38_331.jpg', title: '玫瑰青凤蝶？ · Hazy Bloom' },
+    { src: 'figs/artworks/微信图片_20251125212942_38_331.jpg', title: 'Hazy Bloom' },
     { src: 'figs/artworks/眼.jpeg', title: '眼 · Eye' },
-    { src: 'figs/artworks/被刺穿的.jpeg', title: '被刺穿的 · Buried' },
+    { src: 'figs/artworks/被刺穿的.jpeg', title: '禁锢的魔鬼· Buried' },
+
   ];
 
   var currentIndex = 0;

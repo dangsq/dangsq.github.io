@@ -17,6 +17,10 @@
 I am Shengqi Dang, a Ph.D. candidate at the [Shanghai Research Institute for Intelligent Autonomous Systems](https://srias.tongji.edu.cn/main.htm), Tongji University (major: Intelligent Science and Technology, advisor: [Prof. Nan Cao](http://nancao.org/)). Additionally, I am also undergoing training at the [Shanghai Innovation Institute](https://www.sii.edu.cn/main.htm). I obtained my Bachelor's degree in Mathematics and Applied Mathematics from the [School of Mathematical Sciences](https://math.tongji.edu.cn/) at Tongji University. I pursued my Master's degree in AI and Data Design at the [College of Design and Innovation](https://tjdi.tongji.edu.cn/), Tongji University, and later transferred to the Ph.D. program.
 I consider myself to have an interdisciplinary background and have a strong interest in cross-disciplinary research. My research interests include computer graphics, intelligent computational design, psychology and artificial intelligence. I enjoy engaging in creative activities and look forward to translating these interests into practical and innovative outcomes in my future research. I am an INFP and I enjoy daydreaming. If you are interested in my research, please feel free to contact me.
 
+<!-- <font size="+2">Service</font>
+<br /><br />
+Reviewer: AAAI2026, CVPR2026
+<br/><br /><br /> -->
 
 <br />
 <center style="margin-top: 50px; color: #888; font-size: 12pt;">
