@@ -1,58 +1,6 @@
 
 <span id="about"></span>
-<div class="personal-bg-animation">
-  <svg width="100%" height="100%" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <!-- 定义渐变，呼应你的赛博绿和粉色 -->
-      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" style="stop-color:#b8e994;stop-opacity:0.1" />
-        <stop offset="100%" style="stop-color:#ff6b81;stop-opacity:0.05" />
-      </linearGradient>
-      <filter id="blurMe">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
-      </filter>
-    </defs>
-    <g fill="none" stroke="url(#grad1)" stroke-width="1.5">
-      <path d="M-100 300 Q 200 100 400 300 T 900 300" opacity="0.6">
-        <animate attributeName="d" 
-          values="M-100 300 Q 200 100 400 300 T 900 300;
-                  M-100 300 Q 200 500 400 300 T 900 300;
-                  M-100 300 Q 200 100 400 300 T 900 300" 
-          dur="10s" repeatCount="indefinite" />
-      </path>
-      <path d="M-100 350 Q 200 150 400 350 T 900 350" opacity="0.4">
-        <animate attributeName="d" 
-          values="M-100 350 Q 200 550 400 350 T 900 350;
-                  M-100 350 Q 200 150 400 350 T 900 350;
-                  M-100 350 Q 200 550 400 350 T 900 350" 
-          dur="15s" repeatCount="indefinite" />
-      </path>
-      <path d="M-100 250 Q 200 50 400 250 T 900 250" opacity="0.3">
-        <animate attributeName="d" 
-          values="M-100 250 Q 200 450 400 250 T 900 250;
-                  M-100 250 Q 200 50 400 250 T 900 250;
-                  M-100 250 Q 200 450 400 250 T 900 250" 
-          dur="12s" repeatCount="indefinite" />
-      </path>
-    </g>
-    <circle cx="400" cy="300" r="150" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.05" stroke-dasharray="10, 10">
-      <animateTransform attributeName="transform" type="rotate" from="0 400 300" to="360 400 300" dur="60s" repeatCount="indefinite" />
-    </circle>
-    <rect x="350" y="250" width="100" height="100" fill="none" stroke="#b8e994" stroke-width="1" stroke-opacity="0.1">
-      <animateTransform attributeName="transform" type="rotate" values="0 400 300; 90 400 300; 0 400 300" dur="20s" repeatCount="indefinite" />
-    </rect>
-    <line x1="0" y1="550" x2="800" y2="550" stroke="#ff6b81" stroke-width="2" stroke-opacity="0.1">
-        <animate attributeName="stroke-opacity" values="0.1; 0.3; 0.1" dur="2s" repeatCount="indefinite" />
-        <animate attributeName="stroke-width" values="1; 3; 1" dur="2s" repeatCount="indefinite" />
-    </line>
-    <circle cx="200" cy="150" r="2" fill="#ffffff" opacity="0">
-      <animate attributeName="opacity" values="0; 0.8; 0" dur="3s" begin="0s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="600" cy="450" r="1.5" fill="#b8e994" opacity="0">
-      <animate attributeName="opacity" values="0; 0.6; 0" dur="4s" begin="1s" repeatCount="indefinite" />
-    </circle>
-  </svg>
-</div>
+<!--  -->
 
 
 

@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Shengqi Dang</title>
-    <link rel="icon" href="./1F34E.svg">
+    <title>Shengqi Dang | Dreamscape</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
     
-    <!-- 字体引入 -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@700&family=Rock+Salt&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -14,430 +13,523 @@
     
     <style>
     /* =========================================
-       THEME VARIABLES (主题变量系统)
+       THEME VARIABLES (梦境变量系统)
        ========================================= */
     
-    /* --- 默认：学术模式 (Academic - Light) --- */
     :root {
-        --bg-color: #ffffff;
-        --ink-black: #000000;
-        --text-main: #222222;
-        --accent-color: #8e44ad; /* 学术紫 */
-        --accent-secondary: #f1c40f; 
-        --grid-color: rgba(0, 0, 0, 0.08);
-        --glass-bg: rgba(255, 255, 255, 0.96);
-        --blend-mode: multiply; /* 图片混合模式 */
-        --img-opacity: 0.12;
-        --font-title: 'Playfair Display', serif; /* 优雅衬线 */
+        /* 背景氛围色 - 柔和清晨 */
+        --bg-gradient-1: #e0c3fc;
+        --bg-gradient-2: #8ec5fc;
+        --bg-gradient-3: #fdfbfb;
+        
+        /* 玻璃卡片颜色 */
+        --glass-bg: rgba(255, 255, 255, 0.55);
+        --glass-border: rgba(255, 255, 255, 0.6);
+        --glass-shadow: rgba(142, 197, 252, 0.25);
+        
+        /* 文字颜色 */
+        --text-primary: #2c3e50;
+        --text-secondary: #546e7a;
+        --accent-color: #6a89cc; /* 柔和蓝紫 */
+        --accent-glow: rgba(106, 137, 204, 0.5);
+
+        /* 字体 */
+        --font-title-main: 'Cinzel Decorative', cursive;
+        --font-title-sub: 'Cormorant Garamond', serif;
+        --font-body: 'Montserrat', sans-serif;
     }
 
-    /* --- 个人模式 (Personal - Dark) --- */
     [data-theme="personal"] {
-        --bg-color: #0a0a0a;
-        --ink-black: #ffffff; /* 反转：边框变白 */
-        --text-main: #e0e0e0;
-        --accent-color: #b8e994; /* 赛博绿 */
-        --accent-secondary: #ff6b81;
-        --grid-color: rgba(255, 255, 255, 0.1);
-        --glass-bg: rgba(20, 20, 20, 0.96);
-        --blend-mode: screen; /* 变亮混合模式 */
-        --img-opacity: 0.2;
-        --font-title: 'Space Grotesk', sans-serif; /* 现代无衬线 */
+        /* 背景氛围色 - 神秘午夜 */
+        --bg-gradient-1: #240b36;
+        --bg-gradient-2: #c31432;
+        --bg-gradient-3: #1a2a6c;
+        
+        /* 玻璃卡片颜色 */
+        --glass-bg: rgba(20, 20, 40, 0.65);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --glass-shadow: rgba(0, 0, 0, 0.4);
+        
+        /* 文字颜色 */
+        --text-primary: #e0e0e0;
+        --text-secondary: #b0bec5;
+        --accent-color: #ff9ff3; /* 梦幻粉 */
+        --accent-glow: rgba(255, 159, 243, 0.6);
     }
 
     /* =========================================
-       GLOBAL STYLES
+       GLOBAL & BACKGROUND
        ========================================= */
     body {
-        background-color: var(--bg-color);
         min-height: 100vh;
         margin: 0; padding: 0;
-        font-family: 'Space Grotesk', sans-serif;
-        color: var(--text-main);
-        font-size: 18px;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        font-size: 17px;
+        line-height: 1.7;
         overflow-x: hidden;
-        transition: background-color 0.5s ease, color 0.5s ease; /* 平滑过渡 */
-        
-        /* 背景网格 */
-        background-image: 
-            linear-gradient(var(--grid-color) 1px, transparent 1px),
-            linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-        background-size: 40px 40px;
+        background: var(--bg-gradient-3);
     }
 
-    /* =========================================
-       DECORATIONS
-       ========================================= */
-
-    /* 边框 */
-    .frame-border {
-        position: fixed; top: 15px; left: 15px; right: 15px; bottom: 15px;
-        border: 2px solid var(--ink-black);
-        pointer-events: none; z-index: 100;
-        transition: border-color 0.5s ease;
-    }
-    .frame-corner {
-        position: fixed; width: 20px; height: 20px; background: var(--ink-black); z-index: 101;
-        transition: background-color 0.5s ease;
-    }
-    .fc-tl { top: 15px; left: 15px; }
-    .fc-tr { top: 15px; right: 15px; }
-    .fc-bl { bottom: 15px; left: 15px; }
-    .fc-br { bottom: 15px; right: 15px; background: var(--accent-color); }
-
-    /* 背景大数字 */
-    .bg-number {
+    .dream-background {
         position: fixed;
-        font-family: 'Space Grotesk', sans-serif;
-        font-weight: 700;
-        font-size: 30vw;
-        line-height: 0.8;
-        color: var(--ink-black);
-        opacity: 0.03;
-        z-index: -5;
-        pointer-events: none;
-        user-select: none;
-        transition: color 0.5s ease;
-    }
-    .num-01 { top: -5%; right: -5%; }
-    .num-02 { bottom: -5%; left: -2%; }
-
-    /* 创世纪线稿 */
-    .genesis-sketch {
-        position: fixed;
-        top: 50%; left: 50%;
-        width: 60vw; height: 60vh;
-        transform: translate(-50%, -50%);
-        background: url('https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg') center/contain no-repeat;
-        opacity: var(--img-opacity);
-        filter: grayscale(100%) contrast(1.2);
-        mix-blend-mode: var(--blend-mode); /* 关键：混合模式切换 */
+        top: -50%; left: -50%; right: -50%; bottom: -50%;
+        width: 200%; height: 200%;
+        background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-1));
+        background-size: 400% 400%;
         z-index: -10;
-        transition: opacity 0.5s ease, mix-blend-mode 0.5s ease;
+        animation: gradientBG 25s ease infinite;
+        filter: blur(80px);
+        opacity: 0.8;
+        transition: all 1.5s ease;
     }
 
-    /* 侧边信息 */
-    .side-info {
-        position: fixed;
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 700;
-        font-size: 14px;
-        color: var(--ink-black);
-        z-index: 90;
-        background: var(--bg-color);
-        padding: 5px 10px;
-        border: 1px solid var(--ink-black);
-        transition: all 0.5s ease;
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
-    .info-left { top: 50%; left: -60px; transform: rotate(-90deg); }
-    .info-right { top: 50%; right: -50px; transform: rotate(90deg); }
 
     /* =========================================
-       UI COMPONENTS
+       NEW: NATURE & SPRITE ELEMENTS
        ========================================= */
 
-    /* --- 模式切换按钮 (右上角) --- */
-    .mode-switcher {
+    /* 1. 精灵 (Dream Wisps) */
+    .wisp-container {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none; z-index: -2;
+        overflow: hidden;
+    }
+
+    .wisp {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, #fff 10%, var(--accent-color) 60%, transparent 100%);
+        box-shadow: 0 0 20px var(--accent-glow);
+        opacity: 0;
+        animation: floatWisp linear infinite;
+    }
+
+    @keyframes floatWisp {
+        0% { transform: translateY(100vh) scale(0); opacity: 0; }
+        20% { opacity: 0.8; }
+        80% { opacity: 0.8; }
+        100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
+    }
+
+    /* 2. 生长藤蔓 (Growing Vines) */
+    .vine-decoration {
         position: fixed;
-        top: 30px; right: 50px; /* 放在边框内 */
-        z-index: 200;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .switch-btn {
-        background: var(--bg-color);
-        color: var(--ink-black);
-        display: none;
-        border: 2px solid var(--ink-black);
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 700;
-        font-size: 14px;
-        padding: 8px 16px;
-        cursor: pointer;
-        box-shadow: 4px 4px 0 var(--accent-color);
-        transition: all 0.2s ease;
-        text-transform: uppercase;
-    }
-
-    .switch-btn:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 6px 6px 0 var(--accent-color);
+        bottom: 0;
+        pointer-events: none;
+        z-index: -1;
+        width: 400px;
+        height: 400px;
+        opacity: 0.6;
+        transition: all 1s ease;
     }
     
-    .switch-btn:active {
-        transform: translate(1px, 1px);
-        box-shadow: 2px 2px 0 var(--accent-color);
+    .vine-left { left: -50px; bottom: -50px; transform: rotate(10deg); }
+    .vine-right { right: -50px; bottom: -50px; transform: scaleX(-1) rotate(10deg); }
+
+    .vine-path {
+        fill: none;
+        stroke: var(--accent-color);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-dasharray: 1000; /* 足够覆盖路径长度 */
+        stroke-dashoffset: 1000; /* 初始隐藏 */
+        animation: growVine 4s ease-out forwards;
+        filter: drop-shadow(0 0 5px var(--accent-glow));
     }
 
-    /* --- 导航栏 --- */
+    /* 不同的藤蔓部分有不同的延迟，制造生长感 */
+    .vine-path.delay-1 { animation-delay: 0.5s; }
+    .vine-path.delay-2 { animation-delay: 1.2s; }
+
+    @keyframes growVine {
+        to { stroke-dashoffset: 0; }
+    }
+
+    /* 个人模式下藤蔓发光更强 */
+    [data-theme="personal"] .vine-path {
+        stroke-width: 3;
+        filter: drop-shadow(0 0 15px var(--accent-color));
+    }
+
+
+    /* =========================================
+       COMPONENTS (GLASSMORPHISM)
+       ========================================= */
+    
+    .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(16px) saturate(120%);
+        -webkit-backdrop-filter: blur(16px) saturate(120%);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 32px 0 var(--glass-shadow);
+        border-radius: 20px;
+        transition: all 0.5s ease;
+    }
+
     .header-container {
-        display: flex; justify-content: center;
-        top: 60px; right: 30px; /* 放在边框内 */
-        /* padding: 60px 0; */
-         position: fixed; z-index: 199;
+        position: fixed;
+        top: 30px; left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        width: auto;
+        max-width: 90%;
     }
 
     .nav-pills ul { 
-        display: flex; gap: 20px; list-style: none; 
-        background: var(--bg-color); padding: 10px 20px;
-        border: 2px solid var(--ink-black);
-        box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
-        transition: all 0.5s ease;
-    }
-    
-    .nav-pills li { position: relative; }
-
-    .nav-pills center {
-        font-family: 'Space Grotesk', sans-serif;
-        font-weight: 700;
-        font-size: 1.1rem;
-        text-transform: uppercase; 
-        color: var(--ink-black);
-        padding: 5px 10px;
-        transition: 0.2s;
+        display: flex; gap: 10px; list-style: none; margin: 0; padding: 8px;
     }
     
     .nav-pills a { text-decoration: none; }
+
+    .nav-pills center {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+        color: var(--text-primary);
+        padding: 10px 25px;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
     
     .nav-pills li:hover center {
-        background: var(--ink-black);
-        color: var(--accent-color);
-        transform: translateY(-2px);
-        box-shadow: 3px 3px 0 var(--accent-secondary);
+        background: var(--accent-color);
+        color: #fff;
+        box-shadow: 0 0 15px var(--accent-glow);
     }
 
-    /* --- 标题区域 --- */
+    .mode-switcher {
+        position: fixed;
+        top: 40px; right: 40px;
+        z-index: 200;
+    }
+
+    .switch-btn {
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 12px;
+        padding: 12px 24px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--text-primary);
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 50px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px var(--glass-shadow);
+        transition: all 0.4s ease;
+        outline: none;
+    }
+
+    .switch-btn:hover {
+        background: var(--accent-color);
+        color: #fff;
+        box-shadow: 0 0 25px var(--accent-glow);
+        transform: translateY(-2px);
+    }
+    
     .hero-title {
-        text-align: center; margin: 50px auto 80px auto; position: relative; z-index: 10;
+        text-align: center; margin: 160px auto 60px auto; position: relative; z-index: 10;
+        padding: 0 20px;
     }
     
     .main-title {
-        font-family: var(--font-title); /* 字体随模式变 */
-        font-weight: 900;
-        font-size: 6rem;
-        padding: 60px;
-        top:120px;position: relative    ;
-        color: var(--ink-black);
-        line-height: 1.1;
-        letter-spacing: -2px;
+        font-family: var(--font-title-main);
+        font-weight: 400;
+        font-size: 5.5rem;
+        color: var(--text-primary);
+        line-height: 1.2;
+        text-shadow: 2px 2px 10px var(--glass-shadow);
         transition: color 0.5s ease;
+        margin-bottom: 30px;
     }
     
-    /* .title-line {
-        width: 100px; height: 6px; background: var(--accent-color);
-        margin: 20px auto;
-        transition: background-color 0.5s ease;
-    } */
+    .main-title::after {
+        content: ''; display: block;
+        width: 120px; height: 3px;
+        background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        margin: 40px auto 0 auto;
+        border-radius: 2px;
+        opacity: 0.7;
+    }
 
     .subtitle-text {
-        display: none;
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 700;
-        font-size: 1rem;
-        color: #000; /* 始终黑字 */
-        background: var(--accent-color);
-        padding: 5px 15px;
-        /* display: inline-block; */
-        border: 2px solid #000;
-        transition: background-color 0.5s ease;
-    }
-
-    /* --- 内容区域 --- */
-    .markdown-section {
-        max-width: 850px;
-        margin: 0 auto 100px auto !important;
-        padding: 80px !important;
-        background: var(--glass-bg);
-        border: 3px solid var(--ink-black);
-        box-shadow: 15px 15px 0 rgba(0,0,0,0.15);
-        position: relative; z-index: 5;
-
-        transition: all 0.5s ease;
+        font-family: var(--font-title-sub);
+        font-style: italic;
+        font-size: 1.8rem;
+        color: var(--text-secondary);
+        letter-spacing: 1px;
+        display: inline-block;
+        position: relative;
+        padding: 0 20px;
     }
     
-    .markdown-section::before {
-        content: attr(data-mode-label); /* 动态标签 */
-        position: absolute; top: -15px; left: 20px;
-        background: var(--ink-black); color: var(--bg-color);
-        font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px;
-        padding: 5px 15px;
+    .subtitle-text::before, .subtitle-text::after {
+        content: '✧';
+        color: var(--accent-color);
+        position: absolute; top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+    }
+    .subtitle-text::before { left: -10px; }
+    .subtitle-text::after { right: -10px; }
+
+    .markdown-section {
+        max-width: 900px;
+        margin: 0 auto 120px auto !important;
+        padding: 80px 100px !important;
+        background: var(--glass-bg) !important;
+        backdrop-filter: blur(20px) saturate(120%);
+        -webkit-backdrop-filter: blur(20px) saturate(120%);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 20px 40px 0 var(--glass-shadow);
+        border-radius: 30px;
+        position: relative; z-index: 5;
         transition: all 0.5s ease;
     }
 
-    /* Typography Adjustments */
-    h1, h2, h3, h4, h5, h6 { color: var(--ink-black); transition: color 0.5s ease; }
-    h1 { font-family: var(--font-title); border-bottom-color: var(--ink-black); }
-    h2 { border-left-color: var(--accent-color); }
-    p, li { color: var(--text-main); }
+    .markdown-section::before {
+        content: attr(data-mode-label);
+        position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+        background: var(--accent-color); color: #fff;
+        font-family: var(--font-body); font-weight: 700; font-size: 12px; letter-spacing: 2px;
+        padding: 8px 25px;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px var(--accent-glow);
+        transition: all 0.5s ease;
+        white-space: nowrap;
+    }
+
+    h1, h2, h3, h4, h5, h6 { 
+        font-family: var(--font-title-sub); 
+        color: var(--text-primary) !important; 
+        font-weight: 600;
+        margin-top: 1.5em;
+    }
+    h1 { font-size: 2.8rem; text-align: center; border: none; }
+    h2 { font-size: 2.2rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; }
+    
+    p, li { color: var(--text-secondary) !important; font-weight: 400; }
     
     strong {
         color: var(--accent-color);
-        background: rgba(128, 128, 128, 0.1);
+        font-weight: 600;
     }
     
-    a {
-        color: var(--ink-black); 
-        border-bottom: 3px solid var(--accent-color);
+    .markdown-section a {
+        color: var(--accent-color) !important;
+        text-decoration: none;
+        border-bottom: 1px dotted var(--accent-color);
+        transition: all 0.3s ease;
+        font-weight: 600;
     }
-    a:hover { background: var(--accent-color); color: #000; }
+    .markdown-section a:hover {
+        border-bottom: 1px solid var(--accent-color);
+        text-shadow: 0 0 8px var(--accent-glow);
+    }
 
     blockquote {
-        border-left-color: var(--ink-black);
-        background: rgba(128, 128, 128, 0.1); /* 适配深色模式 */
-        color: var(--text-main);
+        border-left: 4px solid var(--accent-color);
+        background: rgba(255,255,255, 0.1) !important;
+        color: var(--text-secondary) !important;
+        border-radius: 0 10px 10px 0;
+        margin: 2em 0;
+        padding: 20px 30px;
+        font-family: var(--font-title-sub);
+        font-style: italic;
+        font-size: 1.1em;
+    }
+    
+    pre {
+        background: rgba(0,0,0,0.05) !important;
+        border-radius: 15px;
+        border: 1px solid var(--glass-border);
+    }
+    [data-theme="personal"] pre {
+        background: rgba(0,0,0,0.3) !important;
     }
 
-    /* 移动端适配 */
     @media screen and (max-width: 768px) {
-        .main-title { font-size: 3.5rem; }
-        .frame-border { display: none; }
-        .mode-switcher { top: 10px; right: 10px; }
-        .markdown-section { padding: 30px !important; }
-        .bg-number { font-size: 50vw; opacity: 0.05; }
+        .main-title { font-size: 3.5rem; margin-top: 140px;}
+        .subtitle-text { font-size: 1.4rem; }
+        .mode-switcher { top: 20px; right: 20px; }
+        .switch-btn { padding: 8px 16px; font-size: 10px; }
+        .header-container { top: 80px; width: 95%; }
+        .nav-pills ul { flex-wrap: wrap; justify-content: center; }
+        .nav-pills center { padding: 8px 15px; font-size: 0.85rem; }
+        .markdown-section { padding: 40px 30px !important; margin-top: 40px; border-radius: 20px;}
+        .vine-decoration { width: 200px; height: 200px; } /* 移动端缩小藤蔓 */
     }
-.personal-bg-animation {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* 放在文字下方 */
-    overflow: hidden;
-    pointer-events: none; /* 确保不影响鼠标点击文字 */
-    opacity: 0; /* 默认隐藏，只在个人模式显示 */
-    transition: opacity 1s ease;
-}
-[data-theme="personal"] .personal-bg-animation {
-    opacity: 1;
-}
-[data-theme="personal"] .markdown-section {
-    background: rgba(20, 20, 20, 0.85); /* 比之前的 0.96 透明一点 */
-    backdrop-filter: blur(10px); /* 增加磨砂玻璃感 */
-}
+
     </style>
 </head>
 <body>
 
-    <!-- 1. 页面边框框架 -->
-    <div class="frame-border"></div>
-    <div class="frame-corner fc-tl"></div>
-    <div class="frame-corner fc-tr"></div>
-    <div class="frame-corner fc-bl"></div>
-    <div class="frame-corner fc-br"></div>
+    <div class="dream-background"></div>
+    
+    <!-- 精灵容器 -->
+    <div class="wisp-container" id="wisp-container"></div>
 
-    <!-- 2. 模式切换按钮 (新增) -->
+    <!-- 左下角藤蔓 SVG -->
+    <svg class="vine-decoration vine-left" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- 主枝干 -->
+        <path class="vine-path" d="M0,200 Q50,150 40,100 T80,50 T120,20" fill="none" />
+        <!-- 分支 1 -->
+        <path class="vine-path delay-1" d="M40,100 Q10,80 20,60" fill="none" />
+        <!-- 分支 2 -->
+        <path class="vine-path delay-2" d="M80,50 Q110,40 130,60" fill="none" />
+        <!-- 卷须 -->
+        <path class="vine-path delay-1" d="M20,60 C10,50 30,40 25,55" fill="none" />
+    </svg>
+
+    <!-- 右下角藤蔓 SVG (通过CSS镜像翻转) -->
+    <svg class="vine-decoration vine-right" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path class="vine-path" d="M0,200 Q50,150 40,100 T80,50 T120,20" fill="none" />
+        <path class="vine-path delay-1" d="M40,100 Q10,80 20,60" fill="none" />
+        <path class="vine-path delay-2" d="M80,50 Q110,40 130,60" fill="none" />
+        <path class="vine-path delay-1" d="M20,60 C10,50 30,40 25,55" fill="none" />
+    </svg>
+
     <div class="mode-switcher">
-        <a class="mode-link" href="#README-pers.md">
-            <button class="switch-btn" id="modeBtn" onclick="toggleMode()">
-            SWITCH MODE
+        <button class="switch-btn" id="modeBtn" onclick="toggleModeWithJump()">
+            Switch Realm
         </button>
-    </a>
     </div>
 
-    <!-- 3. 背景装饰 -->
-    <div class="bg-number num-01">01</div>
-    <div class="bg-number num-02">89</div>
-    <div class="genesis-sketch"></div>
-
-    <!-- 4. 侧边信息 -->
-    <div class="side-info info-left" id="status-text">MODE: ACADEMIC</div>
-    <div class="side-info info-right">STATUS: ONLINE</div>
-
-    <!-- 5. 导航栏 (内容由 JS 动态生成) -->
     <header class="header-container">
-        <nav class="nav-pills">
+        <nav class="nav-pills glass-card">
             <ul id="nav-list">
-                <!-- Javascript will populate this -->
-            </ul>
+                </ul>
         </nav>
     </header>
 
-    <!-- 6. 标题 -->
     <div class="hero-title">
-        <div class="title-wrapper">
-            <div class="main-title" id="hero-text">To Feel<br>To Dream<br>To Create</div>
-        </div>
-        <div class="title-line"></div>
-        <div class="subtitle-text" id="sub-text">/// ACADEMIC_VIEW ///</div>
+        <div class="main-title" id="hero-text">Calculating Dream...</div>
+        <div class="subtitle-text" id="sub-text">Loading reality construct</div>
     </div>
 
-    <!-- 7. Docsify 容器 -->
     <div id="app"></div>
 
     <script>
         // --- 配置数据 ---
         const config = {
             academic: {
+                modeName: 'academic',
                 theme: 'academic',
-                heroText: 'To Discover<br>To Define<br>To Innovate',
-                subText: '/// RESEARCHER ///',
-                statusText: 'MODE: ACADEMIC',
-                readLabel: '/// READ_MODE: ACADEMIC',
+                heroText: 'The Rational Dreamer',
+                subText: 'Exploring structures, data, and design.',
+                statusText: 'REALM: ACADEMIC',
+                readLabel: '✧ CURRENT REALM: RATIONALITY ✧',
+                btnText: 'Enter Dreamworld',
+                homeLink: '#/README.md',
                 menu: [
                     { text: 'About', link: '#/README.md' },
                     { text: 'Publications', link: '#/pub.md' },
                     { text: 'Designs', link: '#/proj.md' },
-                    { text: 'Edu | Experience', link: '#/cv.md' }
+                    { text: 'Journey', link: '#/cv.md' }
                 ]
             },
             personal: {
+                modeName: 'personal',
                 theme: 'personal',
-                heroText: 'To Feel<br>To Dream<br>To Create',
-                subText: '/// CREATOR ///',
-                statusText: 'MODE: PERSONAL',
-                readLabel: '/// READ_MODE: PERSONAL',
+                heroText: 'The Wandering Soul',
+                subText: 'Lost in colors, emotions, and stories.',
+                statusText: 'REALM: DREAMWORLD',
+                readLabel: '✧ CURRENT REALM: IMAGINATION ✧',
+                btnText: 'Wake Up To Reality',
+                homeLink: '#/README-pers.md',
                 menu: [
-                    { text: 'About Me', link: '#/README-pers.md' },
-                    { text: 'Artwork', link: '#/works.md' },
-                    { text: 'Blogs', link: '#/blogs.md' }
+                    { text: 'My Essence', link: '#/README-pers.md' },
+                    { text: 'Gallery', link: '#/works.md' },
+                    { text: 'Musings', link: '#/blogs.md' }
                 ]
             }
         };
 
-        let currentMode = 'academic'; // 默认模式
+        let currentMode = 'academic';
 
-        // --- 核心切换逻辑 ---
+        // --- 精灵生成器 (New) ---
+        function spawnWisps() {
+            const container = document.getElementById('wisp-container');
+            const wispCount = 15; // 精灵数量
+
+            for (let i = 0; i < wispCount; i++) {
+                const wisp = document.createElement('div');
+                wisp.classList.add('wisp');
+                
+                // 随机大小
+                const size = Math.random() * 10 + 4 + 'px';
+                wisp.style.width = size;
+                wisp.style.height = size;
+
+                // 随机水平位置
+                wisp.style.left = Math.random() * 100 + 'vw';
+
+                // 随机动画时长和延迟，制造错落感
+                const duration = Math.random() * 10 + 10 + 's'; // 10-20s
+                const delay = Math.random() * 10 + 's';
+                
+                wisp.style.animationDuration = duration;
+                wisp.style.animationDelay = delay;
+
+                container.appendChild(wisp);
+            }
+        }
+
+        // --- 藤蔓重绘 (New) ---
+        function replayVineAnimation() {
+            // 简单的移除再添加 class 来触发 CSS 动画重播
+            const vines = document.querySelectorAll('.vine-path');
+            vines.forEach(vine => {
+                vine.style.animation = 'none';
+                vine.offsetHeight; /* trigger reflow */
+                vine.style.animation = null; 
+            });
+        }
+
+        function toggleModeWithJump() {
+            const targetMode = currentMode === 'academic' ? 'personal' : 'academic';
+            window.location.hash = config[targetMode].homeLink;
+            toggleMode();
+        }
+
         function toggleMode() {
-            // 切换状态
             currentMode = currentMode === 'academic' ? 'personal' : 'academic';
             renderInterface();
+            replayVineAnimation(); // 切换模式时藤蔓重新生长
         }
 
         function renderInterface() {
             const data = config[currentMode];
-            const body = document.body;
             const navList = document.getElementById('nav-list');
             const heroText = document.getElementById('hero-text');
             const subText = document.getElementById('sub-text');
-            const statusText = document.getElementById('status-text');
             const modeBtn = document.getElementById('modeBtn');
             const contentBox = document.querySelector('.markdown-section');
-            const modeLink = document.querySelector('.mode-link');
-            // 1. 设置 CSS 变量主题
+
             if (currentMode === 'personal') {
                 document.documentElement.setAttribute('data-theme', 'personal');
-                modeBtn.innerText = "SWITCH TO ACADEMIC";
-                modeLink.href = "#README-pers.md";
-
             } else {
                 document.documentElement.removeAttribute('data-theme');
-                modeBtn.innerText = "SWITCH TO PERSONAL";
-                modeLink.href = "#README.md";
             }
 
-            // 2. 更新文字内容
-            heroText.innerHTML = data.heroText;
+            modeBtn.innerText = data.btnText;
+            heroText.innerHTML = data.heroText.replace(/\n/g, '<br>');
             subText.innerText = data.subText;
-            statusText.innerText = data.statusText;
             
-            // 3. 更新内容框顶部的标签 (如果 Docsify 还没加载出来，可能找不到元素，加个判断)
             if(contentBox) {
                 contentBox.setAttribute('data-mode-label', data.readLabel);
             }
 
-            // 4. 重绘导航栏
             navList.innerHTML = '';
             data.menu.forEach(item => {
                 const li = document.createElement('li');
@@ -446,36 +538,45 @@
             });
         }
 
-        // --- Docsify 配置 ---
         window.$docsify = {
             name: "Shengqi Dang",
-            themeColor: "#000000", // 这会影响 Docsify 默认的一些颜色
+            themeColor: "#6a89cc",
             hideSidebar: true,
             executeScript: true,
-            // el: '#README-acad',
             auto2top: true,
             plugins: [
                 function(hook, vm) {
-                    // Docsify 渲染完成后，确保内容框标签正确
                     hook.doneEach(function() {
                         const contentBox = document.querySelector('.markdown-section');
-                        const data = config[currentMode];
+                        if (window.location.hash.includes('README-pers.md') || window.location.hash.includes('works.md') || window.location.hash.includes('blogs.md')) {
+                             if(currentMode !== 'personal') {
+                                 currentMode = 'personal';
+                                 renderInterface();
+                             }
+                        } else {
+                             if(currentMode !== 'academic') {
+                                 currentMode = 'academic';
+                                 renderInterface();
+                             }
+                        }
                         if(contentBox) {
-                            contentBox.setAttribute('data-mode-label', data.readLabel);
+                            contentBox.setAttribute('data-mode-label', config[currentMode].readLabel);
                         }
                     });
                 }
             ]
         }
 
-        // 初始化页面
         document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash.includes('README-pers.md')) {
+                currentMode = 'personal';
+            }
             renderInterface();
+            spawnWisps(); // 初始化精灵
         });
-        console.log(currentMode);
     </script>
 
-    <script src="init_proj.js"></script>
+    <script src="init_proj.js"></script> 
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 </body>
 </html>
