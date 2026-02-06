@@ -19,9 +19,9 @@
 <br/><br/>
 
 **Ph.D. (in progress)** Intelligent Science and Technology 
-- [Tongji University Shanghai Research Institute for Autonomous Intelligent Unmanned Systems](https://srias.tongji.edu.cn/main.htm) 
+- [Shanghai Research Institute for Autonomous Intelligent Unmanned Systems,Tongji University](https://srias.tongji.edu.cn/main.htm) 
 
-- [Shanghai Institute of Innovation](https://www.sii.edu.cn/main.htm) 
+- [Shanghai Innovation Institute ](https://www.sii.edu.cn/main.htm) 
 
 **M.S.** Artificial Intelligence and Data Design  
 - [College of Design and Innovation, Tongji University](https://tjdi.tongji.edu.cn/)

@@ -2,510 +2,534 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Shengqi Dang | Dreamscape</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Shengqi Dang</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦋</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@300;400;600&family=Zhi+Mang+Xing&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
     
     <style>
-    /* =========================================
-       THEME VARIABLES (梦境变量系统)
-       ========================================= */
-    
     :root {
-        /* 背景氛围色 - 柔和清晨 */
-        --bg-gradient-1: #e0c3fc;
-        --bg-gradient-2: #8ec5fc;
-        --bg-gradient-3: #fdfbfb;
+        /* =========================================
+           [学术模式 - 新中式雅致版]
+           Palette: 汝窑天青 (Pale Cyan), 墨色 (Ink), 朱砂 (Vermilion)
+           ========================================= */
+        --paper-bg: #fdfbf7;       /* 更干净的米白 (宣纸) */
+        /* 叠加一个极淡的竖线纹理 (信笺感) */
+        --paper-pattern: repeating-linear-gradient(to right, 
+            transparent, 
+            transparent 39px, 
+            rgba(200, 200, 200, 0.15) 40px
+        );
         
-        /* 玻璃卡片颜色 */
-        --glass-bg: rgba(255, 255, 255, 0.55);
-        --glass-border: rgba(255, 255, 255, 0.6);
-        --glass-shadow: rgba(142, 197, 252, 0.25);
+        --ink-primary: #2c3e50;    /* 黛蓝深灰，比纯黑更有质感 */
+        --ink-secondary: #5d6b7a;  /* 次级文字色 */
+        --accent-color: #bc3e34;   /* 中国红 (更正红一点) */
+        --accent-sub: #78909c;     /* 汝窑青灰 (链接色) */
         
-        /* 文字颜色 */
-        --text-primary: #2c3e50;
-        --text-secondary: #546e7a;
-        --accent-color: #6a89cc; /* 柔和蓝紫 */
-        --accent-glow: rgba(106, 137, 204, 0.5);
-
-        /* 字体 */
-        --font-title-main: 'Cinzel Decorative', cursive;
-        --font-title-sub: 'Cormorant Garamond', serif;
-        --font-body: 'Montserrat', sans-serif;
-    }
-
-    [data-theme="personal"] {
-        /* 背景氛围色 - 神秘午夜 */
-        --bg-gradient-1: #240b36;
-        --bg-gradient-2: #c31432;
-        --bg-gradient-3: #1a2a6c;
+        --font-title: 'Ma Shan Zheng', cursive; 
+        --font-serif: 'Playfair Display', 'Noto Serif SC', serif; /* 英文衬线+中文宋体 */
+        --font-body: 'Noto Serif SC', serif;
         
-        /* 玻璃卡片颜色 */
-        --glass-bg: rgba(20, 20, 40, 0.65);
-        --glass-border: rgba(255, 255, 255, 0.15);
-        --glass-shadow: rgba(0, 0, 0, 0.4);
-        
-        /* 文字颜色 */
-        --text-primary: #e0e0e0;
-        --text-secondary: #b0bec5;
-        --accent-color: #ff9ff3; /* 梦幻粉 */
-        --accent-glow: rgba(255, 159, 243, 0.6);
+        --border-deco: rgba(44, 62, 80, 0.1); /* 装饰边框色 */
     }
 
     /* =========================================
-       GLOBAL & BACKGROUND
+       [个人模式 - 保持原样不动]
+       ========================================= */
+    [data-theme="personal"] {
+        --paper-bg: #1a1a1c;
+        --paper-pattern: none; /* 个人模式不需要竖线 */
+        --paper-texture: url("https://www.transparenttextures.com/patterns/stardust.png"); /* 恢复原有纹理 */
+        
+        --ink-primary: #e6e6e6;
+        --ink-secondary: #a0a0a0;
+        --accent-color: #c94c4c;
+        --accent-sub: #8fa0c0;
+        --border-deco: transparent;
+    }
+
+    /* =========================================
+       全局基础设定
        ========================================= */
     body {
-        min-height: 100vh;
         margin: 0; padding: 0;
         font-family: var(--font-body);
-        color: var(--text-primary);
-        font-size: 17px;
-        line-height: 1.7;
+        background-color: var(--paper-bg);
+        background-image: var(--paper-pattern); /* 应用竖线纹理 */
+        color: var(--ink-primary);
+        transition: background-color 1.0s ease, color 0.8s ease;
         overflow-x: hidden;
-        background: var(--bg-gradient-3);
+        cursor: none; 
+        font-weight: 300;
+        letter-spacing: 0.04em;
     }
 
-    .dream-background {
+    /* 个人模式下的背景覆盖 (恢复原有材质感) */
+    [data-theme="personal"] body {
+        background-image: var(--paper-texture);
+    }
+
+    /* 学术模式 - 角落窗棂装饰 (仅在学术模式显示) */
+    .corner-lattice {
         position: fixed;
-        top: -50%; left: -50%; right: -50%; bottom: -50%;
-        width: 200%; height: 200%;
-        background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-1));
-        background-size: 400% 400%;
-        z-index: -10;
-        animation: gradientBG 25s ease infinite;
-        filter: blur(80px);
-        opacity: 0.8;
-        transition: all 1.5s ease;
-    }
-
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    /* =========================================
-       NEW: NATURE & SPRITE ELEMENTS
-       ========================================= */
-
-    /* 1. 精灵 (Dream Wisps) */
-    .wisp-container {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        pointer-events: none; z-index: -2;
-        overflow: hidden;
-    }
-
-    .wisp {
-        position: absolute;
-        border-radius: 50%;
-        background: radial-gradient(circle, #fff 10%, var(--accent-color) 60%, transparent 100%);
-        box-shadow: 0 0 20px var(--accent-glow);
-        opacity: 0;
-        animation: floatWisp linear infinite;
-    }
-
-    @keyframes floatWisp {
-        0% { transform: translateY(100vh) scale(0); opacity: 0; }
-        20% { opacity: 0.8; }
-        80% { opacity: 0.8; }
-        100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
-    }
-
-    /* 2. 生长藤蔓 (Growing Vines) */
-    .vine-decoration {
-        position: fixed;
-        bottom: 0;
+        width: 150px; height: 150px;
         pointer-events: none;
         z-index: -1;
-        width: 400px;
-        height: 400px;
-        opacity: 0.6;
-        transition: all 1s ease;
+        opacity: 0.15;
+        border: 2px solid var(--ink-primary);
+        transition: opacity 0.5s;
     }
-    
-    .vine-left { left: -50px; bottom: -50px; transform: rotate(10deg); }
-    .vine-right { right: -50px; bottom: -50px; transform: scaleX(-1) rotate(10deg); }
+    .corner-lattice.top-left { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+    .corner-lattice.top-right { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+    .corner-lattice.bottom-left { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+    .corner-lattice.bottom-right { bottom: 20px; right: 20px; border-left: none; border-top: none; }
 
-    .vine-path {
-        fill: none;
-        stroke: var(--accent-color);
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-dasharray: 1000; /* 足够覆盖路径长度 */
-        stroke-dashoffset: 1000; /* 初始隐藏 */
-        animation: growVine 4s ease-out forwards;
-        filter: drop-shadow(0 0 5px var(--accent-glow));
+    /* 内部回纹装饰 */
+    .corner-lattice::after {
+        content: ''; position: absolute;
+        width: 70%; height: 70%;
+        border: 1px solid var(--ink-primary);
     }
+    .top-left::after { top: 0; left: 0; }
+    .top-right::after { top: 0; right: 0; }
+    .bottom-left::after { bottom: 0; left: 0; }
+    .bottom-right::after { bottom: 0; right: 0; }
 
-    /* 不同的藤蔓部分有不同的延迟，制造生长感 */
-    .vine-path.delay-1 { animation-delay: 0.5s; }
-    .vine-path.delay-2 { animation-delay: 1.2s; }
-
-    @keyframes growVine {
-        to { stroke-dashoffset: 0; }
+    /* 个人模式隐藏这些装饰 */
+    [data-theme="personal"] .corner-lattice {
+        opacity: 0;
     }
 
-    /* 个人模式下藤蔓发光更强 */
-    [data-theme="personal"] .vine-path {
-        stroke-width: 3;
-        filter: drop-shadow(0 0 15px var(--accent-color));
+    /* 水墨背景层 */
+    .ink-bg {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: -10;
+        background: radial-gradient(circle at 80% 20%, rgba(188, 62, 52, 0.04), transparent 40%),
+                    radial-gradient(circle at 20% 80%, rgba(120, 144, 156, 0.08), transparent 50%);
+        pointer-events: none;
+        transition: opacity 0.5s;
     }
 
+    .mountain-silhouette {
+        position: fixed; bottom: 0; left: 0; width: 100%; height: 30vh;
+        background-repeat: no-repeat;
+        background-position: bottom center;
+        background-size: cover;
+        opacity: 0.1;
+        z-index: -5;
+        pointer-events: none;
+        mask-image: linear-gradient(to top, black, transparent);
+        -webkit-mask-image: linear-gradient(to top, black, transparent);
+        background-image: url('https://images.unsplash.com/photo-1517865288-978fcb780652?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        filter: grayscale(100%) contrast(120%) sepia(20%);
+    }
 
     /* =========================================
-       COMPONENTS (GLASSMORPHISM)
+       自定义鼠标 (保留原逻辑)
+       ========================================= */
+    #brush-cursor {
+        position: fixed; top: 0; left: 0; width: 12px; height: 12px;
+        background: var(--ink-primary);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        opacity: 0.8;
+        mix-blend-mode: multiply;
+        transition: width 0.2s, height 0.2s, opacity 0.2s;
+    }
+    [data-theme="personal"] #brush-cursor { mix-blend-mode: normal; background: var(--ink-primary); }
+    #brush-cursor.hovered { width: 30px; height: 30px; opacity: 0.3; background: var(--accent-color); }
+    #ink-trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9998; pointer-events: none; }
+
+    /* =========================================
+       UI 组件
        ========================================= */
     
-    .glass-card {
-        background: var(--glass-bg);
-        backdrop-filter: blur(16px) saturate(120%);
-        -webkit-backdrop-filter: blur(16px) saturate(120%);
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 8px 32px 0 var(--glass-shadow);
-        border-radius: 20px;
-        transition: all 0.5s ease;
-    }
-
-    .header-container {
-        position: fixed;
-        top: 30px; left: 50%;
-        transform: translateX(-50%);
-        z-index: 100;
-        width: auto;
-        max-width: 90%;
-    }
-
-    .nav-pills ul { 
-        display: flex; gap: 10px; list-style: none; margin: 0; padding: 8px;
-    }
-    
-    .nav-pills a { text-decoration: none; }
-
-    .nav-pills center {
-        font-family: var(--font-body);
-        font-weight: 600;
-        font-size: 0.95rem;
-        letter-spacing: 1px;
-        color: var(--text-primary);
-        padding: 10px 25px;
-        border-radius: 50px;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .nav-pills li:hover center {
-        background: var(--accent-color);
-        color: #fff;
-        box-shadow: 0 0 15px var(--accent-glow);
-    }
-
-    .mode-switcher {
-        position: fixed;
-        top: 40px; right: 40px;
-        z-index: 200;
-    }
-
-    .switch-btn {
-        font-family: var(--font-body);
-        font-weight: 700;
-        font-size: 12px;
-        padding: 12px 24px;
+    /* 印章开关 */
+    .seal-switch {
+        position: fixed; top: 40px; right: 40px; z-index: 101;
+        width: 46px; height: 46px;
+        background: rgba(255,255,255,0.5);
+        border: 2px solid var(--accent-color);
+        color: var(--accent-color);
+        font-family: var(--font-title);
+        font-size: 1.4rem;
+        border-radius: 4px; 
         cursor: pointer;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: var(--text-primary);
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        border-radius: 50px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 15px var(--glass-shadow);
+        display: flex; align-items: center; justify-content: center;
         transition: all 0.4s ease;
-        outline: none;
+        backdrop-filter: blur(2px);
+    }
+    .seal-switch:hover {
+        background: var(--accent-color);
+        color: var(--paper-bg);
+        box-shadow: 0 4px 15px rgba(188, 62, 52, 0.4);
+    }
+    [data-theme="personal"] .seal-switch { background: transparent; }
+
+    /* 导航栏 */
+    .nav-wrapper {
+        position: fixed; top: 45px; width: 100%;
+        display: flex; justify-content: center;
+        z-index: 100;
+    }
+    .classic-nav ul { display: flex; gap: 50px; list-style: none; margin: 0; padding: 0; }
+    .classic-nav a {
+        text-decoration: none;
+        color: var(--ink-secondary);
+        font-family: var(--font-serif);
+        font-weight: 500;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        position: relative;
+        transition: color 0.3s;
+    }
+    .classic-nav a::after {
+        content: '';
+        position: absolute; bottom: -5px; left: 50%; width: 4px; height: 4px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        transform: translateX(-50%) scale(0);
+        transition: transform 0.3s ease;
+    }
+    .classic-nav a:hover { color: var(--ink-primary); }
+    .classic-nav a:hover::after { transform: translateX(-50%) scale(1); }
+
+    /* =========================================
+       Hero Section (核心视觉区)
+       ========================================= */
+    .hero-section {
+        text-align: center;
+        margin-top: 18vh;
+        margin-bottom: 60px;
+        position: relative;
+        z-index: 10;
+        padding: 40px 0;
     }
 
-    .switch-btn:hover {
+    /* 学术模式下的装饰框 - 细线框 */
+    .hero-section::before {
+        content: '';
+        position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+        width: 600px; height: 100%;
+        border-top: 1px solid var(--border-deco);
+        border-bottom: 1px solid var(--border-deco);
+        z-index: -1;
+    }
+    [data-theme="personal"] .hero-section::before { display: none; }
+
+    /* 竖排装饰字 */
+    .vertical-decoration {
+        position: absolute; top: 10px; right: 20%; /* 移到右侧更有味道 */
+        writing-mode: vertical-rl;
+        font-family: var(--font-title);
+        color: var(--accent-color);
+        opacity: 0.8;
+        font-size: 2.5rem;
+        pointer-events: none;
+        letter-spacing: 0.2em;
+        text-shadow: 2px 2px 0 rgba(255,255,255,0.5);
+    }
+    
+    /* 英文主标题 - 更优雅的衬线体 */
+    .main-title {
+        font-family: var(--font-serif);
+        font-size: 4.5rem;
+        margin-bottom: 10px;
+        color: var(--ink-primary);
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        position: relative;
+        display: inline-block;
+    }
+    
+    /* 名字后的印章效果 (仅学术模式) */
+    .main-title::after {
+        content: '党'; /* 姓氏印章 */
+        position: absolute; top: 10px; right: -50px;
+        width: 36px; height: 36px;
+        line-height: 36px;
         background: var(--accent-color);
         color: #fff;
-        box-shadow: 0 0 25px var(--accent-glow);
-        transform: translateY(-2px);
-    }
-    
-    .hero-title {
-        text-align: center; margin: 160px auto 60px auto; position: relative; z-index: 10;
-        padding: 0 20px;
-    }
-    
-    .main-title {
-        font-family: var(--font-title-main);
-        font-weight: 400;
-        font-size: 5.5rem;
-        color: var(--text-primary);
-        line-height: 1.2;
-        text-shadow: 2px 2px 10px var(--glass-shadow);
-        transition: color 0.5s ease;
-        margin-bottom: 30px;
-    }
-    
-    .main-title::after {
-        content: ''; display: block;
-        width: 120px; height: 3px;
-        background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
-        margin: 40px auto 0 auto;
-        border-radius: 2px;
-        opacity: 0.7;
-    }
-
-    .subtitle-text {
-        font-family: var(--font-title-sub);
-        font-style: italic;
-        font-size: 1.8rem;
-        color: var(--text-secondary);
-        letter-spacing: 1px;
-        display: inline-block;
-        position: relative;
-        padding: 0 20px;
-    }
-    
-    .subtitle-text::before, .subtitle-text::after {
-        content: '✧';
-        color: var(--accent-color);
-        position: absolute; top: 50%;
-        transform: translateY(-50%);
+        font-family: var(--font-title);
         font-size: 1.2rem;
+        border-radius: 4px;
+        opacity: 0.9;
+        transform: rotate(8deg);
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
-    .subtitle-text::before { left: -10px; }
-    .subtitle-text::after { right: -10px; }
+    [data-theme="personal"] .main-title::after { display: none; }
 
+    /* 个人模式标题样式复原 */
+    [data-theme="personal"] .main-title {
+        font-family: var(--font-title); /* 个人模式用书法体 */
+        font-size: 5rem;
+        text-shadow: 2px 2px 0px var(--paper-bg);
+    }
+
+    .sub-title {
+        font-family: var(--font-body);
+        font-size: 1rem;
+        color: var(--ink-secondary);
+        letter-spacing: 0.3em;
+        margin-top: 15px;
+        text-transform: uppercase;
+        border-top: 1px solid var(--accent-color);
+        display: inline-block;
+        padding-top: 15px;
+    }
+
+    /* =========================================
+       Content - Markdown 区域
+       ========================================= */
     .markdown-section {
-        max-width: 900px;
-        margin: 0 auto 120px auto !important;
-        padding: 80px 100px !important;
-        background: var(--glass-bg) !important;
-        backdrop-filter: blur(20px) saturate(120%);
-        -webkit-backdrop-filter: blur(20px) saturate(120%);
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 20px 40px 0 var(--glass-shadow);
-        border-radius: 30px;
-        position: relative; z-index: 5;
-        transition: all 0.5s ease;
+        max-width: 820px;
+        margin: 0 auto 100px auto !important;
+        padding: 40px 60px !important;
+        position: relative;
+        z-index: 5;
+    }
+    
+    /* 学术模式：内容区背景 (让文字更清晰) */
+    .markdown-section {
+        background: rgba(255, 255, 255, 0.4) !important;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 4px 30px rgba(0,0,0,0.02);
+    }
+    [data-theme="personal"] .markdown-section {
+        background: transparent !important;
+        backdrop-filter: none;
+        box-shadow: none;
     }
 
-    .markdown-section::before {
-        content: attr(data-mode-label);
-        position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
-        background: var(--accent-color); color: #fff;
-        font-family: var(--font-body); font-weight: 700; font-size: 12px; letter-spacing: 2px;
-        padding: 8px 25px;
-        border-radius: 20px;
-        box-shadow: 0 5px 15px var(--accent-glow);
-        transition: all 0.5s ease;
-        white-space: nowrap;
+    /* 标题排版 */
+    h1 { 
+        font-family: var(--font-serif);
+        text-align: center; 
+        font-size: 2em; 
+        margin-bottom: 2em; 
+        color: var(--ink-primary) !important; 
+        border-bottom: none;
+        position: relative;
+    }
+    /* 学术模式 H1 下的装饰 */
+    h1::after {
+        content: ''; display: block; 
+        width: 40px; height: 2px; background: var(--accent-color);
+        margin: 15px auto 0;
     }
 
-    h1, h2, h3, h4, h5, h6 { 
-        font-family: var(--font-title-sub); 
-        color: var(--text-primary) !important; 
-        font-weight: 600;
-        margin-top: 1.5em;
+    h2 {
+        font-family: var(--font-serif);
+        font-size: 1.5em;
+        margin-top: 2em;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        color: var(--ink-primary) !important;
+        display: flex; align-items: center;
     }
-    h1 { font-size: 2.8rem; text-align: center; border: none; }
-    h2 { font-size: 2.2rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; }
-    
-    p, li { color: var(--text-secondary) !important; font-weight: 400; }
-    
-    strong {
-        color: var(--accent-color);
-        font-weight: 600;
+    /* H2 前的装饰改为竖条 */
+    h2::before {
+        content: '';
+        display: inline-block; width: 4px; height: 1em;
+        background: var(--accent-color);
+        margin-right: 15px;
+        transform: none; /* 取消旋转 */
+    }
+
+    p, li { 
+        font-size: 1.05rem; 
+        line-height: 1.8; 
+        color: var(--ink-secondary) !important;
+        text-align: justify; 
     }
     
-    .markdown-section a {
+    a { 
+        color: var(--accent-sub) !important; 
+        text-decoration: none; 
+        border-bottom: 1px solid rgba(120, 144, 156, 0.3); 
+        transition: all 0.2s; 
+    }
+    a:hover { 
         color: var(--accent-color) !important;
-        text-decoration: none;
-        border-bottom: 1px dotted var(--accent-color);
-        transition: all 0.3s ease;
-        font-weight: 600;
-    }
-    .markdown-section a:hover {
-        border-bottom: 1px solid var(--accent-color);
-        text-shadow: 0 0 8px var(--accent-glow);
+        border-bottom-color: var(--accent-color);
+        background: rgba(188, 62, 52, 0.05);
     }
 
     blockquote {
-        border-left: 4px solid var(--accent-color);
-        background: rgba(255,255,255, 0.1) !important;
-        color: var(--text-secondary) !important;
-        border-radius: 0 10px 10px 0;
-        margin: 2em 0;
-        padding: 20px 30px;
-        font-family: var(--font-title-sub);
+        border-left: 3px solid var(--accent-color);
+        background: rgba(0,0,0,0.02);
+        margin: 2em 0; padding: 15px 25px;
+        font-family: var(--font-body);
         font-style: italic;
-        font-size: 1.1em;
-    }
-    
-    pre {
-        background: rgba(0,0,0,0.05) !important;
-        border-radius: 15px;
-        border: 1px solid var(--glass-border);
-    }
-    [data-theme="personal"] pre {
-        background: rgba(0,0,0,0.3) !important;
+        color: var(--ink-secondary) !important;
     }
 
-    @media screen and (max-width: 768px) {
-        .main-title { font-size: 3.5rem; margin-top: 140px;}
-        .subtitle-text { font-size: 1.4rem; }
-        .mode-switcher { top: 20px; right: 20px; }
-        .switch-btn { padding: 8px 16px; font-size: 10px; }
-        .header-container { top: 80px; width: 95%; }
-        .nav-pills ul { flex-wrap: wrap; justify-content: center; }
-        .nav-pills center { padding: 8px 15px; font-size: 0.85rem; }
-        .markdown-section { padding: 40px 30px !important; margin-top: 40px; border-radius: 20px;}
-        .vine-decoration { width: 200px; height: 200px; } /* 移动端缩小藤蔓 */
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+        .main-title { font-size: 3rem; }
+        .hero-section::before { width: 90%; }
+        .corner-lattice { display: none; } /* 移动端隐藏角落装饰 */
+        .markdown-section { padding: 30px 20px !important; width: 90%; background: transparent !important; }
+        .vertical-decoration { display: none; }
+        .seal-switch { top: auto; bottom: 30px; right: 30px; }
     }
 
     </style>
 </head>
 <body>
 
-    <div class="dream-background"></div>
-    
-    <!-- 精灵容器 -->
-    <div class="wisp-container" id="wisp-container"></div>
+    <div class="corner-lattice top-left"></div>
+    <div class="corner-lattice top-right"></div>
+    <div class="corner-lattice bottom-left"></div>
+    <div class="corner-lattice bottom-right"></div>
 
-    <!-- 左下角藤蔓 SVG -->
-    <svg class="vine-decoration vine-left" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <!-- 主枝干 -->
-        <path class="vine-path" d="M0,200 Q50,150 40,100 T80,50 T120,20" fill="none" />
-        <!-- 分支 1 -->
-        <path class="vine-path delay-1" d="M40,100 Q10,80 20,60" fill="none" />
-        <!-- 分支 2 -->
-        <path class="vine-path delay-2" d="M80,50 Q110,40 130,60" fill="none" />
-        <!-- 卷须 -->
-        <path class="vine-path delay-1" d="M20,60 C10,50 30,40 25,55" fill="none" />
-    </svg>
+    <div class="ink-bg"></div>
+    <div class="mountain-silhouette"></div>
+    <canvas id="ink-trail-canvas"></canvas>
 
-    <!-- 右下角藤蔓 SVG (通过CSS镜像翻转) -->
-    <svg class="vine-decoration vine-right" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <path class="vine-path" d="M0,200 Q50,150 40,100 T80,50 T120,20" fill="none" />
-        <path class="vine-path delay-1" d="M40,100 Q10,80 20,60" fill="none" />
-        <path class="vine-path delay-2" d="M80,50 Q110,40 130,60" fill="none" />
-        <path class="vine-path delay-1" d="M20,60 C10,50 30,40 25,55" fill="none" />
-    </svg>
+    <div id="brush-cursor"></div>
 
-    <div class="mode-switcher">
-        <button class="switch-btn" id="modeBtn" onclick="toggleModeWithJump()">
-            Switch Realm
-        </button>
+    <button class="seal-switch" id="modeBtn" onclick="toggleModeWithAnim()">
+        <span>境</span> </button>
+
+    <div class="nav-wrapper">
+        <nav class="classic-nav" style="right: 80px;">
+            <ul id="nav-list"></ul>
+        </nav>
     </div>
 
-    <header class="header-container">
-        <nav class="nav-pills glass-card">
-            <ul id="nav-list">
-                </ul>
-        </nav>
-    </header>
-
-    <div class="hero-title">
-        <div class="main-title" id="hero-text">Calculating Dream...</div>
-        <div class="subtitle-text" id="sub-text">Loading reality construct</div>
+    <div class="hero-section">
+        <div class="vertical-decoration" id="vert-decor">博学笃行</div> 
+        
+        <div class="main-title" id="hero-text">Shengqi Dang</div>
+        <br>
+        <div class="sub-title" id="sub-text">Logic & Romance</div>
     </div>
 
     <div id="app"></div>
 
     <script>
-        // --- 配置数据 ---
+        // --- 核心配置 ---
         const config = {
             academic: {
-                modeName: 'academic',
                 theme: 'academic',
-                heroText: 'The Rational Dreamer',
-                subText: 'Exploring structures, data, and design.',
-                statusText: 'REALM: ACADEMIC',
-                readLabel: '✧ CURRENT REALM: RATIONALITY ✧',
-                btnText: 'Enter Dreamworld',
+                heroText: 'Shengqi Dang', // 英文名用衬线体更学术
+                subText: 'Researcher · Developer · Dreamer', // 更具体的学术身份
+                sealChar: '理', 
+                vertDecor: '博学笃行', // 竖排装饰字：博学笃行 (Scholarly & Dedicated)
                 homeLink: '#/README.md',
                 menu: [
                     { text: 'About', link: '#/README.md' },
-                    { text: 'Publications', link: '#/pub.md' },
-                    { text: 'Designs', link: '#/proj.md' },
-                    { text: 'Journey', link: '#/cv.md' }
+                    { text: 'Research', link: '#/pub.md' },
+                    { text: 'Projects', link: '#/proj.md' },
+                    { text: 'CV', link: '#/cv.md' }
                 ]
             },
             personal: {
-                modeName: 'personal',
                 theme: 'personal',
-                heroText: 'The Wandering Soul',
-                subText: 'Lost in colors, emotions, and stories.',
-                statusText: 'REALM: DREAMWORLD',
-                readLabel: '✧ CURRENT REALM: IMAGINATION ✧',
-                btnText: 'Wake Up To Reality',
+                heroText: 'Ethereal Void',
+                subText: 'Collecting fallen blossoms in silence.', 
+                sealChar: '心',
+                vertDecor: '心游万仞', // 竖排装饰字
                 homeLink: '#/README-pers.md',
                 menu: [
-                    { text: 'My Essence', link: '#/README-pers.md' },
+                    { text: 'Essence', link: '#/README-pers.md' },
                     { text: 'Gallery', link: '#/works.md' },
-                    { text: 'Musings', link: '#/blogs.md' }
+                    { text: 'Mind', link: '#/blogs.md' }
                 ]
             }
         };
 
         let currentMode = 'academic';
 
-        // --- 精灵生成器 (New) ---
-        function spawnWisps() {
-            const container = document.getElementById('wisp-container');
-            const wispCount = 15; // 精灵数量
+        // --- 1. 水墨光标逻辑 (Ink Brush Cursor) ---
+        const brushCursor = document.getElementById('brush-cursor');
+        const canvas = document.getElementById('ink-trail-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let points = [];
 
-            for (let i = 0; i < wispCount; i++) {
-                const wisp = document.createElement('div');
-                wisp.classList.add('wisp');
-                
-                // 随机大小
-                const size = Math.random() * 10 + 4 + 'px';
-                wisp.style.width = size;
-                wisp.style.height = size;
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-                // 随机水平位置
-                wisp.style.left = Math.random() * 100 + 'vw';
+        document.addEventListener('mousemove', (e) => {
+            brushCursor.style.left = e.clientX + 'px';
+            brushCursor.style.top = e.clientY + 'px';
+            points.push({ x: e.clientX, y: e.clientY, age: 0, force: Math.random() });
 
-                // 随机动画时长和延迟，制造错落感
-                const duration = Math.random() * 10 + 10 + 's'; // 10-20s
-                const delay = Math.random() * 10 + 's';
-                
-                wisp.style.animationDuration = duration;
-                wisp.style.animationDelay = delay;
-
-                container.appendChild(wisp);
+            if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+                brushCursor.classList.add('hovered');
+            } else {
+                brushCursor.classList.remove('hovered');
             }
-        }
+        });
 
-        // --- 藤蔓重绘 (New) ---
-        function replayVineAnimation() {
-            // 简单的移除再添加 class 来触发 CSS 动画重播
-            const vines = document.querySelectorAll('.vine-path');
-            vines.forEach(vine => {
-                vine.style.animation = 'none';
-                vine.offsetHeight; /* trigger reflow */
-                vine.style.animation = null; 
-            });
-        }
+        function inkLoop() {
+            ctx.clearRect(0, 0, width, height);
+            if (points.length > 1) {
+                ctx.beginPath();
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
 
-        function toggleModeWithJump() {
+                for (let i = 0; i < points.length - 1; i++) {
+                    const p1 = points[i];
+                    const p2 = points[i+1];
+                    p1.age++;
+                    
+                    const isDark = currentMode === 'personal';
+                    // 学术模式下墨迹稍微蓝一点，个人模式纯白/灰
+                    const color = isDark ? '230, 230, 230' : '44, 62, 80'; 
+                    const opacity = 1 - (p1.age / 25);
+                    
+                    if (opacity > 0) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(${color}, ${opacity * 0.4})`;
+                        ctx.lineWidth = (15 - p1.age * 0.5) * p1.force;
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+                points = points.filter(p => p.age < 25);
+            }
+            requestAnimationFrame(inkLoop);
+        }
+        inkLoop();
+
+
+        // --- 2. 页面逻辑 & 切换动画 ---
+
+        function toggleModeWithAnim() {
+            const btn = document.getElementById('modeBtn');
+            btn.style.transform = "rotate(360deg) scale(0.8)";
+            setTimeout(() => { btn.style.transform = ""; }, 400);
+
             const targetMode = currentMode === 'academic' ? 'personal' : 'academic';
-            window.location.hash = config[targetMode].homeLink;
-            toggleMode();
+            
+            document.body.style.opacity = 0;
+            
+            setTimeout(() => {
+                window.location.hash = config[targetMode].homeLink;
+                toggleMode();
+                document.body.style.opacity = 1;
+            }, 600);
         }
 
         function toggleMode() {
             currentMode = currentMode === 'academic' ? 'personal' : 'academic';
             renderInterface();
-            replayVineAnimation(); // 切换模式时藤蔓重新生长
         }
 
         function renderInterface() {
@@ -513,8 +537,8 @@
             const navList = document.getElementById('nav-list');
             const heroText = document.getElementById('hero-text');
             const subText = document.getElementById('sub-text');
+            const vertDecor = document.getElementById('vert-decor');
             const modeBtn = document.getElementById('modeBtn');
-            const contentBox = document.querySelector('.markdown-section');
 
             if (currentMode === 'personal') {
                 document.documentElement.setAttribute('data-theme', 'personal');
@@ -522,33 +546,31 @@
                 document.documentElement.removeAttribute('data-theme');
             }
 
-            modeBtn.innerText = data.btnText;
-            heroText.innerHTML = data.heroText.replace(/\n/g, '<br>');
+            modeBtn.innerHTML = `<span>${data.sealChar}</span>`;
+            heroText.innerText = data.heroText;
             subText.innerText = data.subText;
-            
-            if(contentBox) {
-                contentBox.setAttribute('data-mode-label', data.readLabel);
-            }
+            if(vertDecor) vertDecor.innerText = data.vertDecor;
 
             navList.innerHTML = '';
             data.menu.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `<a href="${item.link}"><center>${item.text}</center></a>`;
+                li.innerHTML = `<a href="${item.link}">${item.text}</a>`;
                 navList.appendChild(li);
             });
         }
 
+        // --- Docsify ---
         window.$docsify = {
             name: "Shengqi Dang",
-            themeColor: "#6a89cc",
+            themeColor: "#bc3e34", 
             hideSidebar: true,
             executeScript: true,
             auto2top: true,
             plugins: [
                 function(hook, vm) {
                     hook.doneEach(function() {
-                        const contentBox = document.querySelector('.markdown-section');
-                        if (window.location.hash.includes('README-pers.md') || window.location.hash.includes('works.md') || window.location.hash.includes('blogs.md')) {
+                        const hash = window.location.hash;
+                        if (hash.includes('README-pers.md') || hash.includes('works.md') || hash.includes('blogs.md')) {
                              if(currentMode !== 'personal') {
                                  currentMode = 'personal';
                                  renderInterface();
@@ -558,9 +580,6 @@
                                  currentMode = 'academic';
                                  renderInterface();
                              }
-                        }
-                        if(contentBox) {
-                            contentBox.setAttribute('data-mode-label', config[currentMode].readLabel);
                         }
                     });
                 }
@@ -572,7 +591,6 @@
                 currentMode = 'personal';
             }
             renderInterface();
-            spawnWisps(); // 初始化精灵
         });
     </script>
 

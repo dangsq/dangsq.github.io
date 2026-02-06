@@ -17,7 +17,7 @@
     </div>
     <br />    <br />
     
-    Annual AAAI Conference on Artificial Intelligence (AAAI), 2026 (Accepted) <br /> <br />
+    Annual AAAI Conference on Artificial Intelligence (AAAI), 2026 <br /> <br />
     Shengqi Dang, Fu Chai, Jiaxin Li, Chao Yuan, Wei Ye, Nan Cao  <br /> <br />
   </div>
 </div>
@@ -32,7 +32,7 @@
     </div>
     <br />    <br />
     
-    Annual AAAI Conference on Artificial Intelligence (AAAI), 2026 (Accepted) <br /> <br />
+    Annual AAAI Conference on Artificial Intelligence (AAAI), 2026 <br /> <br />
     Ziqing Qian, Jiaying Lei, Shengqi Dang, Nan Cao  <br /> <br />
   </div>
 </div>
@@ -112,10 +112,21 @@
     <!-- 智能可控的情感化图像生成  -->
     <!-- Controllable Emotional Image Generation -->
   </div>
+
+  </div>
 </div>
 
-
-
+  <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+    <div>
+    <font size="+1"><a href = "https://dlnext.acm.org/doi/10.1145/3778349"> FreeShell: A Context-Free 4D Printing Technique for Fabricating Complex 3D Triangle Mesh Shells</a></font>
+    <br /><br />
+          <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">4D打印</span>
+          <span style="border: 1px solid var(--doudou-cream);  padding: 4px 8px; border-radius: 0px;">曲面展平</span>
+    <br /><br />
+    ACM Transactions on Graphics, 2026  <br /> <br />
+    Chao Yuan, Shengqi Dang, Xuejiao Ma, Nan Cao  <br /> <br />
+  </div>
+</div>
 </div>
 <center style="margin-top: 50px; color: #888; font-size: 12pt;">
   © 2025 Shengqi Dang. All rights reserved.<br/>
