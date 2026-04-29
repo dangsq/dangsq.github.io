@@ -13,36 +13,48 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="nav-fixed">
+    <nav className="border-b border-[var(--border-color)] bg-[var(--bg-primary)]">
       <div className="container">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-2xl">🦋</span>
-            <span className="font-semibold text-lg">Shengqi Dang</span>
+          <Link href="/" className="group">
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-[var(--text-primary)] group-hover:text-[var(--accent-primary)] transition-colors">
+                Shengqi Dang
+              </span>
+              <span className="text-sm text-[var(--text-secondary)]">
+                党圣奇
+              </span>
+            </div>
           </Link>
 
           {/* Navigation Links */}
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`text-sm font-medium transition-colors relative py-2 ${
                   pathname === item.href
-                    ? 'bg-[var(--accent-light)] text-[var(--accent-primary)]'
-                    : 'text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]'
+                    ? 'text-[var(--accent-primary)]'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
               >
                 {item.name}
+                {pathname === item.href && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-primary)]"></span>
+                )}
               </Link>
             ))}
           </div>
 
           {/* Contact */}
-          <div className="hidden md:flex items-center space-x-4 text-sm text-[var(--text-secondary)]">
-            <a href="mailto:dangsq123@163.com" className="hover:text-[var(--accent-primary)]">
-              Email
+          <div className="hidden lg:flex items-center">
+            <a 
+              href="mailto:dangsq123@163.com" 
+              className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors"
+            >
+              Contact
             </a>
           </div>
         </div>
@@ -50,3 +62,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

@@ -4,16 +4,13 @@ export default function Home() {
       {/* Hero Section */}
       <section className="container py-20 md:py-32">
         <div className="max-w-4xl mx-auto text-center fade-in">
-          <div className="mb-6">
-            <span className="text-6xl md:text-7xl">🦋</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 text-[var(--text-primary)]">
+          <h1 className="text-5xl md:text-7xl font-bold mb-4 text-[var(--text-primary)]">
             Shengqi Dang
           </h1>
-          <h2 className="text-2xl md:text-3xl mb-6 text-[var(--text-secondary)]">
+          <h2 className="text-3xl md:text-4xl mb-6 text-[var(--text-secondary)]">
             党圣奇
           </h2>
-          <p className="text-lg text-[var(--text-secondary)] mb-8">
+          <p className="text-xl text-[var(--text-secondary)] mb-8">
             PhD Candidate at Tongji University
           </p>
           <div className="flex flex-wrap justify-center gap-4 text-sm text-[var(--text-secondary)]">

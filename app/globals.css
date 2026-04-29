@@ -187,13 +187,3 @@ a:hover {
     padding: 0 1rem;
   }
 }
-
-/* 导航栏固定 */
-.nav-fixed {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-color);
-  backdrop-filter: blur(10px);
-}
