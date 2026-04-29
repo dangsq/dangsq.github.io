@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+/* =========================================
+   [电子蝴蝶效应 - Y2K / Low-Poly / 古早Windows]
+   ========================================= */
+:root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-panel: rgba(20, 20, 35, 0.85);
+    --bg-window: #c0c0c0;
+    --bg-titlebar: linear-gradient(90deg, #000080, #1084d0);
+    
+    --chrome-1: #d4d4d4;
+    --chrome-2: #a8a8a8;
+    --chrome-3: #808080;
+    --chrome-highlight: #ffffff;
+    --chrome-shadow: #404040;
+    
+    --neon-cyan: #00ffff;
+    --neon-magenta: #ff00ff;
+    --neon-pink: #ff6ec7;
+    --neon-blue: #4169ff;
+    --neon-green: #39ff14;
+    --neon-orange: #ff6600;
+    --neon-yellow: #ffff00;
+    
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0b0;
+    --text-link: #00ccff;
+    --text-accent: #ff6ec7;
+    
+    --font-pixel: 'Press Start 2P', monospace;
+    --font-terminal: 'VT323', monospace;
+    --font-tech: 'Orbitron', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --font-cn: 'Ma Shan Zheng', cursive;
+    
+    --scanline-opacity: 0.04;
+    --noise-opacity: 0.03;
+    --glitch-intensity: 2px;
+    
+    --win-border-light: #ffffff;
+    --win-border-dark: #808080;
+    --win-border-darker: #404040;
+    --win-bg: #c0c0c0;
+
+    --ink-black: #1a1a1a;
+    --doudou-cream: #f5f1e8;
+    --accent-purple: #9b59b6;
+}
+
+/* =========================================
+   基础样式
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    line-height: 1.6;
+    position: relative;
+}
+
+/* =========================================
+   扫描线效果
+   ========================================= */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 255, 0.03) 0px,
+        transparent 1px,
+        transparent 2px,
+        rgba(0, 255, 255, 0.03) 3px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    opacity: var(--scanline-opacity);
+}
+
+/* =========================================
+   网格背景
+   ========================================= */
+.grid-bg {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40vh;
+    z-index: -10;
+    background-image: 
+        linear-gradient(rgba(0, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 255, 0.05) 1px, transparent 1px);
+    background-size: 80px 40px;
+    transform: perspective(300px) rotateX(65deg);
+    transform-origin: center bottom;
+    mask-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+/* =========================================
+   链接样式
+   ========================================= */
+a {
+    color: var(--text-link);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* =========================================
+   按钮样式
+   ========================================= */
+.project-toggle {
+    background: #fff;
+    border: 3px solid var(--ink-black);
+    color: var(--ink-black);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    padding: 15px 35px;
+    cursor: pointer;
+    font-size: 1rem;
+    box-shadow: 5px 5px 0 var(--ink-black);
+    transition: 0.2s;
+    margin-top: 10px;
+}
+
+.project-toggle:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 8px 8px 0 var(--accent-purple);
+}
+
+/* =========================================
+   项目详情
+   ========================================= */
+.project-details {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
+    margin-top: 0;
+    padding-top: 0;
+    box-sizing: border-box;
+}
+
+.project-details.open {
+    opacity: 1;
+    visibility: visible;
+    margin-top: 20px;
+    padding-top: 20px;
+    height: auto; 
+}
+
+/* =========================================
+   标签样式
+   ========================================= */
+.tag {
+    border: 1px solid var(--doudou-cream);
+    padding: 4px 8px;
+    border-radius: 0px;
+    display: inline-block;
+    margin: 4px;
+}
+
+/* =========================================
+   动画
+   ========================================= */
+@keyframes float-spin {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+    100% { transform: translateY(0) rotate(360deg); }
+}
+
+@keyframes glow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
