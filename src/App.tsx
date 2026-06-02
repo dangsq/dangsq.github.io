@@ -8,7 +8,15 @@ const SECTIONS = [
     items: [
       {
         title: 'Background',
-        content: `PhD candidate at Shanghai Innovation Institute (from 2025.09) & Tongji University (from 2025.03).
+        content: `上海创智学院 博士生（2025.09 起）& 同济大学（2025.03 起）
+
+同济大学设计创意学院 人工智能与数据设计 硕士（2023.09 – 2025.01）
+
+同济大学 数学科学学院 学士（2019.09 – 2023.06）
+
+---
+
+PhD candidate at Shanghai Innovation Institute (from 2025.09) & Tongji University (from 2025.03).
 
 Master of AI and Data Design at Tongji University College of Design and Innovation (2023.09 – 2025.01)
 
@@ -16,17 +24,33 @@ Bachelor of Mathematics at Tongji University (2019.09 – 2023.06)`
       },
       {
         title: 'Personality',
-        content: `INFP personality type. Passionate about creative technology, design thinking, and building things that matter.
+        content: `INFP 人格类型。热爱创意科技、设计思维和创造有意义的事物。
+坚信跨学科研究的力量。
+
+---
+
+INFP personality type. Passionate about creative technology, design thinking, and building things that matter.
 Believes in the power of interdisciplinary research.`,
       },
       {
         title: 'Interests',
-        content: `Human-Computer Interaction · Computer Vision · Intelligent Design · Generative Models · Graphics
+        content: `人机交互 · 计算机视觉 · 智能设计 · 生成式模型 · 图形学
+热衷于探索技术、艺术与人类体验的交汇点。
+
+---
+
+Human-Computer Interaction · Computer Vision · Intelligent Design · Generative Models · Graphics
 Love exploring the intersection of technology, art, and human experience.`,
       },
       {
         title: 'Contact',
-        content: `Feel free to reach out for research collaboration, project discussions, or just a nice chat about technology and design!
+        content: `欢迎联系我进行科研合作、项目讨论，或聊聊技术与设计！
+
+        邮箱: dangsq123@163.com
+
+---
+
+Feel free to reach out for research collaboration, project discussions, or just a nice chat about technology and design!
         
         Email: dangsq123@163.com
         `
@@ -37,8 +61,10 @@ Love exploring the intersection of technology, art, and human experience.`,
     key: 'research', label: 'Research & Publications', color: '#FF0055',
     items: [
       {
-        title: 'Human-Centered Generative Models',
-        content: `<b>EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model</b>
+        title: 'Human-Centered GenAI',
+        content: `<b>以人为中心的生成式模型 / Human-Centered Generative Models</b>
+
+<b>EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model</b>
 Shengqi Dang, Yi He, Long Ling, Ziqing Qian, Nanxuan Zhao, Nan Cao
 <i>ICCV 2025</i>
 
@@ -48,7 +74,9 @@ Shengqi Dang, Jiaying Lei, Yi He, Ziqing Qian, Nan Cao
       },
       {
         title: 'Personalization',
-        content: `<b>Personalizing Products with Stylized Head Portraits for Self-Expression</b>
+        content: `<b>个性化 / Personalization</b>
+
+<b>Personalizing Products with Stylized Head Portraits for Self-Expression</b>
 Yang Shi, Yechun Peng, Shengqi Dang, Nanxuan Zhao, Nan Cao
 <i>CHI 2024</i>
 
@@ -58,7 +86,9 @@ Nanxuan Zhao, Shengqi Dang, Hexun Lin, Yang Shi, Nan Cao
       },
       {
         title: 'Graphics & Fabrication',
-        content: `<b>DensiCrafter: Physically-Constrained Generation and Fabrication of Self-Supporting Hollow Structures</b>
+        content: `<b>图形学与制造 / Graphics & Fabrication</b>
+
+<b>DensiCrafter: Physically-Constrained Generation and Fabrication of Self-Supporting Hollow Structures</b>
 Shengqi Dang, Fu Chai, Jiaxin Li, Chao Yuan, Wei Ye, Nan Cao
 <i>AAAI 2026</i> 
 
@@ -68,7 +98,9 @@ Chao Yuan, Shengqi Dang, Xuejiao Ma, Nan Cao
       },
       {
         title: 'Visualization',
-        content: `<b>MV-Crafter: An Intelligent System for Music-guided Video Generation</b>
+        content: `<b>可视化 / Visualization</b>
+
+<b>MV-Crafter: An Intelligent System for Music-guided Video Generation</b>
 Chuer Chen, Shengqi Dang, Yuqi Liu, Nanxuan Zhao, Yang Shi, Nan Cao
 <i>ACM Transactions on Interactive Intelligent Systems (TiiS) 2025</i>
 
@@ -104,26 +136,52 @@ Yifang Wang, Yifan Qian, Xiaoyu Qi, Yian Yin, Shengqi Dang, Ziqing Qian, Benjami
     ]
   },
   {
-     key: 'demos', label: 'Demos', color: '#FF0055',
+     key: 'projects', label: 'Projects', color: '#FF0055',
      items: [
-       {
-         title: 'Visualization',
-         content: `TBD`,
-       },
-       {
-         title: 'Artwork',
-         content: `TBD`,
-       },
-       {
-         title: 'AI Applications',
-         content: `TBD`,
-       },
-       {
-         title: 'Others',
-         content: `TBD`,
-       },
-     ]
-   },
+        {
+          title: 'LLM & Agents',
+          content: `<div class="project-item">
+  <div class="pj-title">LLM长短期记忆存储及任务规划 — Research on LLM Long Short Term Memory Storage and Task Planning</div>
+  <div class="pj-meta">李雪琛，刘雨绮，党圣奇 / Xuechen Li, Yuqi Liu, Shengqi Dang | 2023 fall</div>
+  <div class="pj-tags">交互设计 · 智能体 · 大语言模型 · 用户界面设计 / Interaction Design · Agents · LLM · UI Design</div>
+  <div class="pj-desc">大语言模型的出现让人们看到了解决复杂问题的可能。然而，受限于其自身的限制（幻觉，记忆有限，以及交互方式单一等问题），其在实际应用中往往会遇到一些挑战。我们通过设计交互方式，让人类可以参与到大语言模型的记忆管理，并使用工作流的方式对模型的记忆进行整理和规划，从而实现更高效的记忆管理和任务规划。<br><br>The emergence of large language models has shown the potential to solve complex problems. However, due to their inherent limitations (hallucinations, limited memory, single interaction methods), they often face challenges in practical applications. We designed interaction methods that allow humans to participate in the memory management of LLMs, using workflow approaches to organize and plan the model's memory.</div>
+</div>`,
+        },
+        {
+          title: 'Media Art',
+          content: `<div class="project-item">
+  <div class="pj-title">文字洪流 — TORRENT OF WORDS</div>
+  <div class="pj-meta">倪豪，何一，党圣奇 / Hao Ni, Yi He, Shengqi Dang | 2023 winter</div>
+  <div class="pj-tags">体验设计 · 视觉艺术 · 粒子模拟 / 流体模拟 · Unity / Experience Design · Visual Art · Particle/Fluid Simulation · Unity</div>
+  <div class="pj-desc">生成式 AI 的时代，语言与文字已不再是人类的特权。大语言模型所产生的文字和其中蕴含的情感、观点、知识、智慧正不断膨胀，终有一天会超过全体人类所产生的文字量。我们希望通过一个多端的可交互程序，使观众在文字的洪流沉浸体验，寻找人和语言之间的新关系。<br><br>In the era of generative AI, language and text are no longer exclusive to humans. We aim to create a multi-platform interactive program that allows audiences to immerse themselves in the torrent of words and explore new relationships between humans and language.</div>
+</div>`,
+        },
+        {
+          title: 'Game Design',
+          content: `<div class="project-item">
+  <div class="pj-title">radical run run run</div>
+  <div class="pj-meta">倪豪，叶婧鑫，党圣奇 / Hao Ni, Jingxin Ye, Shengqi Dang | 2024 spring & summer</div>
+  <div class="pj-tags">游戏设计 · 算法设计 · 传统文化 / Game Design · Algorithm Design · Traditional Culture</div>
+  <div class="pj-desc">许多外国人发现学习中文是一项具有挑战性的任务，尤其是汉字。我们的游戏旨在为用户提供一个轻松、愉快的学习途径，用户利用碎片时间来玩游戏，他们既可以打发时间，也可以提高的汉字识别和书写能力。<br><br>Many foreigners find learning Chinese challenging, especially Chinese characters. Our game provides a relaxed and enjoyable learning approach, allowing users to play during fragmented time while improving Chinese character recognition and writing skills.</div>
+</div>`,
+        },
+        {
+          title: 'AI & Visualization',
+          content: `<div class="project-item">
+  <div class="pj-title">How Stable Diffusion Imagines Images — 一段数据可视化之旅</div>
+  <div class="pj-meta">倪豪，党圣奇 / Hao Ni, Shengqi Dang | 2023 fall</div>
+  <div class="pj-tags">信息设计 · 可视化 · 前端 · 生成式模型 / Information Design · Visualization · Frontend · Generative Models</div>
+  <div class="pj-desc">移步 <a href="https://sd-vis.ioclab.app" target="_blank" rel="noopener">sd-vis.ioclab.app</a> 查看完整内容。<br><br>Visit <a href="https://sd-vis.ioclab.app" target="_blank" rel="noopener">sd-vis.ioclab.app</a> to view the full content.</div>
+</div>
+<div class="project-item">
+  <div class="pj-title">Picme 个性化内容定制系统 — Picme Personalized Content Customization System</div>
+  <div class="pj-meta">彭也纯，党圣奇，石洋，曹楠，赵南轩 / Yechun Peng, Shengqi Dang, Yang Shi, Nan Cao, Nanxuan Zhao | 2022 fall</div>
+  <div class="pj-tags">交互设计 · 内容定制 · 卡通头像生成 / Interaction Design · Content Customization · Cartoon Avatar</div>
+  <div class="pj-desc">个性化产品帮助我们提升自我认识以及有助于自我表达。我们利用深度学习模型设计了头像照片到卡通头像的转化系统，并应用到个性化内容定制系统中。<br><br>Personalized products enhance self-awareness and facilitate self-expression. We designed a deep learning system to transform profile photos into cartoon avatars, applied to a personalized content customization system.</div>
+</div>`,
+        },
+      ]
+    },
 ]
 
 function App() {
@@ -219,10 +277,8 @@ function App() {
     })
 
     const sequence: { faceIdx: number; subIdx: number }[] = []
-    for (let f = 0; f < 4; f++) {
-      for (let s = 0; s < 4; s++) {
-        sequence.push({ faceIdx: f, subIdx: s })
-      }
+    for (let s = 0; s < 4; s++) {
+      sequence.push({ faceIdx: 0, subIdx: s })
     }
 
     const cameraDir = new THREE.Vector3(-2, 0, 4.5).normalize()
@@ -297,9 +353,9 @@ function App() {
 
     const subTitles = [
       ['Background', 'Personality', 'Interests', 'Contact'],
-      ['Generative Models', 'Personalization', 'Graphics & Fab', 'Visualization'],
+        ['Human-Centered GenAI', 'Personalization', 'Graphics & Fab', 'Visualization'],
       ['TBD1', 'TBD2', 'TBD3', 'TBD4'],
-      ['Visualization', 'Artwork', 'AI Apps', 'Others'],
+      ['LLM & Agents', 'Media Art', 'Game Design', 'AI & Visualization'],
     ]
 
     triangleData.forEach(tri => {
@@ -474,10 +530,6 @@ function App() {
     canvas.addEventListener('mouseenter', () => {
       autoModeRef.current = false
       setAutoPlaying(false)
-      if (resumeTimerRef.current) { clearTimeout(resumeTimerRef.current); resumeTimerRef.current = null }
-    })
-    canvas.addEventListener('mouseleave', () => {
-      resumeTimerRef.current = setTimeout(() => { autoModeRef.current = true; setAutoPlaying(true) }, 1500)
     })
 
     const handleResize = () => {
@@ -603,6 +655,7 @@ function App() {
   return (
     <main className="main-container">
       <canvas ref={canvasRef} className="canvas" />
+      <div className="hint-text">Click a triangle to explore ↩</div>
       <div className="content-panel">
         <div className="panel-header">
           <div className="section-title" style={{ color: displaySection.color }}>
@@ -626,6 +679,7 @@ function App() {
         </div>
       </div>
       <div className="cursor-dot" style={{ left: mouse.x - 5, top: mouse.y - 5, background: displaySection.color }} />
+      <div className="copyright">© 2026 Shengqi Dang. All rights reserved.</div>
       {autoPlaying && <div className="auto-badge">AUTO</div>}
     </main>
   )
