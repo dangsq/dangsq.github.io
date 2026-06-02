@@ -19,6 +19,12 @@
 
 # production
 /build
+/dist
+
+# vite generated
+.vite
+vite.config.d.ts
+vite.config.js
 
 # misc
 .DS_Store
@@ -39,3 +45,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.DS_Store
