@@ -2,6 +2,11 @@
   "name": "dangsq.github.io",
   "version": "0.1.0",
   "private": true,
+  "author": "Shengqi Dang <dangsq123@163.com>",
+  "contributors": [
+    "Shengqi Dang <dangsq123@163.com>",
+    "opencode (https://opencode.ai)"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

@@ -1,13 +1,14 @@
 # Dangs — Personal Website
 
-Personal portfolio website with an interactive 3D tetrahedron interface built with Three.js.
+A maximalist scrapbook / zine personal site — papers, projects and doodles all taped onto a living sticker-bomb background.
 
 ## Tech Stack
 
 - **React 18** — UI framework
 - **TypeScript** — Type safety
-- **Three.js** — 3D rendering
 - **Vite** — Build tool
+- **Framer Motion** — Scroll reveals & hover animations
+- Hand-drawn fonts (Caveat, Permanent Marker, Special Elite, Gochi Hand) + a custom kawaii SVG icon library
 
 ## Development
 
@@ -20,13 +21,21 @@ npm run build      # Build for production
 ## Deployment
 
 ```bash
-./deploy.sh        # Build + push to main branch → GitHub Pages
+npm run build      # Build into dist/
+# then push dist/ contents to the main branch → GitHub Pages
 ```
 
 ## Structure
 
-- `src/App.tsx` — Main component with 3D tetrahedron logic & content
-- `src/App.css` — All styles
-- `src/main.tsx` — React entry point
+- `src/data/content.ts` — profile, publications, projects data
+- `src/components/Scrapbook.tsx` — the scrollable spreads (cover, about, publications, projects, contact)
+- `src/components/ScrapField.tsx` — dense tiled sticker-bomb background
+- `src/components/Decorations.tsx` — kawaii SVG icon & material library (stickers, washi tape, stamps…)
+- `src/App.tsx` / `src/App.css` — entry & styles
 - `docs` branch — Source code (develop here)
 - `main` branch — Built output (auto-deployed to GitHub Pages)
+
+## Credits
+
+- Hand-crafted by **Shengqi Dang** ([dangsq123@163.com](mailto:dangsq123@163.com))
+- Pair-programmed with [opencode](https://opencode.ai) — AI contributor ✨
