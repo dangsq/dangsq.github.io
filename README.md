@@ -38,4 +38,4 @@ npm run build      # Build into dist/
 ## Credits
 
 - Hand-crafted by **Shengqi Dang** ([dangsq123@163.com](mailto:dangsq123@163.com))
-- Pair-programmed with [opencode](https://opencode.ai) — AI contributor ✨
+- Pair-programmed with **GLM-5.2** ([Zhipu AI](https://www.zhipuai.cn)) via [opencode](https://opencode.ai) — AI contributor ✨
