@@ -1,8 +1,7 @@
-import { Scrapbook } from './components/Scrapbook'
-import './App.css'
+import { Room } from './room/Room'
 
 function App() {
-  return <Scrapbook />
+  return <Room />
 }
 
 export default App
