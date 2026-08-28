@@ -233,16 +233,18 @@ export function Room() {
               <span className="poster-venue">Publications ✦ {publications.length} 篇</span>
             </div>
             <div className="info-list">
-              {publications.map(p => (
-                <div className="info-item" key={p.title}>
-                  <div className="info-item-title">{p.title}</div>
-                  <div className="info-item-meta">
-                    {p.stamp && <span className="stamp">{p.stamp}</span>}
-                    <span className="authors">{p.authors}</span>
+              <div className="info-grid">
+                {publications.map(p => (
+                  <div className="info-item" key={p.title}>
+                    <div className="info-item-title">{p.title}</div>
+                    <div className="info-item-meta">
+                      {p.stamp && <span className="stamp">{p.stamp}</span>}
+                      <span className="authors">{p.authors}</span>
+                    </div>
+                    <div className="info-item-desc">{p.abstract}</div>
                   </div>
-                  <div className="info-item-desc">{p.abstract}</div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -258,24 +260,26 @@ export function Room() {
               <span className="poster-venue">Projects ✦ {projects.length} 个</span>
             </div>
             <div className="info-list">
-              {projects.map(p => (
-                <div className="info-item" key={p.title}>
-                  <div className="info-item-title">
-                    {p.title}
-                    {p.titleEn && p.titleEn !== p.title && <span className="title-en"> · {p.titleEn}</span>}
+              <div className="info-grid">
+                {projects.map(p => (
+                  <div className="info-item" key={p.title}>
+                    <div className="info-item-title">
+                      {p.title}
+                      {p.titleEn && p.titleEn !== p.title && <span className="title-en"> · {p.titleEn}</span>}
+                    </div>
+                    <div className="info-item-meta">
+                      <span className="stamp">{p.tags}</span>
+                    </div>
+                    <div className="info-item-desc">{p.desc}</div>
+                    <div className="info-item-foot">
+                      <span className="authors">{p.team}</span>
+                      {p.link && (
+                        <a className="info-link" href={p.link} target="_blank" rel="noreferrer">去看看 ↗</a>
+                      )}
+                    </div>
                   </div>
-                  <div className="info-item-meta">
-                    <span className="stamp">{p.tags}</span>
-                  </div>
-                  <div className="info-item-desc">{p.desc}</div>
-                  <div className="info-item-foot">
-                    <span className="authors">{p.team}</span>
-                    {p.link && (
-                      <a className="info-link" href={p.link} target="_blank" rel="noreferrer">去看看 ↗</a>
-                    )}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -284,7 +288,7 @@ export function Room() {
       {/* About me：点击左缘猫猫 */}
       {panel === 'about' && (
         <div className="poster-modal" onClick={closePanel}>
-          <div className="poster-card info-card" onClick={e => e.stopPropagation()}>
+          <div className="poster-card info-card about-card" onClick={e => e.stopPropagation()}>
             <button className="info-close" onClick={closePanel} aria-label="关闭">✕</button>
             <div className="poster-card-head">
               <h2>关于我</h2>

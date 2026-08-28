@@ -130,7 +130,8 @@
 .poster-modal {
   position: absolute;
   inset: 0;
-  background: rgba(43, 34, 24, 0.4);
+  background: rgba(43, 34, 24, 0.42);
+  backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -348,11 +349,51 @@
    信息面板：论文 / 设计项目 / 关于我 / 联系
    ════════════════════════════════════════ */
 .info-card {
-  width: min(580px, 92%);
-  max-height: 84vh;
+  width: min(780px, 94%);
+  max-width: min(780px, 94%);
+  max-height: 86vh;
   display: flex;
   flex-direction: column;
+  padding: 26px 30px 22px;
+  animation: card-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+@keyframes card-pop {
+  0% { transform: scale(0.86) rotate(-1.5deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+/* 面板顶部和纸胶带装饰 */
+.info-card::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 130px;
+  height: 28px;
+  background: repeating-linear-gradient(45deg, #FFC3DC 0 9px, #FFD9EA 9px 18px);
+  border: 1.5px dashed rgba(74, 53, 36, 0.4);
+  border-radius: 3px;
+  opacity: 0.92;
+}
+.contact-card::before {
+  background: repeating-linear-gradient(45deg, #A8EBC8 0 9px, #CDF4DF 9px 18px);
+}
+/* 面板头部：大手写标题 + 计数戳 */
+.info-card .poster-card-head {
+  align-items: center;
+  gap: 14px;
+  padding-right: 44px;
+}
+.info-card .poster-card-head h2 {
+  font-size: 30px;
+  line-height: 1;
+}
+.info-card .poster-venue {
+  font-size: 12.5px;
+  background: #FF6FB3;
+  box-shadow: 2px 2px 0 rgba(43, 34, 24, 0.2);
+}
+
 .info-close {
   position: absolute;
   top: 14px;
@@ -374,9 +415,18 @@
 }
 
 .info-list {
-  margin-top: 16px;
+  margin-top: 18px;
   overflow-y: auto;
-  padding-right: 8px;
+  padding: 4px 10px 8px 2px;
+}
+/* 论文/项目：双列贴纸墙 */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 640px) {
+  .info-grid { grid-template-columns: 1fr; }
 }
 .info-list::-webkit-scrollbar { width: 8px; }
 .info-list::-webkit-scrollbar-track { background: transparent; }
@@ -386,17 +436,46 @@
 }
 
 .info-item {
+  position: relative;
   background: #FFF9F0;
   border: 2px solid #EDDCC8;
   border-radius: 14px;
-  padding: 13px 16px;
+  padding: 15px 16px 13px;
   margin-bottom: 10px;
-  transition: border-color 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
+/* 双列模式下去掉单列的底边距，贴纸感：偶数项微微倾斜 */
+.info-grid .info-item {
+  margin-bottom: 0;
+  transform: rotate(-0.6deg);
+  box-shadow: 2px 3px 0 rgba(43, 34, 24, 0.1);
+}
+.info-grid .info-item:nth-child(2n) { transform: rotate(0.7deg); }
+.info-grid .info-item:hover,
 .info-item:hover {
   border-color: #FF9ECC;
-  transform: translateX(3px);
+  transform: rotate(0) translateY(-3px);
+  box-shadow: 4px 6px 0 rgba(43, 34, 24, 0.16);
+  z-index: 1;
 }
+/* 角落小星星贴纸 */
+.info-grid .info-item::after {
+  content: '✦';
+  position: absolute;
+  top: -9px;
+  right: 10px;
+  font-size: 15px;
+  color: #FF6FB3;
+  text-shadow: 0 0 4px rgba(255, 111, 179, 0.4);
+  transform: rotate(12deg);
+}
+.info-grid .info-item:nth-child(3n)::after { color: #FFD84D; }
+.info-grid .info-item:nth-child(3n+1)::after { color: #8FD3F4; }
+/* venue 戳颜色交替（粉/蓝/黄/紫） */
+.info-grid .info-item:nth-child(4n+1) .stamp { background: #FF6FB3; }
+.info-grid .info-item:nth-child(4n+2) .stamp { background: #6BB8E8; }
+.info-grid .info-item:nth-child(4n+3) .stamp { background: #F5B942; }
+.info-grid .info-item:nth-child(4n) .stamp { background: #A78BDB; }
 .info-item-title {
   font-size: 15px;
   font-weight: 700;
@@ -531,8 +610,11 @@
   margin-right: 8px;
 }
 
+/* ── About me：长文阅读宽度略窄 ── */
+.about-card { width: min(560px, 94%); max-width: min(560px, 94%); }
+
 /* ── Contact ── */
-.contact-card { width: min(460px, 92%); }
+.contact-card { width: min(460px, 92%); max-width: min(460px, 92%); }
 .contact-mail {
   display: flex;
   align-items: center;
