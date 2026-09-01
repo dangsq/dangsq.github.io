@@ -3,7 +3,7 @@ import * as THREE from 'three/webgpu'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { buildRoom, type RoomHandle } from './scene'
 import { EdgeCritters } from './EdgeCritters'
-import { publications, projects, profile } from '../data/content'
+import { publications, projects, profile, papersMeta } from '../data/content'
 import './Room.css'
 
 type PanelKind = 'papers' | 'projects' | 'about' | 'contact' | null
@@ -232,6 +232,9 @@ export function Room() {
               <h2>研究论文</h2>
               <span className="poster-venue">Publications ✦ {publications.length} 篇</span>
             </div>
+            <div className="sync-badge" title={`数据源：${papersMeta.sources.join(' + ')}`}>
+              <span className="sync-dot" />自动同步 {papersMeta.sources.join(' · ')} · {new Date(papersMeta.fetchedAt).toLocaleDateString('zh-CN')}
+            </div>
             <div className="info-list">
               <div className="info-grid">
                 {publications.map(p => (
@@ -239,9 +242,17 @@ export function Room() {
                     <div className="info-item-title">{p.title}</div>
                     <div className="info-item-meta">
                       {p.stamp && <span className="stamp">{p.stamp}</span>}
-                      <span className="authors">{p.authors}</span>
+                      {typeof p.citationCount === 'number' && p.citationCount > 0 && (
+                        <span className="cites">被引 {p.citationCount}</span>
+                      )}
+                      {p.url && (
+                        <a className="info-link" href={p.url} target="_blank" rel="noreferrer">PDF ↗</a>
+                      )}
                     </div>
                     <div className="info-item-desc">{p.abstract}</div>
+                    <div className="info-item-foot">
+                      <span className="authors">{p.authors}</span>
+                    </div>
                   </div>
                 ))}
               </div>

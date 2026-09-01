@@ -9,6 +9,8 @@
   ],
   "scripts": {
     "dev": "vite",
+    "fetch-papers": "node scripts/fetch-papers.mjs",
+    "prebuild": "node scripts/fetch-papers.mjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },

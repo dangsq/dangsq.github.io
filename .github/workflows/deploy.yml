@@ -1,0 +1,55 @@
+name: Weekly Deploy
+
+# 定时任务只在默认分支(main)上生效，因此每次部署都会把本文件同步到 main
+on:
+  schedule:
+    - cron: '0 3 * * 1' # 每周一 03:00 UTC（北京时间周一 11:00），自动拉最新论文并部署
+  workflow_dispatch: # 支持手动触发
+  push:
+    branches: [room] # 源码更新自动部署
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: room # 永远从源码分支构建
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install & Build
+        run: |
+          npm ci
+          npm run build # prebuild 会自动拉取 DBLP + Semantic Scholar 论文数据
+
+      - name: Deploy artifacts to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git worktree add --detach .deploy-main origin/main
+          cd .deploy-main
+          # 清旧产物（保留 workflow 文件、.nojekyll、CNAME）
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '.github' ! -name '.nojekyll' ! -name 'CNAME' -exec rm -rf {} +
+          cp -r ../dist/* .
+          mkdir -p .github/workflows
+          cp ../.github/workflows/deploy.yml .github/workflows/deploy.yml
+          git add -A
+          git diff --cached --quiet || git commit -m "Deploy: $(date -u +'%Y-%m-%d %H:%M') UTC"
+          git push origin HEAD:main
+          cd ..
+          git worktree remove .deploy-main
+
+      - name: Done
+        run: echo "✅ Deployed to https://dangsq.github.io"

@@ -1,0 +1,210 @@
+{
+  "fetchedAt": "2026-09-01T15:59:46.528Z",
+  "sources": [
+    "DBLP",
+    "Semantic Scholar"
+  ],
+  "papers": [
+    {
+      "title": "ChartBlender: An Interactive System for Authoring and Synchronizing Visualization Charts in Video",
+      "authors": [
+        "Yi He",
+        "Yuqi Liu",
+        "Chenpu Li",
+        "Ruoyan Chen",
+        "Chuer Chen",
+        "Shengqi Dang",
+        "Nan Cao 0001"
+      ],
+      "venue": "IEEE Trans. Vis. Comput. Graph.",
+      "year": 2026,
+      "stamp": "TVCG 2026",
+      "abstract": "Embedded data visualizations have emerged as a powerful narrative medium for conveying complex information within video footage. However, creating such content remains labor-intensive, as existing workflows rely on…",
+      "citationCount": 0,
+      "url": "https://doi.org/10.1109/TVCG.2026.3689056"
+    },
+    {
+      "title": "CogBlender: Towards Continuous Cognitive Intervention in Text-to-Image Generation",
+      "authors": [
+        "Shengqi Dang",
+        "Jiaying Lei",
+        "Yi He",
+        "Ziqing Qian",
+        "Nan Cao 0001"
+      ],
+      "venue": "CoRR",
+      "year": 2026,
+      "stamp": "arXiv 2026",
+      "abstract": "Beyond conveying semantic information, images also possess cognitive properties that elicit specific psychological responses from viewers, such as memory encoding or emotional reactions. Although modern text-to-image…",
+      "citationCount": 0,
+      "url": "https://doi.org/10.48550/arXiv.2603.09286"
+    },
+    {
+      "title": "DensiCrafter: Physically-Constrained Generation and Fabrication of Self-Supporting Hollow Structures",
+      "authors": [
+        "Shengqi Dang",
+        "Fu Chai",
+        "Jiaxin Li",
+        "Chao Yuan",
+        "Wei Ye",
+        "Nan Cao 0001"
+      ],
+      "venue": "AAAI",
+      "year": 2026,
+      "stamp": "AAAI 2026",
+      "abstract": "The rise of 3D generative models has enabled automatic 3D geometry and texture synthesis from multimodal inputs (e.g., text or images). However, these methods often ignore physical constraints and manufacturability…",
+      "citationCount": 1,
+      "url": "https://doi.org/10.1609/aaai.v40i1.36979"
+    },
+    {
+      "title": "Designed to Spread: A Generative Approach to Enhance Information Diffusion",
+      "authors": [
+        "Ziqing Qian",
+        "Jiaying Lei",
+        "Shengqi Dang",
+        "Nan Cao 0001"
+      ],
+      "venue": "AAAI",
+      "year": 2026,
+      "stamp": "AAAI 2026",
+      "abstract": "Social media has fundamentally transformed how people access information and form social connections, with content expression playing a critical role in driving information diffusion. While prior research has focused…",
+      "citationCount": 0,
+      "url": "https://doi.org/10.1609/aaai.v40i2.37063"
+    },
+    {
+      "title": "Drift-Aware Multimodal User Representation Learning via Multi-Scale Temporal Modeling and Sparse Mixture-of-Experts",
+      "authors": [
+        "Ziqing Qian",
+        "Hao-Hang Chen",
+        "Shengqi Dang",
+        "Yueyang Xiong",
+        "Can-Yu Shen",
+        "Jiaying Lei",
+        "Nan Cao"
+      ],
+      "venue": "",
+      "year": 2026,
+      "stamp": "arXiv 2026",
+      "abstract": "Understanding user preferences from noisy and temporally evolving social media behaviors is fundamentally challenging due to interest drift, where user preferences shift across time and exhibit both multi-scale temporal…",
+      "citationCount": 0,
+      "url": "https://arxiv.org/abs/2608.25773"
+    },
+    {
+      "title": "FreeShell: A Context-Free 4D Printing Technique for Fabricating Complex 3D Triangle Mesh Shells",
+      "authors": [
+        "Chao Yuan",
+        "Shengqi Dang",
+        "Xuejiao Ma",
+        "Nan Cao 0001"
+      ],
+      "venue": "ACM Trans. Graph.",
+      "year": 2026,
+      "stamp": "TOG 2026",
+      "abstract": "Freeform thin-shell surfaces are critical in various fields, but their fabrication is complex and costly. Traditional methods are wasteful and require custom molds, while 3D printing needs extensive support structures…",
+      "citationCount": 1,
+      "url": "https://doi.org/10.1145/3778349"
+    },
+    {
+      "title": "From Latent Influence to Language: Diffusion-Oriented Content Generation via Audience-Susceptible Features",
+      "authors": [
+        "Jiaying Lei",
+        "Shengqi Dang",
+        "Runqian Bai",
+        "Ziqing Qian",
+        "Nan Cao"
+      ],
+      "venue": "",
+      "year": 2026,
+      "stamp": "arXiv 2026",
+      "abstract": "The rapid growth of multimodal user-generated content on social media has made information diffusion a critical factor for advertisers and brand marketers. However, manually tailoring content to resonate with specific…",
+      "citationCount": 0,
+      "url": "https://arxiv.org/abs/2608.19809"
+    },
+    {
+      "title": "EmotiCrafter: Text-to-Emotional-Image Generation Based on Valence-Arousal Model",
+      "authors": [
+        "Shengqi Dang",
+        "Yi He",
+        "Long Ling",
+        "Ziqing Qian",
+        "Nanxuan Zhao",
+        "Nan Cao 0001"
+      ],
+      "venue": "ICCV",
+      "year": 2025,
+      "stamp": "ICCV 2025",
+      "abstract": "Recent research shows that emotions can enhance users' cognition and influence information communication. While research on visual emotion analysis is extensive, limited work has been done on helping users generate…",
+      "citationCount": 26,
+      "url": "https://doi.org/10.1109/ICCV51701.2025.01412"
+    },
+    {
+      "title": "Funding the Frontier: Visualizing the Broad Impact of Science and Science Funding",
+      "authors": [
+        "Yifang Wang 0001",
+        "Yifan Qian",
+        "Xiaoyu Qi",
+        "Yian Yin",
+        "Shengqi Dang",
+        "Ziqing Qian",
+        "Benjamin F. Jones 0001",
+        "Nan Cao 0001",
+        "Dashun Wang"
+      ],
+      "venue": "CoRR",
+      "year": 2025,
+      "stamp": "arXiv 2025",
+      "abstract": "Understanding the broad impact of science and science funding is critical to ensuring that science investments and policies align with societal needs. Existing research links science funding to the output of scientific…",
+      "citationCount": 2,
+      "url": "https://doi.org/10.48550/arXiv.2509.16323"
+    },
+    {
+      "title": "MV-Crafter: An Intelligent System for Music-Guided Video Generation",
+      "authors": [
+        "Chuer Chen",
+        "Shengqi Dang",
+        "Yuqi Liu",
+        "Nanxuan Zhao",
+        "Yang Shi 0007",
+        "Nan Cao 0001"
+      ],
+      "venue": "ACM Trans. Interact. Intell. Syst.",
+      "year": 2025,
+      "stamp": "TiiS 2025",
+      "abstract": "Music videos, as a prevalent form of multimedia entertainment, deliver engaging audio-visual experiences to audiences and have gained immense popularity among singers and fans. Creators can express their interpretations…",
+      "citationCount": 3,
+      "url": "https://doi.org/10.1145/3748515"
+    },
+    {
+      "title": "Personalizing Products with Stylized Head Portraits for Self-Expression",
+      "authors": [
+        "Yang Shi 0007",
+        "Yechun Peng",
+        "Shengqi Dang",
+        "Nanxuan Zhao",
+        "Nan Cao 0001"
+      ],
+      "venue": "CHI",
+      "year": 2024,
+      "stamp": "CHI 2024",
+      "abstract": "Personalizing products aesthetically or functionally can help users increase personal relevance and support self-expression. However, using non-abstract personal data such as head portraits for product personalization…",
+      "citationCount": 6,
+      "url": "https://doi.org/10.1145/3613904.3642391"
+    },
+    {
+      "title": "Bring Clipart to Life",
+      "authors": [
+        "Nanxuan Zhao",
+        "Shengqi Dang",
+        "Hexun Lin",
+        "Yang Shi 0007",
+        "Nan Cao 0001"
+      ],
+      "venue": "ICCV",
+      "year": 2023,
+      "stamp": "ICCV 2023",
+      "abstract": "The development of face editing has been boosted since the birth of StyleGAN. While previous works have explored different interactive methods, such as sketching and exemplar photos, they have been limited in terms of…",
+      "citationCount": 2,
+      "url": "https://doi.org/10.1109/ICCV51070.2023.02133"
+    }
+  ]
+}

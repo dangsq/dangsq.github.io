@@ -5,6 +5,8 @@ export type Publication = {
   year: string
   abstract: string
   stamp?: string
+  url?: string
+  citationCount?: number | null
 }
 
 export type Project = {
@@ -41,80 +43,65 @@ export const profile = {
   funFacts: ['做过的项目横跨论文、游戏、装置和可视化', '本科学数学，硕士转设计，现在读博搞 CS', '坚信好的研究应该既严谨又好玩'],
 }
 
-export const publications: Publication[] = [
-  {
-    title: 'EmotiCrafter: Text-to-Emotional-Image Generation based on Valence-Arousal Model',
-    authors: 'Shengqi Dang, Yi He, Long Ling, Ziqing Qian, Nanxuan Zhao, Nan Cao',
-    venue: 'ICCV',
-    year: '2025',
+/* ────────────────────────────────────────────────
+   论文数据自动同步：scripts/fetch-papers.mjs 在构建前
+   从 DBLP（元数据）+ Semantic Scholar（摘要/引用数）拉取，
+   生成 publications.json。下面的 overrides 是手工覆盖层：
+   主页偏好的短摘要、备注等，不会被子代拉取覆盖。
+   ──────────────────────────────────────────────── */
+import papersJson from './publications.json'
+
+const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+const overrides: Record<string, Partial<Publication>> = {
+  emoticraftertexttoemotionalimagegenerationbasedonvalencearousalmodel: {
     abstract: 'Text-to-image generation steered by emotion on the valence–arousal plane — making emotion a first-class control.',
-    stamp: 'ICCV 2025',
   },
-  {
-    title: 'DensiCrafter: Physically-Constrained Generation and Fabrication of Self-Supporting Hollow Structures',
-    authors: 'Shengqi Dang, Fu Chai, Jiaxin Li, Chao Yuan, Wei Ye, Nan Cao',
-    venue: 'AAAI',
-    year: '2026',
+  densicrafterphysicallyconstrainedgenerationandfabricationofselfsupportinghollowstructures: {
     abstract: 'Generating self-supporting hollow structures that are ready for physical fabrication.',
-    stamp: 'AAAI 2026',
   },
-  {
-    title: 'FreeShell: A Context-Free 4D Printing Technique for Fabricating Complex 3D Triangle Mesh Shells',
-    authors: 'Chao Yuan, Shengqi Dang, Xuejiao Ma, Nan Cao',
-    venue: 'ACM TOG',
-    year: '2026',
+  freeshellacontextfree4dprintingtechniqueforfabricatingcomplex3dtrianglemeshshells: {
     abstract: 'A 4D printing technique for complex free-form 3D mesh shells, without support context.',
-    stamp: 'TOG 2026',
   },
-  {
-    title: 'ChartBlender: An Interactive System for Authoring and Synchronizing Visualization Charts in Video',
-    authors: 'Yi He, Yuqi Liu, Chenpu Li, Ruoyan Chen, Chuer Chen, Shengqi Dang, Nan Cao',
-    venue: 'IEEE TVCG',
-    year: '2026',
+  chartblenderaninteractivesystemforauthoringandsynchronizingvisualizationchartsinvideo: {
     abstract: 'Authoring and synchronizing charts that live inside video.',
-    stamp: 'TVCG 2026',
   },
-  {
-    title: 'Personalizing Products with Stylized Head Portraits for Self-Expression',
-    authors: 'Yang Shi, Yechun Peng, Shengqi Dang, Nanxuan Zhao, Nan Cao',
-    venue: 'CHI',
-    year: '2024',
+  personalizingproductswithstylizedheadportraitsforselfexpression: {
     abstract: 'Stylized head portraits as a vehicle for self-expression in personalized products.',
-    stamp: 'CHI 2024',
   },
-  {
-    title: 'MV-Crafter: An Intelligent System for Music-guided Video Generation',
-    authors: 'Chuer Chen, Shengqi Dang, Yuqi Liu, Nanxuan Zhao, Yang Shi, Nan Cao',
-    venue: 'ACM TiiS',
-    year: '2025',
+  mvcrafteranintelligentsystemformusicguidedvideogeneration: {
     abstract: 'An intelligent system that crafts music-guided videos.',
-    stamp: 'TiiS 2025',
   },
-  {
-    title: 'Bring Clipart to Life',
-    authors: 'Nanxuan Zhao, Shengqi Dang, Hexun Lin, Yang Shi, Nan Cao',
-    venue: 'ICCV',
-    year: '2023',
+  bringcliparttolife: {
     abstract: 'Bringing static clipart to life with expressive, lively motion.',
-    stamp: 'ICCV 2023',
   },
-  {
-    title: 'CogBlender: Towards Continuous Cognitive Intervention in Text-to-Image Generation',
-    authors: 'Shengqi Dang, Jiaying Lei, Yi He, Ziqing Qian, Nan Cao',
-    venue: 'arXiv',
-    year: '2026',
+  cogblendertowardscontinuouscognitiveinterventionintexttoimagegeneration: {
     abstract: 'Continuous cognitive intervention for controllable text-to-image synthesis.',
-    stamp: 'arXiv 2026',
   },
-  {
-    title: 'Funding the Frontier: Visualizing the Broad Impact of Science and Science Funding',
-    authors: 'Yifang Wang, Yifan Qian, Xiaoyu Qi, Yian Yin, Shengqi Dang, Ziqing Qian, Benjamin F Jones, Nan Cao, Dashun Wang',
-    venue: 'arXiv',
-    year: '2025',
+  fundingthefrontiervisualizingthebroadimpactofscienceandsciencefunding: {
     abstract: 'Visualizing the broad impact of science and science funding.',
-    stamp: 'arXiv 2025',
   },
-]
+}
+
+export const publications: Publication[] = papersJson.papers.map((p) => {
+  const ov = overrides[normTitle(p.title)] ?? {}
+  return {
+    title: p.title,
+    authors: p.authors.join(', '),
+    venue: p.venue,
+    year: String(p.year),
+    abstract: ov.abstract ?? p.abstract ?? '',
+    stamp: p.stamp,
+    url: p.url ?? undefined,
+    citationCount: p.citationCount,
+  }
+})
+
+/* 同步元数据：面板上展示「自动同步」徽标 */
+export const papersMeta = {
+  fetchedAt: papersJson.fetchedAt,
+  sources: papersJson.sources as string[],
+}
 
 export const projects: Project[] = [
   {
