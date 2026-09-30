@@ -19,26 +19,29 @@ const S2_AUTHOR_ID = '2279712768'
 const normTitle = (s) =>
   s.toLowerCase().replace(/[^a-z0-9]/g, '').replace(/[:.\-–]/g, '')
 
-/* venue → 面板上的短戳 */
+/* 已知 venue → 标准简称；未知名称保持原样，避免凭首字母造出错误简称 */
 function stampOf(venue, year, url) {
-  const v = (venue || '').toLowerCase()
-  if (v.includes('corr') || v.includes('arxiv')) return `arXiv ${year}`
-  if (v.includes('trans. graph') || /\btog\b/.test(v)) return `TOG ${year}`
-  if (v.includes('vis. comput') || /\btvcg\b/.test(v)) return `TVCG ${year}`
-  if (v.includes('interact. intell') || /\btiis\b/.test(v)) return `TiiS ${year}`
-  if (v.includes('iccv')) return `ICCV ${year}`
-  if (v.includes('aaai')) return `AAAI ${year}`
-  if (v.includes('chi')) return `CHI ${year}`
-  if (v.includes('cvpr')) return `CVPR ${year}`
-  if (v.includes('siggraph')) return `SIGGRAPH ${year}`
-  if (v.includes('eurovis')) return `EuroVis ${year}`
-  if (v.includes('ieee pacificvis') || v.includes('pacificvis')) return `PacificVis ${year}`
-  if (v.includes('vast')) return `VAST ${year}`
+  const v = (venue || '').trim()
+  const knownVenues = [
+    ['arXiv', /\b(?:corr|arxiv)\b/i],
+    ['TOG', /\b(?:tog|trans(?:actions)?\.?\s+(?:on\s+)?graph(?:ics)?\.?)\b/i],
+    ['TVCG', /\b(?:tvcg|trans(?:actions)?\.?\s+(?:on\s+)?vis(?:ualization)?\.?\s+(?:and\s+)?comput(?:er)?\.?\s+graph(?:ics)?\.?)\b/i],
+    ['TiiS', /\b(?:tiis|trans(?:actions)?\.?\s+(?:on\s+)?interact(?:ive)?\.?\s+intell(?:igent)?\.?\s+syst(?:ems)?\.?)\b/i],
+    ['ICCV', /\b(?:iccv|international conference (?:on |of )?computer vision)\b/i],
+    ['AAAI', /\b(?:aaai|aaai conference on artificial intelligence)\b/i],
+    ['CHI', /\b(?:chi|(?:acm )?(?:international )?conference on human factors in computing systems)\b/i],
+    ['CVPR', /\b(?:cvpr|conference on computer vision and pattern recognition)\b/i],
+    ['SIGGRAPH', /\bsiggraph\b/i],
+    ['EuroVis', /\beurovis\b/i],
+    ['PacificVis', /\bpacificvis\b|pacific visualization/i],
+    ['VAST', /\bvast\b|visual analytics science and technology/i],
+  ]
+  for (const [shortName, pattern] of knownVenues) {
+    if (pattern.test(v)) return `${shortName} ${year}`
+  }
   // 无 venue：有 arXiv 链接 → arXiv，否则 Preprint
   if (!v) return url?.includes('arxiv.org') ? `arXiv ${year}` : `Preprint ${year}`
-  // 兜底：venue 缩写大写 + 年份
-  const abbr = (venue || 'PUB').split(/[\s.]+/).filter(Boolean).map(w => w[0]).join('').toUpperCase()
-  return `${abbr} ${year}`
+  return `${v} ${year}`
 }
 
 async function fetchJson(url, label, tries = 3) {
