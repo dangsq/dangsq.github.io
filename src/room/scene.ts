@@ -1,7 +1,11 @@
 import * as THREE from 'three/webgpu'
-import { Fn, uv, sin, color, floor, fract, step, mix, smoothstep, float } from 'three/tsl'
-import { toonMat, toonGradient, addOutline, createY2KWallpaper, rbox } from './wood'
+import { toonMat, addOutline, rbox } from './wood'
+import { createAnomalousMaterial, createFoldedSpace, setDreamMaterialTime } from './atelier'
 import { buildPosterWall, buildMikuPoster, type PosterWallHandle } from './posters'
+import { createDreamObjects } from './dreamObjects'
+import { createDistantSculptures } from './distantSculptures'
+import { createMusicShader } from './musicShader'
+import { MUSIC_BAR_SECONDS, MUSIC_BEAT_SECONDS } from './music'
 
 export type RoomHandle = {
   scene: THREE.Scene
@@ -9,25 +13,14 @@ export type RoomHandle = {
   sunLight: THREE.DirectionalLight
   posterWall: PosterWallHandle
   /* 常驻 2D 标签锚点：书排（论文）/ 笔记本（设计），投影到屏幕后放置贴纸标签 */
-  tagAnchors: { papers: THREE.Object3D; projects: THREE.Object3D }
+  tagAnchors: Record<string, THREE.Object3D>
+  setSpeakerPlaying: (on: boolean) => void
   tick: (t: number) => void
   setNight: (on: boolean) => void
   dispose: () => void
 }
 
-const C = {
-  // 白天背景与墙：奶油白底，粉只做点缀（旧版大面积高饱和粉会糊成粉雾）
-  bg: '#F6EFE8',
-  wallBack: '#F6EFE8',
-  wallSide: '#F1E9E2',
-  floor: { base: '#FFF6EC', dark: '#FFD1E3', seam: '#F0B7CE' },
-  desk:  { base: '#B0764A', dark: '#9C6640', seam: '#8A5738' },
-  chair: { base: '#C99763', dark: '#B3814F', seam: '#9C6E42' },
-  skirt: '#FFF9F0',
-  winFrame: '#FFF9F0',
-  rugDark: '#F5A8C8',
-  rug: '#FDEFF5',
-}
+const C = { bg: '#A1F7EB' }
 
 /* ── 午后阳光：从左墙窗外斜射入房（中性暖白，避免整体泡黄）── */
 function makeSun() {
@@ -52,143 +45,58 @@ export function buildRoom(): RoomHandle {
 
   /* ── 光照 ── */
   // 夜色基调：环境光偏冷紫，与暖黄台灯/霓虹形成冷暖对比（旧版全暖光→粉紫雾）
-  const ambient = new THREE.AmbientLight(0xD8C8F0, 0.55)
-  const hemi = new THREE.HemisphereLight(0xE8DFF2, 0xB8A8C8, 0.32)
+  const ambient = new THREE.AmbientLight(0xEBF1F5, 0.75)
+  const hemi = new THREE.HemisphereLight(0xE6F4F8, 0x8DAFC6, 0.48)
   const sun = makeSun()
   sun.intensity = 2.0
-  const lampLight = new THREE.PointLight(0xFFE3B0, 7, 13, 2.0)
+  const lampLight = new THREE.PointLight(0xF5FAFF, 5, 13, 2.0)
   lampLight.position.set(0, 5.6, -2.5)
   lampLight.castShadow = true
   lampLight.shadow.mapSize.set(1024, 1024)
   lampLight.shadow.bias = -0.005
   scene.add(ambient, hemi, sun, sun.target, lampLight)
 
-  /* ── 地板：奶油×浅杏棋盘格（暖木色系，和粉墙拉开层次，不再粉上粉）── */
-  const floorMat = new THREE.MeshToonNodeMaterial()
-  floorMat.gradientMap = toonGradient()
-  floorMat.colorNode = Fn(() => {
-    const g = uv().mul(10)
-    const c = floor(g.x).add(floor(g.y))
-    const checker = mix(color('#F9EFDF'), color('#EFDCC5'), step(0.25, fract(c.mul(0.5))))
-    // 边缘柔和渐晕成暖杏色暗角
-    const d = uv().sub(0.5).length()
-    return mix(checker, color('#E3C9B2'), smoothstep(0.38, 0.95, d).mul(0.5))
-  })()
-  const floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), floorMat)
-  floorMesh.rotation.x = -Math.PI / 2
-  floorMesh.receiveShadow = true
-  scene.add(floorMesh)
+  const foldedSpace = createFoldedSpace()
+  scene.add(foldedSpace.group)
+  const dreamObjects = createDreamObjects()
+  scene.add(dreamObjects.group)
+  const distantSculptures = createDistantSculptures()
+  scene.add(distantSculptures.group)
 
-  /* ── 三面墙：Y2K 贴纸墙纸 ── */
-  const { backMat, sideMat } = createY2KWallpaper()
-  const backWall = new THREE.Mesh(new THREE.PlaneGeometry(12, 6), backMat)
-  backWall.position.set(0, 3, -5)
-  backWall.receiveShadow = true
-
-  const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(10, 6), sideMat)
-  leftWall.rotation.y = Math.PI / 2
-  leftWall.position.set(-5, 3, 0)
-
-  const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(10, 6), sideMat)
-  rightWall.rotation.y = -Math.PI / 2
-  rightWall.position.set(5, 3, 0)
-
-  // 踢脚线（三面）
-  const skirts = [
-    new THREE.Mesh(new THREE.BoxGeometry(12, 0.3, 0.08), toonMat(C.skirt)),
-    new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.3, 10), toonMat(C.skirt)),
-    new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.3, 10), toonMat(C.skirt)),
-  ]
-  skirts[0].position.set(0, 0.15, -4.95)
-  skirts[1].position.set(-4.95, 0.15, 0)
-  skirts[2].position.set(4.95, 0.15, 0)
-
-  scene.add(backWall, leftWall, rightWall, ...skirts)
-
-  /* ── 窗户（左墙）：窗框 + 天色玻璃 + 十字中梃 ── */
-  const winFrameMat = toonMat(C.winFrame)
-  const window = new THREE.Group()
-  window.position.set(-4.9, 2.2, 1.2)
-
-  const glass = new THREE.Mesh(
-    new THREE.PlaneGeometry(1.1, 1.5),
-    new THREE.MeshBasicNodeMaterial({ color: '#CFE8F2' }),
-  )
-  glass.rotation.y = Math.PI / 2
-
-  const frameGeoV = new THREE.BoxGeometry(0.1, 1.66, 0.08)
-  const frameGeoH = new THREE.BoxGeometry(0.1, 0.08, 1.26)
-  const fTop = new THREE.Mesh(frameGeoH, winFrameMat); fTop.position.set(0, 0.79, 0)
-  const fBot = new THREE.Mesh(frameGeoH, winFrameMat); fBot.position.set(0, -0.79, 0)
-  const fL = new THREE.Mesh(frameGeoV, winFrameMat); fL.position.set(0, 0, -0.59)
-  const fR = new THREE.Mesh(frameGeoV, winFrameMat); fR.position.set(0, 0, 0.59)
-  const mullV = new THREE.Mesh(new THREE.BoxGeometry(0.07, 1.5, 0.05), winFrameMat)
-  const mullH = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.05, 1.1), winFrameMat)
-  const sill = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.06, 1.4), winFrameMat)
-  sill.position.set(0.1, -0.86, 0)
-
-  for (const m of [fTop, fBot, fL, fR, mullV, mullH, sill]) {
-    m.castShadow = true
-    addOutline(m, 0.008)
+  // 哑光墙贴：保留原本的爱心图案，但不发光。
+  const heartShape = new THREE.Shape()
+  heartShape.moveTo(0, -0.34)
+  heartShape.bezierCurveTo(-0.2, -0.1, -0.46, 0.08, -0.42, 0.27)
+  heartShape.bezierCurveTo(-0.38, 0.48, -0.12, 0.47, 0, 0.29)
+  heartShape.bezierCurveTo(0.12, 0.47, 0.38, 0.48, 0.42, 0.27)
+  heartShape.bezierCurveTo(0.46, 0.08, 0.2, -0.1, 0, -0.34)
+  const heartStickerGeometry = new THREE.ShapeGeometry(heartShape)
+  for (const [x, y, scale, tilt, tint] of [
+    [-1.7, 2.8, 0.46, -0.15, '#007CBE'],
+    [-2.15, 3.3, 0.28, 0.23, '#00CBB0'],
+    [1.48, 3.56, 0.43, 0.17, '#00A9BF'],
+  ] as const) {
+    const sticker = new THREE.Mesh(heartStickerGeometry, new THREE.MeshBasicNodeMaterial({
+      color: tint, side: THREE.DoubleSide,
+    }))
+    sticker.position.set(x, y, -4.91)
+    sticker.scale.setScalar(scale)
+    sticker.rotation.z = tilt
+    scene.add(sticker)
   }
-  window.add(glass, fTop, fBot, fL, fR, mullV, mullH, sill)
-  scene.add(window)
-
-  /* ── 丁达尔光柱：两片交叉半透明面 ── */
-  const shaftDir = new THREE.Vector3(-0.8 - (-5), 0 - 2.2, -0.56 - 1.2).normalize()
-  const shaftLen = new THREE.Vector3(-0.8 + 5, -2.2, -0.56 - 1.2).length()
-  const shaftGroup = new THREE.Group()
-  shaftGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), shaftDir)
-  shaftGroup.position.set((-5 + -0.8) / 2, (2.2 + 0) / 2, (1.2 + -0.56) / 2)
-
-  const makeShaftMat = () => {
-    const m = new THREE.MeshBasicNodeMaterial({
-      transparent: true,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      side: THREE.DoubleSide,
-    })
-    m.colorNode = color('#FFE9B8')
-    m.opacityNode = Fn(() => {
-      const t = uv()
-      const edge = sin(t.x.mul(Math.PI))
-      const fade = t.y.oneMinus().pow(1.4)
-      return edge.mul(fade).mul(0.15)
-    })()
-    return m
-  }
-  const shaftGeo = new THREE.PlaneGeometry(1.0, shaftLen)
-  const shaftA = new THREE.Mesh(shaftGeo, makeShaftMat())
-  const shaftB = new THREE.Mesh(shaftGeo, makeShaftMat())
-  shaftB.rotation.y = Math.PI / 2
-  shaftGroup.add(shaftA, shaftB)
-  scene.add(shaftGroup)
 
   /* ── 大像素海报：后墙正中 ── */
   const posterWall = buildPosterWall()
+  posterWall.group.position.x = -3.9
+  posterWall.frame.scale.setScalar(0.42)
   scene.add(posterWall.group)
 
   /* ── Miku 像素海报：后墙右侧（动态）── */
   const mikuPoster = buildMikuPoster()
-  mikuPoster.group.position.set(2.3, 2.45, -4.9)
+  mikuPoster.group.position.set(-2.9, 1.9, -6.2)
   scene.add(mikuPoster.group)
 
-  /* ── 海报周围装饰：彩灯串 + 挂架 + 圆镜 + 和纸胶带 ── */
-  // 彩灯串：横跨后墙，弧线下垂，交替五色闪烁
-  const bulbs: THREE.Mesh[] = []
-  const bulbColors = ['#FF6FB3', '#8FD3F4', '#FFD84D', '#A8EBC8', '#C9B8F5']
-  const N_BULBS = 17
-  for (let i = 0; i < N_BULBS; i++) {
-    const u = i / (N_BULBS - 1)
-    const bulb = new THREE.Mesh(
-      new THREE.SphereGeometry(0.045, 10, 8),
-      new THREE.MeshBasicNodeMaterial({ color: bulbColors[i % bulbColors.length] }),
-    )
-    bulb.position.set(-3.2 + u * 6.4, 4.15 - Math.sin(u * Math.PI) * 0.32, -4.9)
-    scene.add(bulb)
-    bulbs.push(bulb)
-  }
-
+  /* ── 海报周围保留少量个人物件，让墙面有呼吸空间 ── */
   // 挂架（海报左侧）：白色小隔板 + 三角支架 + 迷你摆件
   const hangShelf = new THREE.Group()
   const hsBoard = new THREE.Mesh(rbox(1.05, 0.06, 0.26, 0.028), toonMat('#FFF9F0'))
@@ -196,31 +104,31 @@ export function buildRoom(): RoomHandle {
   addOutline(hsBoard, 0.008)
   const hsBracketGeo = new THREE.BoxGeometry(0.05, 0.05, 0.22)
   for (const bx of [-0.42, 0.42]) {
-    const bracket = new THREE.Mesh(hsBracketGeo, toonMat('#FF6FB3'))
+    const bracket = new THREE.Mesh(hsBracketGeo, toonMat('#75C7C3'))
     bracket.position.set(bx, -0.09, -0.03)
     bracket.rotation.z = 0.5
     hangShelf.add(bracket)
   }
   // 迷你盆栽 + 小相框 + 小星星
-  const miniPot = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.065, 0.09, 12), toonMat('#FF6FB3'))
+  const miniPot = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.065, 0.09, 12), toonMat('#75C7C3'))
   miniPot.position.set(-0.32, 0.075, 0)
   const miniPlant = new THREE.Mesh(new THREE.SphereGeometry(0.055, 12, 10), toonMat('#4ED492'))
   miniPlant.scale.set(1, 1.25, 1)
   miniPlant.position.set(-0.32, 0.18, 0)
   miniPlant.castShadow = true
-  const miniFrame = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.22, 0.03), toonMat('#FFD84D'))
+  const miniFrame = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.22, 0.03), toonMat('#B4CDA2'))
   miniFrame.position.set(-0.02, 0.14, 0.02)
   miniFrame.rotation.z = -0.08
   const miniStar = new THREE.Mesh(new THREE.OctahedronGeometry(0.07), toonMat('#57C1F0'))
   miniStar.position.set(0.32, 0.16, 0)
   miniStar.rotation.y = 0.6
   hangShelf.add(hsBoard, miniPot, miniPlant, miniFrame, miniStar)
-  hangShelf.position.set(-2.55, 2.35, -4.87)
+  hangShelf.position.set(-3.1, 1.1, -4.87)
   scene.add(hangShelf)
 
   // 后墙小星星装饰（黄粉蓝，发亮）
   const starGeo = new THREE.OctahedronGeometry(0.05)
-  const starColors = ['#FFD84D', '#FF9ECC', '#57C1F0']
+  const starColors = ['#B4CDA2', '#FF9ECC', '#57C1F0']
   const starPos: [number, number][] = [[3.75, 3.2], [4.35, 3.3], [4.0, 2.1]]
   starPos.forEach(([sx, sy], i) => {
     const star = new THREE.Mesh(starGeo, new THREE.MeshBasicNodeMaterial({ color: starColors[i] }))
@@ -231,7 +139,7 @@ export function buildRoom(): RoomHandle {
 
   // 拍立得照片串（右墙，床上方）：木夹 + 三张 pastel 拍立得
   const picColors = ['#FFD9EF', '#CFEBF5', '#FFF3A0']
-  const clipColors = ['#FF6FB3', '#57C1F0', '#FFD84D']
+  const clipColors = ['#75C7C3', '#57C1F0', '#B4CDA2']
   const picZ = [-2.65, -3.35, -4.05]
   picZ.forEach((pz, i) => {
     const u = i / 2
@@ -259,27 +167,98 @@ export function buildRoom(): RoomHandle {
     scene.add(p)
   })
 
-  // 海报四角和纸胶带（斜贴的彩色小方块）
-  const tapeColors = ['#FFD84D', '#57C1F0', '#7AF0B0', '#B79CFF']
-  const tapePos: [number, number][] = [[-1.22, 3.6], [1.22, 3.6], [-1.22, 1.6], [1.22, 1.6]]
-  tapePos.forEach(([tx, ty], i) => {
-    const tape = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.14, 0.014), toonMat(tapeColors[i]))
-    tape.position.set(tx, ty, -4.79)
-    tape.rotation.z = (i % 2 === 0 ? 1 : -1) * (Math.PI / 4)
-    scene.add(tape)
-  })
-
   // 彩灯闪烁 + 向日葵随风摇晃
   let lastScreenT = 0
+  let musicPlaying = false
+  let danceStartedAt = 0
   const tick = (t: number) => {
-    bulbs.forEach((b, i) => {
-      const s = 0.45 + 0.55 * Math.max(0, Math.sin(t * 2.4 + i * 1.3))
-      ;(b.material as THREE.MeshBasicNodeMaterial).color
-        .set(bulbColors[i % bulbColors.length])
-        .multiplyScalar(s)
+    musicShader.tick(t, musicPlaying)
+    foldedSpace.tick(t, musicPlaying)
+    setDreamMaterialTime(t)
+    distantSculptures.tick(t)
+    // The paw trail dissolves into open space beyond the foreground island.
+    const handPosition = handTarget.set(8.5, 7.6, -20)
+    dreamObjects.setDestination(foreground.worldToLocal(handPosition))
+    dreamObjects.tick(t)
+    // The room never quite settles: familiar objects drift on different cycles.
+    const drift = musicPlaying ? 1.45 : 1
+    props.position.y = 0.08
+    bear.position.set(-0.9 + Math.sin(t * 0.31) * 0.16,
+      0.91 + Math.sin(t * 0.67 + 0.8) * 0.025, -3.7 + Math.cos(t * 0.27) * 0.1)
+    bear.rotation.y = Math.sin(t * 0.24) * 0.25
+    bear.rotation.z = Math.sin(t * 0.43) * 0.07
+    slime.position.set(0.35 + Math.sin(t * 0.39 + 2) * 0.19,
+      0.98 + Math.sin(t * 0.83 + 2) * 0.018, -3.62 + Math.cos(t * 0.32 + 1) * 0.13)
+    slime.rotation.y = -0.25 + Math.sin(t * 0.3 + 1) * 0.3
+    slime.rotation.z = Math.sin(t * 0.51 + 1) * 0.09
+    clock.position.set(-1.25 + Math.sin(t * 0.23 + 1.5) * 0.1,
+      1.045 + Math.sin(t * 0.58 + 2.4) * 0.018, -3.42 + Math.cos(t * 0.29 + 0.7) * 0.065)
+    clock.rotation.y = 0.3 + Math.sin(t * 0.26) * 0.18
+    clock.rotation.z = Math.sin(t * 0.46 + 1.3) * 0.12
+    surfaceRipples.forEach(({ mesh, object, phase }, i) => {
+      const expansion = (t * 0.18 + phase) % 1
+      mesh.position.set(object.position.x, 1.116 + (i % 2) * 0.001, object.position.z)
+      mesh.scale.setScalar(0.8 + expansion * 0.65)
+      mesh.material.opacity = Math.sin(expansion * Math.PI) * 0.32
     })
+    displayBook.position.y = 1.12 + Math.sin(t * 0.29 + 1.4) * 0.15
+    displayBook.rotation.z = 0.04 + Math.sin(t * 0.42 + 0.8) * 0.11
+    mug.position.y = 1.03 + Math.sin(t * 0.41 + 2.2) * 0.025
+    mug.rotation.z = Math.sin(t * 0.51 + 0.4) * 0.09
+    laptop.position.y = 1.2 + Math.sin(t * 0.62 + 2.7) * 0.04
+    laptop.rotation.y = 0.15 + Math.sin(t * 0.36) * 0.06
+    speaker.position.y = 1.2 + Math.sin(t * 0.92 + 1.8) * 0.04
+    chair.position.y = 0.26 + Math.sin(t * 0.29 * drift + 1.1) * 0.12
+    chair.position.z = -3.03 + Math.sin(t * 0.21) * 0.15
+    chair.rotation.x = Math.sin(t * 0.19) * 0.13
+    blanket.position.y = 0.39 + Math.sin(t * 0.22 + 1) * 0.1
+    blanket.rotation.z = Math.sin(t * 0.17) * 0.08
+    chair.rotation.y = Math.PI - 0.35 + Math.sin(t * 0.42) * 0.085
+    posterWall.group.position.y = 1.3 + Math.sin(t * 0.37 + 0.4) * 0.09
+    posterWall.frame.position.z = -4.72 + Math.sin(t * 0.41 + 0.6) * 0.14
+    posterWall.frame.rotation.y = Math.sin(t * 0.35) * 0.11
+    posterWall.frame.rotation.x = Math.sin(t * 0.27 + 1.2) * 0.05
+    posterWall.frame.rotation.z = 0.012 + Math.sin(t * 0.29) * 0.035
+    mikuPoster.group.position.y = 1.9 + Math.sin(t * 0.49 + 2) * 0.065
+    mikuPoster.group.position.z = -6.2 + Math.sin(t * 0.39 + 1.8) * 0.13
+    mikuPoster.group.rotation.z = Math.sin(t * 0.32 + 1.7) * 0.035
     sfSway.rotation.z = Math.sin(t * 0.9) * 0.045
     sfSway.rotation.x = Math.cos(t * 0.7) * 0.03
+    if (musicPlaying) {
+      const elapsed = performance.now() / 1000 - danceStartedAt
+      const phase = (elapsed / MUSIC_BEAT_SECONDS) * Math.PI * 2
+      const section = Math.floor(elapsed / (MUSIC_BAR_SECONDS * 4)) % 4
+      const palette = musicPalettes[section]
+      const pulse = Math.pow(Math.max(0, Math.cos(phase)), 6)
+      ;(scene.background as THREE.Color).lerp(palette.bg, 0.035)
+      ambient.color.lerp(palette.left, 0.035)
+      hemi.color.lerp(palette.right, 0.035)
+      lampLight.color.lerp(palette.left, 0.035)
+      musicGlowLeft.color.lerp(palette.left, 0.045)
+      musicGlowRight.color.lerp(palette.right, 0.045)
+      musicGlowLeft.intensity = 0.55 + pulse * 0.22
+      musicGlowRight.intensity = 0.42 + pulse * 0.18
+      neonLight.intensity = 0.12
+      neonCyanLight.intensity = 0.1
+      neonYellowLight.intensity = 0.06
+      musicMotes.forEach(({ mesh, x, y, z, phase: offset }) => {
+        mesh.position.set(x + Math.sin(elapsed * 0.6 + offset) * 0.08,
+          y + Math.sin(elapsed * 0.9 + offset) * 0.12, z)
+        mesh.rotation.y += 0.012
+        mesh.scale.setScalar(0.75 + 0.25 * Math.sin(phase + offset))
+      })
+      const hop = Math.pow(Math.max(0, Math.sin(phase)), 2)
+      bear.position.y += hop * 0.025
+      bear.rotation.z = Math.sin(phase * 0.5) * 0.17
+      head.rotation.z = 0.1 + Math.sin(phase) * 0.16
+      bearArms.forEach((arm, i) => { arm.rotation.z = (i === 0 ? 0.5 : -0.5) + Math.sin(phase + i * Math.PI) * 0.38 })
+      slime.position.y += Math.pow(Math.max(0, Math.sin(phase + 1)), 2) * 0.02
+      slime.scale.set(1 + Math.sin(phase + 1) * 0.08, 1 - Math.sin(phase + 1) * 0.12, 1)
+      slime.rotation.z = Math.sin(phase * 0.5 + 1) * 0.2
+      duck.position.y = 1.3025 + Math.pow(Math.max(0, Math.sin(phase + 2)), 2) * 0.07
+      duck.rotation.z = Math.sin(phase * 0.5 + 2) * 0.17
+      sfSway.rotation.z += Math.sin(phase) * 0.18
+    }
     mikuPoster.tick(t)
     // 12fps 刷新两块屏幕的像素动画
     if (t - lastScreenT > 0.08) {
@@ -310,36 +289,26 @@ export function buildRoom(): RoomHandle {
   }
 
   /* ── 地毯：双层圆叠出描边感 ── */
-  const rugOuter = new THREE.Mesh(new THREE.CircleGeometry(1.72, 40), toonMat(C.rugDark))
-  rugOuter.rotation.x = -Math.PI / 2
-  rugOuter.scale.x = 1.35
-  rugOuter.position.set(0, 0.011, -0.7)
-  rugOuter.receiveShadow = true
-  const rugInner = new THREE.Mesh(new THREE.CircleGeometry(1.56, 40), toonMat(C.rug))
-  rugInner.rotation.x = -Math.PI / 2
-  rugInner.scale.x = 1.35
-  rugInner.position.set(0, 0.013, -0.7)
-  rugInner.receiveShadow = true
-  scene.add(rugOuter, rugInner)
+
 
   /* ── Y2K 书桌：白桌板 + 粉前裙板 + 四条白圆腿 ── */
   const desk = new THREE.Group()
 
-  const top = new THREE.Mesh(rbox(3.4, 0.1, 1.7, 0.045), toonMat('#FFF9F0'))
+  const top = new THREE.Mesh(rbox(3.4, 0.1, 1.7, 0.045), new THREE.MeshBasicNodeMaterial({ color: '#EAF3F7' }))
   top.position.y = 1.05
   top.castShadow = true
   top.receiveShadow = true
   addOutline(top, 0.014)
 
   // 粉色前裙板（镜头方向一面）——灰樱粉，亮粉只留给小物件
-  const apron = new THREE.Mesh(rbox(3.2, 0.16, 0.07, 0.03), toonMat('#F28FBF'))
+  const apron = new THREE.Mesh(rbox(3.2, 0.16, 0.07, 0.03), toonMat('#C8DCE9'))
   apron.position.set(0, 0.94, 0.8)
   apron.castShadow = true
   addOutline(apron, 0.008)
 
   // 四条白色圆腿
   const legGeo = new THREE.CylinderGeometry(0.055, 0.05, 0.95, 14)
-  const legMat = toonMat('#FFF9F0')
+  const legMat = toonMat('#D6E5EB')
   const legs: THREE.Mesh[] = []
   for (const [x, z] of [[-1.55, -0.72], [1.55, -0.72], [-1.55, 0.72], [1.55, 0.72]]) {
     const leg = new THREE.Mesh(legGeo, legMat)
@@ -353,34 +322,33 @@ export function buildRoom(): RoomHandle {
   desk.position.set(0, 0, -4.06)
   scene.add(desk)
 
-  /* ── 卡通格纹桌布：粉色 gingham 顶面 + 三面扇贝垂边 ── */
+  /* ── 格子布顶面与三面垂边；顶面随缓慢的波浪变形 ── */
   const drawGingham = (ctx: CanvasRenderingContext2D, w: number, h: number) => {
-    ctx.fillStyle = '#FFF9F2'
+    const cell = 32
+    ctx.fillStyle = '#F4FFFB'
     ctx.fillRect(0, 0, w, h)
-    const cell = w / 4
-    // 浅粉细条纹（经 + 纬）
-    ctx.fillStyle = '#FFDFEC'
-    for (const s of [0, 2]) {
-      ctx.fillRect(s * cell, 0, cell, h)
-      ctx.fillRect(0, s * cell, w, cell)
+    ctx.fillStyle = 'rgba(0, 181, 175, 0.31)'
+    for (let x = 0; x < w; x += cell) ctx.fillRect(x, 0, cell / 2, h)
+    for (let y = 0; y < h; y += cell) ctx.fillRect(0, y, w, cell / 2)
+    ctx.fillStyle = 'rgba(0, 133, 160, 0.21)'
+    for (let y = 0; y < h; y += cell) {
+      for (let x = 0; x < w; x += cell) ctx.fillRect(x, y, cell / 2, cell / 2)
     }
-    // 交叠处深一档
-    ctx.fillStyle = '#FFC3DE'
-    for (const sx of [0, 2]) for (const sy of [0, 2]) ctx.fillRect(sx * cell, sy * cell, cell, cell)
   }
-  // 顶面纹理（平铺）
-  const clothTopCv = document.createElement('canvas')
-  clothTopCv.width = clothTopCv.height = 128
-  drawGingham(clothTopCv.getContext('2d')!, 128, 128)
-  const clothTopTex = new THREE.CanvasTexture(clothTopCv)
-  clothTopTex.wrapS = clothTopTex.wrapT = THREE.RepeatWrapping
-  clothTopTex.colorSpace = THREE.SRGBColorSpace
-  clothTopTex.repeat.set(7, 3.5)
-  const clothTopMat = new THREE.MeshToonNodeMaterial({ map: clothTopTex })
-  clothTopMat.gradientMap = toonGradient()
-  const clothTop = new THREE.Mesh(new THREE.PlaneGeometry(3.48, 1.78), clothTopMat)
+  const clothTopCanvas = document.createElement('canvas')
+  clothTopCanvas.width = 256; clothTopCanvas.height = 128
+  drawGingham(clothTopCanvas.getContext('2d')!, 256, 128)
+  const clothTopTexture = new THREE.CanvasTexture(clothTopCanvas)
+  clothTopTexture.colorSpace = THREE.SRGBColorSpace
+  clothTopTexture.wrapS = THREE.RepeatWrapping
+  clothTopTexture.wrapT = THREE.RepeatWrapping
+  clothTopTexture.anisotropy = 8
+  clothTopTexture.repeat.set(1.5, 1.5)
+  const clothTopGeometry = new THREE.PlaneGeometry(3.48, 1.78)
+  const clothTopMat = new THREE.MeshBasicNodeMaterial({ map: clothTopTexture, side: THREE.DoubleSide })
+  const clothTop = new THREE.Mesh(clothTopGeometry, clothTopMat)
   clothTop.rotation.x = -Math.PI / 2
-  clothTop.position.set(0, 1.104, -4.06)
+  clothTop.position.set(0, 1.11, -4.06)
   clothTop.receiveShadow = true
   scene.add(clothTop)
   // 垂边纹理（底部扇贝镂空）
@@ -391,7 +359,7 @@ export function buildRoom(): RoomHandle {
     drawGingham(c, 128, 64)
     const cell = 32
     // 粉色滚边一条
-    c.fillStyle = '#F2A3C8'
+    c.fillStyle = '#03B9CA'
     c.fillRect(0, 40, 128, 4)
     // 底部扇贝镂空
     c.globalCompositeOperation = 'destination-out'
@@ -407,8 +375,7 @@ export function buildRoom(): RoomHandle {
     tex.wrapS = THREE.RepeatWrapping
     tex.colorSpace = THREE.SRGBColorSpace
     tex.anisotropy = 4
-    const mat = new THREE.MeshToonNodeMaterial({ map: tex, transparent: true, side: THREE.DoubleSide })
-    mat.gradientMap = toonGradient()
+    const mat = new THREE.MeshBasicNodeMaterial({ map: tex, transparent: true, side: THREE.DoubleSide, toneMapped: false })
     mat.alphaTest = 0.4
     return mat
   }
@@ -427,7 +394,7 @@ export function buildRoom(): RoomHandle {
   scene.add(skirtF, skirtL, skirtR)
 
   /* ── Y2K 椅子：奶油白 + 粉坐垫，半拉开 ── */
-  const chairMat = toonMat('#FFF9F0')
+  const chairMat = createAnomalousMaterial('#E5EFF1')
   const chair = new THREE.Group()
   const seat = new THREE.Mesh(rbox(0.5, 0.05, 0.48, 0.024), chairMat)
   seat.position.y = 0.46
@@ -435,7 +402,7 @@ export function buildRoom(): RoomHandle {
   seat.receiveShadow = true
   addOutline(seat, 0.012)
   // 粉色软坐垫
-  const cushion = new THREE.Mesh(rbox(0.44, 0.05, 0.42, 0.024), toonMat('#F28FBF'))
+  const cushion = new THREE.Mesh(rbox(0.44, 0.05, 0.42, 0.024), toonMat('#A9D5E4'))
   cushion.position.y = 0.51
   cushion.castShadow = true
   addOutline(cushion, 0.01)
@@ -444,7 +411,7 @@ export function buildRoom(): RoomHandle {
   backrest.position.set(0, 0.82, -0.22)
   backrest.castShadow = true
   addOutline(backrest, 0.012)
-  const heartDeco = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.13, 0.02), toonMat('#F2A3C8'))
+  const heartDeco = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.13, 0.02), toonMat('#A8D7D1'))
   heartDeco.position.set(0, 0.82, -0.185)
   heartDeco.rotation.z = Math.PI / 4
   const cLegGeo = new THREE.CylinderGeometry(0.03, 0.028, 0.46, 10)
@@ -463,12 +430,12 @@ export function buildRoom(): RoomHandle {
   /* ── Y2K 大床（右后角，靠后墙，2.2×3.0）── */
   const bed = new THREE.Group()
   // 床架 + 床头板
-  const bedFrame = new THREE.Mesh(rbox(2.2, 0.24, 3.0, 0.07), toonMat('#FFF9F0'))
+  const bedFrame = new THREE.Mesh(rbox(2.2, 0.24, 3.0, 0.07), createAnomalousMaterial('#E2ECEF'))
   bedFrame.position.set(0, 0.12, 0)
   bedFrame.castShadow = true
   bedFrame.receiveShadow = true
   addOutline(bedFrame, 0.012)
-  const headboard = new THREE.Mesh(rbox(2.2, 0.95, 0.1, 0.045), toonMat('#FFF9F0'))
+  const headboard = new THREE.Mesh(rbox(2.2, 0.95, 0.1, 0.045), createAnomalousMaterial('#EAF3F0'))
   headboard.position.set(0, 0.64, -1.55)
   headboard.castShadow = true
   addOutline(headboard, 0.012)
@@ -477,11 +444,11 @@ export function buildRoom(): RoomHandle {
   mattress.position.set(0, 0.33, 0)
   mattress.receiveShadow = true
   // 粉色被子（盖住床尾 2/3）——灰樱粉大色块，避免大面积高饱和
-  const blanket = new THREE.Mesh(rbox(2.1, 0.08, 2.1, 0.04), toonMat('#F28FBF'))
+  const blanket = new THREE.Mesh(rbox(2.1, 0.08, 2.1, 0.04), createAnomalousMaterial('#E9FFFB'))
   blanket.position.set(0, 0.45, 0.45)
   blanket.castShadow = true
   addOutline(blanket, 0.01)
-  const blanketTrim = new THREE.Mesh(rbox(2.12, 0.035, 0.16, 0.015), toonMat('#EA8FB8'))
+  const blanketTrim = new THREE.Mesh(rbox(2.12, 0.035, 0.16, 0.015), toonMat('#8BBFC2'))
   blanketTrim.position.set(0, 0.48, -0.55)
   // 双枕头 + 爱心抱枕
   const pillow = new THREE.Mesh(rbox(0.9, 0.15, 0.5, 0.07), toonMat('#FFFDF8'))
@@ -490,7 +457,7 @@ export function buildRoom(): RoomHandle {
   addOutline(pillow, 0.01)
   const pillow2 = pillow.clone()
   pillow2.position.set(0.45, 0.48, -1.12)
-  const heartCushion = new THREE.Mesh(rbox(0.3, 0.3, 0.12, 0.05), toonMat('#F2A3C8'))
+  const heartCushion = new THREE.Mesh(rbox(0.3, 0.3, 0.12, 0.05), toonMat('#A8D7D1'))
   heartCushion.position.set(0.85, 0.52, -0.85)
   heartCushion.rotation.z = Math.PI / 4
   addOutline(heartCushion, 0.008)
@@ -501,7 +468,7 @@ export function buildRoom(): RoomHandle {
 
   /* ── 小书架（左墙，窗下方）── */
   const shelf = new THREE.Group()
-  const shelfWhite = toonMat('#FFF9F0')
+  const shelfWhite = createAnomalousMaterial('#EBF3F2')
   // 侧板 ×2 + 背板 + 三层隔板
   for (const sx of [-1, 1]) {
     const side = new THREE.Mesh(rbox(0.05, 1.35, 0.36, 0.02), shelfWhite)
@@ -510,7 +477,7 @@ export function buildRoom(): RoomHandle {
     addOutline(side, 0.008)
     shelf.add(side)
   }
-  const shelfBack = new THREE.Mesh(rbox(1.1, 1.35, 0.04, 0.018), toonMat('#FFB7D9'))
+  const shelfBack = new THREE.Mesh(rbox(1.1, 1.35, 0.04, 0.018), toonMat('#DDEAF2'))
   shelfBack.position.set(0, 0.675, -0.17)
   const shelfBoards = [0.08, 0.68, 1.28].map((y) => {
     const b = new THREE.Mesh(rbox(1.02, 0.045, 0.34, 0.02), shelfWhite)
@@ -523,7 +490,7 @@ export function buildRoom(): RoomHandle {
   shelf.add(shelfBack, ...shelfBoards)
 
   // 架上的彩色小书（两层，高矮错落 + 一本斜靠）
-  const shelfBookColors = ['#FF6FB3', '#7EC8E3', '#FFD966', '#C9B8F5', '#A8EBC8', '#FF9EC4']
+  const shelfBookColors = ['#75C7C3', '#7EC8E3', '#FFD966', '#B8D9E2', '#A8EBC8', '#B8E0D4']
   const shelfBooks: THREE.Mesh[] = []
   let sbx = -0.42
   shelfBookColors.slice(0, 4).forEach((c, i) => {
@@ -547,7 +514,7 @@ export function buildRoom(): RoomHandle {
   shelf.add(...shelfBooks, leaning, smallStack)
 
   // 架顶小盆栽：粉盆 + 绿仙人掌
-  const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.095, 0.13, 14), toonMat('#FF6FB3'))
+  const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.095, 0.13, 14), toonMat('#75C7C3'))
   pot.position.set(0.32, 1.37, 0)
   pot.castShadow = true
   addOutline(pot, 0.008)
@@ -561,7 +528,7 @@ export function buildRoom(): RoomHandle {
   cactusArm.position.set(0.39, 1.53, 0)
   cactusArm.rotation.z = -0.7
   // 小粉花在仙人掌顶
-  const bloom = new THREE.Mesh(new THREE.SphereGeometry(0.028, 10, 8), toonMat('#FF6FB3'))
+  const bloom = new THREE.Mesh(new THREE.SphereGeometry(0.028, 10, 8), toonMat('#75C7C3'))
   bloom.position.set(0.32, 1.68, 0)
   shelf.add(pot, cactus, cactusArm, bloom)
 
@@ -569,103 +536,88 @@ export function buildRoom(): RoomHandle {
   shelf.rotation.y = Math.PI / 2
   scene.add(shelf)
 
-  /* ── 屋顶 + 吸顶灯（粉色描边圆形灯盘）── */
-  // 天花板：奶油→灰粉渐变（降饱和，夜色里不抢戏）
-  const ceilMat = new THREE.MeshToonNodeMaterial()
-  ceilMat.gradientMap = toonGradient()
-  ceilMat.colorNode = Fn(() =>
-    mix(color('#FDF9F4'), color('#F0E2EA'), smoothstep(float(0.1), float(0.9), uv().y)),
-  )()
-  const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), ceilMat)
-  ceiling.rotation.x = Math.PI / 2
-  ceiling.position.set(0, 6, 0)
-  scene.add(ceiling)
-
-  /* ── Y2K 吸顶灯：土星小星球（铬银球 + 双色星环）+ 垂坠小星星 ── */
-  const ceilLamp = new THREE.Group()
-  const ceilGlow = new THREE.Mesh(
-    new THREE.CircleGeometry(0.5, 32),
-    new THREE.MeshBasicNodeMaterial({ color: '#FFF3D6' }),
-  )
-  ceilGlow.rotation.x = Math.PI / 2
-  // 铬银小星球（亮银 + 白色高光贴片）
-  const planet = new THREE.Mesh(new THREE.SphereGeometry(0.2, 24, 18), toonMat('#D9E2EE'))
-  addOutline(planet, 0.012)
-  const planetShine = new THREE.Mesh(
-    new THREE.SphereGeometry(0.055, 10, 8),
-    new THREE.MeshBasicNodeMaterial({ color: '#FFFFFF' }),
-  )
-  planetShine.position.set(-0.07, 0.1, 0.12)
-  // 星环：粉色主环 + 天蓝细环，斜扣在星球上
-  const ringMain = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.045, 12, 40), toonMat('#FF6FB3'))
-  ringMain.rotation.set(1.35, 0, 0.25)
-  addOutline(ringMain, 0.009)
-  const ringOuter = new THREE.Mesh(new THREE.TorusGeometry(0.52, 0.016, 10, 40), toonMat('#57C1F0'))
-  ringOuter.rotation.set(1.35, 0, 0.25)
-  ceilLamp.add(ceilGlow, planet, planetShine, ringMain, ringOuter)
-
-  // 三颗垂坠小星星（细绳 + 发光小星）
-  const hangStarColors = ['#FFD84D', '#FF9ECC', '#B79CFF']
-  const hangLens = [0.32, 0.45, 0.26]
-  hangLens.forEach((len, i) => {
-    const a = (Math.PI * 2 * i) / 3 + 0.5
-    const hx = Math.cos(a) * 0.55
-    const hz = Math.sin(a) * 0.55
-    const str = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.004, 0.004, len, 6),
-      toonMat('#FFF9F0'),
-    )
-    str.position.set(hx, -len / 2, hz)
-    const star = new THREE.Mesh(
-      new THREE.OctahedronGeometry(0.055),
-      new THREE.MeshBasicNodeMaterial({ color: hangStarColors[i] }),
-    )
-    star.position.set(hx, -len, hz)
-    star.rotation.z = i * 0.9
-    ceilLamp.add(str, star)
-  })
-  ceilLamp.position.set(0, 5.94, -2.5)
-  scene.add(ceilLamp)
-
-  /* ── 霓虹丝带灯：爱心霓虹管家族（粉大 + 蓝小 + 黄中）── */
-  const makeNeonHeart = (hex: string, scale: number) => {
-    const pts: THREE.Vector3[] = []
-    for (let i = 0; i <= 64; i++) {
-      const t = (i / 64) * Math.PI * 2
-      const hx = 16 * Math.pow(Math.sin(t), 3)
-      const hy = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)
-      pts.push(new THREE.Vector3(hx * 0.032 * scale, hy * 0.032 * scale, 0))
-    }
-    return new THREE.Mesh(
-      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true), 96, 0.016, 8, true),
-      new THREE.MeshBasicNodeMaterial({ color: hex }),
-    )
-  }
-  // 粉色大爱心：后墙左侧，海报与挂架之间上方
-  const neonHeart = makeNeonHeart('#FF5FB8', 1)
-  neonHeart.position.set(-1.65, 3.0, -4.88)
-  scene.add(neonHeart)
-  // 蓝色小爱心：后墙右侧，海报与镜子之间
-  const neonHeartCyan = makeNeonHeart('#57E0FF', 0.45)
-  neonHeartCyan.position.set(1.65, 3.3, -4.88)
-  scene.add(neonHeartCyan)
-  // 黄色中爱心：后墙最右，miku 海报上方（抬高避开海报顶框）
-  const neonHeartYellow = makeNeonHeart('#FFD84D', 0.7)
-  neonHeartYellow.position.set(3.3, 3.78, -4.88)
-  scene.add(neonHeartYellow)
-  const neonLight = new THREE.PointLight(0xFF5FB8, 1.2, 4, 1.8)
+  /* ── 隐藏的低亮度环境光，墙面只由材质本身发色 ── */
+  const neonLight = new THREE.PointLight(0xB7A7BD, 0.12, 4, 1.8)
   neonLight.position.set(-1.65, 3.0, -4.55)
-  const neonCyanLight = new THREE.PointLight(0x57E0FF, 0.7, 3, 1.8)
+  const neonCyanLight = new THREE.PointLight(0xA6B9C3, 0.1, 3, 1.8)
   neonCyanLight.position.set(1.65, 3.3, -4.55)
-  const neonYellowLight = new THREE.PointLight(0xFFD84D, 0.5, 3, 1.8)
+  const neonYellowLight = new THREE.PointLight(0xC8B9A9, 0.06, 3, 1.8)
   neonYellowLight.position.set(3.3, 3.78, -4.55)
   scene.add(neonLight, neonCyanLight, neonYellowLight)
+
+  // Music mode brings a second, shifting layer of light into the room.
+  const musicGlowLeft = new THREE.PointLight(0x9B94B0, 0, 6, 1.5)
+  musicGlowLeft.position.set(-2.4, 2.5, -2.9)
+  const musicGlowRight = new THREE.PointLight(0x9EAEB8, 0, 6, 1.5)
+  musicGlowRight.position.set(2.5, 2.3, -2.8)
+  scene.add(musicGlowLeft, musicGlowRight)
+  const musicPalettes = [
+    { bg: new THREE.Color('#F5F9FA'), left: new THREE.Color('#D4E6F4'), right: new THREE.Color('#D6ECEA') },
+    { bg: new THREE.Color('#F1F8FA'), left: new THREE.Color('#BED9EF'), right: new THREE.Color('#D5EBE4') },
+    { bg: new THREE.Color('#F6F9F7'), left: new THREE.Color('#CEE4F1'), right: new THREE.Color('#C9E7E9') },
+    { bg: new THREE.Color('#F8FAF8'), left: new THREE.Color('#E2EFF7'), right: new THREE.Color('#DBF0E8') },
+  ]
+  const musicMotes: { mesh: THREE.Mesh; x: number; y: number; z: number; phase: number }[] = []
+  for (let i = 0; i < 10; i++) {
+    const x = -3.5 + ((i * 17) % 29) / 28 * 7
+    const y = 1.55 + ((i * 11) % 23) / 22 * 2.45
+    const z = -4.45 + (i % 4) * 0.43
+    const mesh = new THREE.Mesh(
+      new THREE.OctahedronGeometry(i % 5 === 0 ? 0.055 : 0.032),
+      new THREE.MeshBasicNodeMaterial({ color: ['#B8ADBB', '#B7C8CE', '#D2C7B8', '#B6B3C8'][i % 4] }),
+    )
+    mesh.position.set(x, y, z)
+    mesh.visible = false
+    scene.add(mesh)
+    musicMotes.push({ mesh, x, y, z, phase: i * 1.73 })
+  }
 
   /* ── 桌面物件 ── */
   const props = new THREE.Group()
 
+  /* ── 桌面右前：可点击的迷你音响 ── */
+  const speaker = new THREE.Group()
+  const speakerBody = new THREE.Mesh(rbox(0.35, 0.46, 0.22, 0.045), toonMat('#4D8DA0'))
+  speakerBody.position.y = 0.23
+  speakerBody.castShadow = true
+  addOutline(speakerBody, 0.012)
+  const speakerFace = new THREE.Mesh(rbox(0.29, 0.39, 0.02, 0.025), toonMat('#FFF9F0'))
+  speakerFace.position.set(0, 0.23, 0.119)
+  const grille = new THREE.Mesh(new THREE.CircleGeometry(0.105, 32), toonMat('#4A3524'))
+  grille.position.set(0, 0.27, 0.133)
+  const cone = new THREE.Mesh(new THREE.CircleGeometry(0.072, 32), toonMat('#89BECB'))
+  cone.position.set(0, 0.27, 0.135)
+  const center = new THREE.Mesh(new THREE.CircleGeometry(0.025, 24), toonMat('#FFF9F0'))
+  center.position.set(0, 0.27, 0.137)
+  const speakerLed = new THREE.Mesh(new THREE.SphereGeometry(0.019, 12, 8), new THREE.MeshBasicNodeMaterial({ color: '#9A93A6' }))
+  speakerLed.position.set(0.1, 0.08, 0.135)
+  speaker.add(speakerBody, speakerFace, grille, cone, center, speakerLed)
+  speaker.position.set(1.48, 1.1, -3.38)
+  speaker.rotation.y = -0.22
+  speaker.userData = { kind: 'speaker' }
+  props.add(speaker)
+  const setSpeakerPlaying = (on: boolean) => {
+    musicPlaying = on
+    if (on) danceStartedAt = performance.now() / 1000
+    ;(speakerLed.material as THREE.MeshBasicNodeMaterial).color.set(on ? '#77E5A8' : '#9A93A6')
+    ;(cone.material as THREE.MeshToonNodeMaterial).color.set(on ? '#B9E631' : '#18B8D2')
+    musicMotes.forEach(({ mesh }) => { mesh.visible = on })
+    if (!on) {
+      musicGlowLeft.intensity = 0
+      musicGlowRight.intensity = 0
+      setNight(true)
+      bear.rotation.z = 0
+      head.rotation.z = 0.1
+      bearArms.forEach((arm, i) => { arm.rotation.z = i === 0 ? 0.5 : -0.5 })
+      slime.scale.set(1, 1, 1)
+      slime.rotation.z = 0
+      duck.position.y = 1.3025
+      duck.rotation.z = 0
+    }
+  }
+
   // 书：三本竖立书排（书脊朝镜头）+ 粉色书立 + 一本封面朝外斜靠墙的展示书
-  const bookColors = ['#FF8FBE', '#8FD3F4', '#A8EBC8', '#FFD84D']
+  const bookColors = ['#5D91B2', '#8FD3F4', '#A8EBC8', '#B4CDA2']
   const bookLabels = ['研究', '设计', '游戏', '我']
   const pagesMat = toonMat('#F7F2E6')
   const makeBook = (c: string) => {
@@ -694,11 +646,11 @@ export function buildRoom(): RoomHandle {
   }
   // 粉色 L 形书立（白菱形装饰），抵住书排右端
   const bookend = new THREE.Group()
-  const bePlate = new THREE.Mesh(rbox(0.03, 0.56, 0.22, 0.012), toonMat('#FF6FB3'))
+  const bePlate = new THREE.Mesh(rbox(0.03, 0.56, 0.22, 0.012), toonMat('#75C7C3'))
   bePlate.position.y = 0.28
   bePlate.castShadow = true
   addOutline(bePlate, 0.008)
-  const beFoot = new THREE.Mesh(rbox(0.17, 0.036, 0.22, 0.016), toonMat('#FF6FB3'))
+  const beFoot = new THREE.Mesh(rbox(0.17, 0.036, 0.22, 0.016), toonMat('#75C7C3'))
   beFoot.position.set(0.085, 0.018, 0)
   addOutline(beFoot, 0.007)
   const beDiamond = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, 0.02), toonMat('#FFF9F0'))
@@ -761,14 +713,14 @@ export function buildRoom(): RoomHandle {
   orgBody.castShadow = true
   addOutline(orgBody, 0.01)
   const orgDrawers = [0.08, -0.08].flatMap((y) => {
-    const face = new THREE.Mesh(rbox(0.38, 0.12, 0.02, 0.012), toonMat('#FF6FB3'))
+    const face = new THREE.Mesh(rbox(0.38, 0.12, 0.02, 0.012), toonMat('#75C7C3'))
     face.position.set(0, y, 0.17)
     addOutline(face, 0.007)
-    const knob = new THREE.Mesh(new THREE.SphereGeometry(0.02, 10, 8), toonMat('#FF6FB3'))
+    const knob = new THREE.Mesh(new THREE.SphereGeometry(0.02, 10, 8), toonMat('#75C7C3'))
     knob.position.set(0, y, 0.19)
     return [face, knob]
   })
-  const penCup = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.043, 0.11, 14), toonMat('#FF6FB3'))
+  const penCup = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.043, 0.11, 14), toonMat('#75C7C3'))
   penCup.position.set(-0.1, 0.215, 0.03)
   penCup.castShadow = true
   addOutline(penCup, 0.007)
@@ -851,7 +803,7 @@ export function buildRoom(): RoomHandle {
   const lapPad = new THREE.Mesh(rbox(0.17, 0.005, 0.085, 0.006), toonMat('#F1EBE0'))
   lapPad.position.set(0, 0.0135, 0.125)
   // 铰链（粉色圆轴）
-  const hinge = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.5, 12), toonMat('#FF6FB3'))
+  const hinge = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.5, 12), toonMat('#75C7C3'))
   hinge.rotation.z = Math.PI / 2
   hinge.position.set(0, 0.013, -0.174)
   // 屏幕组（绕铰链后仰 16°）
@@ -875,7 +827,7 @@ export function buildRoom(): RoomHandle {
   lapDisplay.position.set(0, 0.18, 0.012)
   // 机背发光小爱心 logo
   const lapLogo = new THREE.Group()
-  const lgMat = new THREE.MeshBasicNodeMaterial({ color: '#FF6FB3' })
+  const lgMat = new THREE.MeshBasicNodeMaterial({ color: '#75C7C3' })
   const lgL = new THREE.Mesh(new THREE.SphereGeometry(0.02, 10, 8), lgMat); lgL.position.set(-0.013, 0.007, 0)
   const lgR = new THREE.Mesh(new THREE.SphereGeometry(0.02, 10, 8), lgMat); lgR.position.set(0.013, 0.007, 0)
   const lgTip = new THREE.Mesh(new THREE.ConeGeometry(0.028, 0.038, 4), lgMat)
@@ -893,7 +845,7 @@ export function buildRoom(): RoomHandle {
 
   // ── 掌机：粉色充电底座上立放，屏幕正对镜头，动态小游戏 ──
   const hhDock = new THREE.Group()
-  const dockBase = new THREE.Mesh(rbox(0.46, 0.05, 0.17, 0.022), toonMat('#FF8FBE'))
+  const dockBase = new THREE.Mesh(rbox(0.46, 0.05, 0.17, 0.022), toonMat('#5D91B2'))
   dockBase.position.y = 0.025
   dockBase.castShadow = true
   addOutline(dockBase, 0.009)
@@ -902,10 +854,10 @@ export function buildRoom(): RoomHandle {
   dockBack.castShadow = true
   addOutline(dockBack, 0.009)
   const dockSideGeo = rbox(0.032, 0.27, 0.14, 0.016)
-  const dockSideL = new THREE.Mesh(dockSideGeo, toonMat('#FFB7D9')); dockSideL.position.set(-0.214, 0.175, 0.005)
-  const dockSideR = new THREE.Mesh(dockSideGeo, toonMat('#FFB7D9')); dockSideR.position.set(0.214, 0.175, 0.005)
+  const dockSideL = new THREE.Mesh(dockSideGeo, toonMat('#DDEAF2')); dockSideL.position.set(-0.214, 0.175, 0.005)
+  const dockSideR = new THREE.Mesh(dockSideGeo, toonMat('#DDEAF2')); dockSideR.position.set(0.214, 0.175, 0.005)
   addOutline(dockSideL, 0.007); addOutline(dockSideR, 0.007)
-  const dockLip = new THREE.Mesh(rbox(0.46, 0.05, 0.032, 0.014), toonMat('#FF8FBE'))
+  const dockLip = new THREE.Mesh(rbox(0.46, 0.05, 0.032, 0.014), toonMat('#5D91B2'))
   dockLip.position.set(0, 0.055, 0.075)
   hhDock.add(dockBase, dockBack, dockSideL, dockSideR, dockLip)
 
@@ -916,10 +868,10 @@ export function buildRoom(): RoomHandle {
   addOutline(hhBody, 0.008)
   // 握把（粉 / 天蓝）+ 底部圆头
   const hhGripGeo = rbox(0.05, 0.32, 0.042, 0.02)
-  const hhGripL = new THREE.Mesh(hhGripGeo, toonMat('#FF6FB3')); hhGripL.position.set(-0.145, 0.155, 0)
+  const hhGripL = new THREE.Mesh(hhGripGeo, toonMat('#75C7C3')); hhGripL.position.set(-0.145, 0.155, 0)
   const hhGripR = new THREE.Mesh(hhGripGeo, toonMat('#8FD3F4')); hhGripR.position.set(0.145, 0.155, 0)
   addOutline(hhGripL, 0.008); addOutline(hhGripR, 0.008)
-  const hhCapL = new THREE.Mesh(new THREE.SphereGeometry(0.03, 10, 8), toonMat('#FF6FB3')); hhCapL.position.set(-0.145, 0.02, 0)
+  const hhCapL = new THREE.Mesh(new THREE.SphereGeometry(0.03, 10, 8), toonMat('#75C7C3')); hhCapL.position.set(-0.145, 0.02, 0)
   const hhCapR = new THREE.Mesh(new THREE.SphereGeometry(0.03, 10, 8), toonMat('#8FD3F4')); hhCapR.position.set(0.145, 0.02, 0)
   // 屏幕：深色边框 + 动态画面
   const hhBezel = new THREE.Mesh(rbox(0.2, 0.175, 0.012, 0.008), toonMat('#3A3644'))
@@ -937,7 +889,7 @@ export function buildRoom(): RoomHandle {
   const dpadH = new THREE.Mesh(rbox(0.042, 0.014, 0.012, 0.005), hhDark); dpadH.position.set(-0.062, 0.052, 0.019)
   const dpadV = new THREE.Mesh(rbox(0.014, 0.042, 0.012, 0.005), hhDark); dpadV.position.set(-0.062, 0.052, 0.019)
   const hhBtnGeo = new THREE.CylinderGeometry(0.014, 0.014, 0.012, 12)
-  const hhBtnA = new THREE.Mesh(hhBtnGeo, toonMat('#FF6FB3')); hhBtnA.rotation.x = Math.PI / 2; hhBtnA.position.set(0.052, 0.062, 0.019)
+  const hhBtnA = new THREE.Mesh(hhBtnGeo, toonMat('#75C7C3')); hhBtnA.rotation.x = Math.PI / 2; hhBtnA.position.set(0.052, 0.062, 0.019)
   const hhBtnB = new THREE.Mesh(hhBtnGeo, toonMat('#A8EBC8')); hhBtnB.rotation.x = Math.PI / 2; hhBtnB.position.set(0.088, 0.03, 0.019)
   const pillGeo = rbox(0.026, 0.009, 0.01, 0.004)
   const pillL = new THREE.Mesh(pillGeo, toonMat('#D9D2C4')); pillL.position.set(-0.026, 0.014, 0.019)
@@ -976,7 +928,7 @@ export function buildRoom(): RoomHandle {
       }
     }
     for (let i = 0; i < 3; i++) {
-      drawPxHeart(c, 22 + i * 40, Math.round(76 - ((t * 10 + i * 30) % 96)), 2, i % 2 ? '#FF9ECC' : '#C9B8F5')
+      drawPxHeart(c, 22 + i * 40, Math.round(76 - ((t * 10 + i * 30) % 96)), 2, i % 2 ? '#FF9ECC' : '#B8D9E2')
     }
     // 扒边猫猫：慢速上下 + 眨眼
     const catY = 30 + Math.round(Math.sin(t * 0.7) * 4)
@@ -1006,7 +958,7 @@ export function buildRoom(): RoomHandle {
     const bob = Math.round(Math.sin(t * 1.6) * 2)
     const sBlink = (t % 3.6) > 3.4
     const sy = 62 + bob
-    c.fillStyle = '#FF6FB3'
+    c.fillStyle = '#75C7C3'
     c.fillRect(50, sy, 28, 3); c.fillRect(47, sy + 3, 34, 6); c.fillRect(45, sy + 9, 38, 5)
     c.fillStyle = '#FFA5CE'; c.fillRect(50, sy, 6, 2)
     if (sBlink) {
@@ -1032,7 +984,7 @@ export function buildRoom(): RoomHandle {
     c.fillStyle = '#7ADBA8'; c.fillRect(0, 54, 64, 2)
     for (let i = 0; i < 3; i++) drawPxHeart(c, 4 + i * 13, 4, 2, '#FF6F8E')
     const cy = 24 + Math.round(Math.sin(t * 2.2) * 2)
-    c.fillStyle = '#FFD84D'; c.fillRect(52, cy, 6, 6)
+    c.fillStyle = '#B4CDA2'; c.fillRect(52, cy, 6, 6)
     c.fillStyle = '#FFE9A8'; c.fillRect(53, cy + 1, 2, 2)
     if (Math.sin(t * 3) > 0) { c.fillStyle = '#FFE9A8'; c.fillRect(56, 8, 4, 4) }
     const jump = Math.abs(Math.sin(t * 2.8))
@@ -1040,7 +992,7 @@ export function buildRoom(): RoomHandle {
     const bx = 14, baseY = 54
     const bh = sq ? 7 : 10, bw = sq ? 15 : 12
     const by = baseY - Math.round(jump * 22) - bh
-    c.fillStyle = '#FF6FB3'
+    c.fillStyle = '#75C7C3'
     c.fillRect(bx + (sq ? 0 : 2), by, bw, bh)
     c.fillRect(bx + (sq ? 1 : 1), by - 2, bw - (sq ? 2 : 3), 2)
     c.fillStyle = '#FFA5CE'; c.fillRect(bx + 2, by, 3, 2)
@@ -1057,11 +1009,11 @@ export function buildRoom(): RoomHandle {
 
   // 五斗柜：左墙窗下，白柜体 + 粉顶板 + 四抽屉 + 顶部小摆件
   const dresser = new THREE.Group()
-  const drBody = new THREE.Mesh(rbox(1.3, 1.05, 0.56, 0.05), toonMat('#FFF9F0'))
+  const drBody = new THREE.Mesh(rbox(1.3, 1.05, 0.56, 0.05), createAnomalousMaterial('#E4EFF0'))
   drBody.position.y = 0.545
   drBody.castShadow = true
   addOutline(drBody, 0.011)
-  const drTop = new THREE.Mesh(rbox(1.38, 0.05, 0.62, 0.022), toonMat('#FF6FB3'))
+  const drTop = new THREE.Mesh(rbox(1.38, 0.05, 0.62, 0.022), toonMat('#75C7C3'))
   drTop.position.y = 1.095
   drTop.castShadow = true
   addOutline(drTop, 0.009)
@@ -1091,13 +1043,13 @@ export function buildRoom(): RoomHandle {
     }
   }
   // 顶部小摆件：黄色宝石星星 + 粉框爱心画
-  const drStar = new THREE.Mesh(new THREE.OctahedronGeometry(0.09, 0), toonMat('#FFD84D'))
+  const drStar = new THREE.Mesh(new THREE.OctahedronGeometry(0.09, 0), toonMat('#B4CDA2'))
   drStar.scale.set(1, 1.4, 0.45)
   drStar.position.set(-0.4, 1.2, 0.1)
   drStar.rotation.z = 0.12
   addOutline(drStar, 0.008)
   const drFrame = new THREE.Group()
-  const drFrameOuter = new THREE.Mesh(rbox(0.24, 0.3, 0.025, 0.012), toonMat('#FF6FB3'))
+  const drFrameOuter = new THREE.Mesh(rbox(0.24, 0.3, 0.025, 0.012), toonMat('#75C7C3'))
   addOutline(drFrameOuter, 0.008)
   const drFrameMat = new THREE.Mesh(rbox(0.18, 0.24, 0.02, 0.008), toonMat('#FFF9F0'))
   drFrameMat.position.z = 0.005
@@ -1117,25 +1069,25 @@ export function buildRoom(): RoomHandle {
   drFrame.position.set(0.38, 1.26, 0.08)
   drFrame.rotation.y = -0.18
   dresser.add(drStar, drFrame)
-  dresser.position.set(-4.58, 0, 1.2)
+  dresser.position.set(-4.8, 0, -4.0)
   dresser.rotation.y = Math.PI / 2
   dresser.userData = { kind: 'dresser' }
   scene.add(dresser)
 
   /* ── 桌左侧地板：粉色豆袋懒人沙发 + 黄色星星靠枕 ── */
   const beanbag = new THREE.Group()
-  const bbMain = new THREE.Mesh(new THREE.SphereGeometry(0.62, 24, 18), toonMat('#F2A3C8'))
+  const bbMain = new THREE.Mesh(new THREE.SphereGeometry(0.62, 24, 18), toonMat('#A8D7D1'))
   bbMain.scale.set(1, 0.62, 1)
   bbMain.position.y = 0.36
   bbMain.castShadow = true
   bbMain.receiveShadow = true
   addOutline(bbMain, 0.016)
-  const bbTop = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 16), toonMat('#F6B7D6'))
+  const bbTop = new THREE.Mesh(new THREE.SphereGeometry(0.45, 20, 16), toonMat('#C8E8DF'))
   bbTop.scale.set(1, 0.55, 1)
   bbTop.position.set(0.06, 0.62, -0.04)
   bbTop.castShadow = true
   addOutline(bbTop, 0.013)
-  const bbSeam = new THREE.Mesh(new THREE.TorusGeometry(0.44, 0.018, 8, 28), toonMat('#EA8FB8'))
+  const bbSeam = new THREE.Mesh(new THREE.TorusGeometry(0.44, 0.018, 8, 28), toonMat('#8BBFC2'))
   bbSeam.rotation.x = Math.PI / 2
   bbSeam.scale.set(1, 0.62, 1)
   bbSeam.position.y = 0.37
@@ -1152,7 +1104,7 @@ export function buildRoom(): RoomHandle {
   starShape.closePath()
   const scGeo = new THREE.ExtrudeGeometry(starShape, { depth: 0.06, bevelEnabled: true, bevelSize: 0.02, bevelThickness: 0.02, bevelSegments: 2 })
   scGeo.center()
-  const starCushion = new THREE.Mesh(scGeo, toonMat('#FFD84D'))
+  const starCushion = new THREE.Mesh(scGeo, toonMat('#B4CDA2'))
   starCushion.castShadow = true
   starCushion.position.set(0.42, 0.44, 0.24)
   starCushion.rotation.set(0.2, -0.5, 0.12)
@@ -1179,36 +1131,36 @@ export function buildRoom(): RoomHandle {
       c.lineTo(32 + Math.cos(a) * 28, 32 + Math.sin(a) * 28)
       c.stroke()
     }
-    c.fillStyle = '#FF6FB3'
+    c.fillStyle = '#75C7C3'
     c.fillRect(30, 6, 3, 3); c.fillRect(34, 6, 3, 3); c.fillRect(29, 9, 9, 3); c.fillRect(31, 12, 5, 3)
     c.strokeStyle = '#4A3524'
     c.lineWidth = 4
     c.beginPath(); c.moveTo(32, 32); c.lineTo(22, 23); c.stroke()
     c.lineWidth = 3
     c.beginPath(); c.moveTo(32, 32); c.lineTo(44, 18); c.stroke()
-    c.fillStyle = '#FF6FB3'
+    c.fillStyle = '#75C7C3'
     c.beginPath(); c.arc(32, 32, 3.5, 0, Math.PI * 2); c.fill()
   }
   const clkTex = new THREE.CanvasTexture(clkCv)
   clkTex.colorSpace = THREE.SRGBColorSpace
   const clock = new THREE.Group()
-  const clkBody = new THREE.Mesh(new THREE.CylinderGeometry(0.088, 0.088, 0.03, 24), toonMat('#FF6FB3'))
+  const clkBody = new THREE.Mesh(new THREE.CylinderGeometry(0.088, 0.088, 0.03, 24), toonMat('#75C7C3'))
   clkBody.rotation.x = Math.PI / 2
   clkBody.castShadow = true
   addOutline(clkBody, 0.008)
   const clkFace = new THREE.Mesh(new THREE.CircleGeometry(0.072, 24), new THREE.MeshBasicNodeMaterial({ map: clkTex }))
   clkFace.position.z = 0.017
-  const clkRing = new THREE.Mesh(new THREE.TorusGeometry(0.074, 0.01, 8, 24), toonMat('#FF4F9E'))
+  const clkRing = new THREE.Mesh(new THREE.TorusGeometry(0.074, 0.01, 8, 24), toonMat('#638FA6'))
   clkRing.position.z = 0.016
   const bellGeo = new THREE.SphereGeometry(0.032, 12, 10)
-  const bellMat = toonMat('#FFD84D')
+  const bellMat = toonMat('#B4CDA2')
   const bellL = new THREE.Mesh(bellGeo, bellMat); bellL.position.set(-0.06, 0.082, 0); bellL.scale.set(1, 0.85, 1)
   const bellR = new THREE.Mesh(bellGeo, bellMat); bellR.position.set(0.06, 0.082, 0); bellR.scale.set(1, 0.85, 1)
   addOutline(bellL, 0.006); addOutline(bellR, 0.006)
   const clkBtn = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.018, 10), toonMat('#FFF9F0'))
   clkBtn.position.y = 0.095
   const footGeo = new THREE.SphereGeometry(0.016, 8, 8)
-  const footMat = toonMat('#FF4F9E')
+  const footMat = toonMat('#638FA6')
   const footL = new THREE.Mesh(footGeo, footMat); footL.position.set(-0.052, -0.088, 0.01)
   const footR = new THREE.Mesh(footGeo, footMat); footR.position.set(0.052, -0.088, 0.01)
   clock.add(clkBody, clkFace, clkRing, bellL, bellR, clkBtn, footL, footR)
@@ -1316,6 +1268,7 @@ export function buildRoom(): RoomHandle {
   // 手臂 ×2（摊在身侧，坐着抱的姿势）
   const armGeo = new THREE.SphereGeometry(0.042, 12, 10)
   armGeo.scale(1, 1.6, 1)
+  const bearArms: THREE.Mesh[] = []
   for (const sx of [-1, 1]) {
     const arm = new THREE.Mesh(armGeo, furMat)
     arm.position.set(sx * 0.135, 0.15, 0.02)
@@ -1323,6 +1276,7 @@ export function buildRoom(): RoomHandle {
     arm.castShadow = true
     addOutline(arm, 0.008)
     bear.add(arm)
+    bearArms.push(arm)
   }
   // 腿 ×2（向前伸）
   const bearLegGeo = new THREE.SphereGeometry(0.05, 12, 10)
@@ -1341,7 +1295,7 @@ export function buildRoom(): RoomHandle {
 
   // 脖子上的粉色蝴蝶结
   const bow = new THREE.Group()
-  const bowMat = toonMat('#FF6FB3')
+  const bowMat = toonMat('#75C7C3')
   const wingL = new THREE.Mesh(new THREE.SphereGeometry(0.035, 10, 8), bowMat)
   wingL.scale.set(1.3, 0.8, 0.55)
   wingL.position.set(-0.032, 0, 0)
@@ -1350,7 +1304,7 @@ export function buildRoom(): RoomHandle {
   wingR.scale.set(1.3, 0.8, 0.55)
   wingR.position.set(0.032, 0, 0)
   wingR.rotation.z = -0.35
-  const knot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), toonMat('#FF6FB3'))
+  const knot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 8), toonMat('#75C7C3'))
   bow.add(wingL, wingR, knot)
   bow.position.set(0, 0.235, 0.07)
   bow.rotation.x = -0.25
@@ -1389,7 +1343,7 @@ export function buildRoom(): RoomHandle {
   sSparkL.position.set(-0.031, 0.105, 0.098)
   const sSparkR = sSparkL.clone(); sSparkR.position.set(0.039, 0.105, 0.098)
   // 腮红 + 微笑
-  const blushMat = toonMat('#FF6FB3')
+  const blushMat = toonMat('#75C7C3')
   const blushL = new THREE.Mesh(new THREE.BoxGeometry(0.028, 0.012, 0.008), blushMat)
   blushL.position.set(-0.058, 0.075, 0.082)
   const blushR = blushL.clone(); blushR.position.set(0.058, 0.075, 0.082)
@@ -1402,10 +1356,26 @@ export function buildRoom(): RoomHandle {
   slime.userData = { kind: 'slime' }
   props.add(slime)
 
+  // Thin, flat wakes mark the cloth as a waterline; objects pass through it.
+  const surfaceRipples = [
+    { object: bear, radius: 0.16 }, { object: clock, radius: 0.105 },
+    { object: slime, radius: 0.11 },
+  ].flatMap(({ object, radius }) => [0, 0.5].map((phase) => {
+    const material = new THREE.MeshBasicNodeMaterial({
+      color: '#E9FFFF', transparent: true, opacity: 0, depthWrite: false,
+      toneMapped: false,
+    })
+    const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.0025, 4, 48, Math.PI * 1.65), material)
+    mesh.rotation.set(-Math.PI / 2, 0, phase * Math.PI * 2)
+    scene.add(mesh)
+    return { mesh, object, phase }
+  }))
+
+
   // 向日葵玩具：粉盆 + 绿茎 + 微笑大花盘（茎+花头单独成组用于摇晃，盆保持直立）
   const sunflower = new THREE.Group()
   const sfSway = new THREE.Group()
-  const sfPot = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 0.11, 14), toonMat('#FF6FB3'))
+  const sfPot = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 0.11, 14), toonMat('#75C7C3'))
   sfPot.position.y = 0.055
   sfPot.castShadow = true
   addOutline(sfPot, 0.008)
@@ -1426,7 +1396,7 @@ export function buildRoom(): RoomHandle {
   const sfHead = new THREE.Group()
   const petalGeo = new THREE.SphereGeometry(0.034, 10, 8)
   petalGeo.scale(0.55, 1.35, 0.3)
-  const petalMat = toonMat('#FFD84D')
+  const petalMat = toonMat('#B4CDA2')
   for (let p = 0; p < 10; p++) {
     const a = (Math.PI * 2 * p) / 10
     const petal = new THREE.Mesh(petalGeo, petalMat)
@@ -1501,7 +1471,7 @@ export function buildRoom(): RoomHandle {
   const bnEyeR = new THREE.Mesh(plushEyeGeo, noseMat); bnEyeR.position.set(0.035, 0.02, 0.082)
   const bnSpkL = new THREE.Mesh(plushSparkGeo, sparkleMat); bnSpkL.position.set(-0.031, 0.025, 0.092)
   const bnSpkR = new THREE.Mesh(plushSparkGeo, sparkleMat); bnSpkR.position.set(0.039, 0.025, 0.092)
-  const bnNose = new THREE.Mesh(new THREE.SphereGeometry(0.012, 8, 6), toonMat('#FF8FBE'))
+  const bnNose = new THREE.Mesh(new THREE.SphereGeometry(0.012, 8, 6), toonMat('#5D91B2'))
   bnNose.scale.set(1.2, 0.8, 0.6)
   bnNose.position.set(0, -0.008, 0.088)
   const bnSmile = new THREE.Mesh(plushSmileGeo, noseMat)
@@ -1537,7 +1507,7 @@ export function buildRoom(): RoomHandle {
   }
   // 淡紫蝴蝶结
   const bBow = new THREE.Group()
-  const bBowMat = toonMat('#C9B8F5')
+  const bBowMat = toonMat('#B8D9E2')
   const bWingL = new THREE.Mesh(new THREE.SphereGeometry(0.032, 10, 8), bBowMat)
   bWingL.scale.set(1.3, 0.8, 0.55); bWingL.position.set(-0.03, 0, 0); bWingL.rotation.z = 0.35
   const bWingR = new THREE.Mesh(new THREE.SphereGeometry(0.032, 10, 8), bBowMat)
@@ -1588,7 +1558,7 @@ export function buildRoom(): RoomHandle {
   const cEyeR = new THREE.Mesh(plushEyeGeo, noseMat); cEyeR.position.set(0.037, 0.02, 0.086)
   const cSpkL = new THREE.Mesh(plushSparkGeo, sparkleMat); cSpkL.position.set(-0.033, 0.025, 0.096)
   const cSpkR = new THREE.Mesh(plushSparkGeo, sparkleMat); cSpkR.position.set(0.041, 0.025, 0.096)
-  const cNose = new THREE.Mesh(new THREE.SphereGeometry(0.011, 8, 6), toonMat('#FF8FBE'))
+  const cNose = new THREE.Mesh(new THREE.SphereGeometry(0.011, 8, 6), toonMat('#5D91B2'))
   cNose.scale.set(1.3, 0.8, 0.6)
   cNose.position.set(0, 0.0, 0.094)
   const cW1 = new THREE.Mesh(plushSmileGeo, noseMat)
@@ -1630,7 +1600,7 @@ export function buildRoom(): RoomHandle {
   tail.castShadow = true
   addOutline(tail, 0.007)
   cat.add(ct, cb, ch, tail)
-  cat.position.set(-1.55, 0.012, -0.55) // 地毯左前
+  cat.position.set(-2.4, 0.012, -2.3) // 地毯左前
   cat.rotation.y = 0.55
   cat.userData = { kind: 'cat' }
   scene.add(cat)
@@ -1691,7 +1661,7 @@ export function buildRoom(): RoomHandle {
   shelf.add(duck)
 
   /* ── 蝴蝶群：电子感锐角翅 + 淡淡内透光 ── */
-  const bfColors = ['#FF6FB3', '#FFD84D', '#8FD3F4', '#C9B8F5', '#A8EBC8', '#FF9ECC', '#FFE066', '#A8E0FF', '#FF8FBE']
+  const bfColors = ['#F1FFFC', '#BCEAFF', '#32D6ED', '#E0F5FF', '#A9E8F5', '#F5FFFE', '#69CEFF', '#D5FAFF', '#36BCEB']
   // 单侧翅膀轮廓：直线段硬折角（赛博锐利感）——前翅剑形尖朝前，后翅小锐角朝后
   const wingShapeR = new THREE.Shape()
   wingShapeR.moveTo(0, 0.012)
@@ -1742,8 +1712,8 @@ export function buildRoom(): RoomHandle {
   bfBodyGeo.rotateX(Math.PI / 2)
   const bfHeadGeo = new THREE.SphereGeometry(0.009, 8, 6)
   const bfAntGeo = new THREE.CylinderGeometry(0.0013, 0.0013, 0.034, 5)
-  const bfBodyMat = toonMat('#4A3524')
-  const bfSpotMat = toonMat('#FFF9F2')
+  const bfBodyMat = toonMat('#257DA4')
+  const bfSpotMat = toonMat('#FFFFFF')
   const bfSpots: [number, number, number][] = [
     [-2.8, 2.3, -2.4], [2.4, 2.0, -2.6], [-2.4, 2.7, 1.0], [2.6, 2.4, 1.2],
     [0, 2.6, -1.4], [-1.3, 3.2, 0.4], [1.5, 3.1, -1.6], [-0.5, 1.8, -2.0], [3.0, 1.6, -0.6],
@@ -1831,26 +1801,26 @@ export function buildRoom(): RoomHandle {
   const setNight = (on: boolean) => {
     sun.intensity = on ? 0.02 : 2.0
     // 冷紫环境光打底（夜空反光），暖光源做主角——冷暖对比代替一片粉雾
-    ambient.intensity = on ? 0.26 : 0.55
-    ambient.color.set(on ? 0xC8B8E8 : 0xD8C8F0)
-    hemi.intensity = on ? 0.16 : 0.32
-    hemi.color.set(on ? 0xB8A8D8 : 0xE8DFF2)
-    hemi.groundColor.set(on ? 0x8A78A8 : 0xB8A8C8)
+    ambient.intensity = on ? 0.68 : 0.78
+    ambient.color.set(on ? 0xE9F1F5 : 0xF1F8F8)
+    hemi.intensity = on ? 0.42 : 0.52
+    hemi.color.set(on ? 0xE3F0F6 : 0xF3FAF8)
+    hemi.groundColor.set(on ? 0x45DCCD : 0xA5FFED)
     // 吸顶灯与霓虹只做氛围：过强会在设备旁桌布上打出光斑
-    lampLight.intensity = on ? 6 : 4
-    neonLight.intensity = on ? 1.3 : 0.5
-    neonCyanLight.intensity = on ? 0.85 : 0.25
-    neonYellowLight.intensity = on ? 0.65 : 0.2
-    shaftGroup.visible = !on
-    glass.visible = !on
+    lampLight.intensity = on ? 4.5 : 4
+    lampLight.color.set(0xF6FBFE)
+    neonLight.intensity = on ? 0.12 : 0.08
+    neonCyanLight.intensity = on ? 0.1 : 0.06
+    neonYellowLight.intensity = on ? 0.06 : 0.04
     // 深紫夜空：比纯深黑稍亮，与房间色调断层更小
-    scene.background = new THREE.Color(on ? '#241A33' : C.bg)
+    scene.background = new THREE.Color(C.bg)
   }
 
   // 默认进入夜模式：霓虹与灯光是主角
   setNight(true)
 
   const dispose = () => {
+    distantSculptures.dispose()
     scene.traverse((obj) => {
       if (obj instanceof THREE.Mesh) {
         obj.geometry.dispose()
@@ -1858,13 +1828,31 @@ export function buildRoom(): RoomHandle {
     })
   }
 
-  /* ── 常驻 2D 标签锚点：屏幕空间贴纸标签挂在这两个空物体上 ── */
-  const papersAnchor = new THREE.Object3D()
-  papersAnchor.position.set(-1.385, 1.82, -4.5) // 书排正上方
-  scene.add(papersAnchor)
-  const projectsAnchor = new THREE.Object3D()
-  projectsAnchor.position.set(-0.28, 1.6, -3.62) // 笔记本屏幕正上方
-  scene.add(projectsAnchor)
+  // Attach each entry to its object, including that object's animated transforms.
+  const anchorOn = (object: THREE.Object3D, offset: [number, number, number]) => {
+    const anchor = new THREE.Object3D()
+    anchor.position.set(...offset)
+    object.add(anchor)
+    return anchor
+  }
+  const firstBook = props.children.find(object => object.userData.kind === 'book') ?? displayBook
+  const papersAnchor = anchorOn(firstBook, [0, 0.63, 0])
+  const projectsAnchor = anchorOn(laptop, [0, 0.48, 0])
+  const musicAnchor = anchorOn(speaker, [0, 0.64, 0])
 
-  return { scene, lampLight, sunLight: sun, posterWall, tagAnchors: { papers: papersAnchor, projects: projectsAnchor }, tick, setNight, dispose }
+  // Gather the intimate objects into a smaller foreground island. Anchors and
+  // animated props keep their local coordinates, so picking and drift stay aligned.
+  const foreground = new THREE.Group()
+  const horizon = new Set<THREE.Object3D>([foldedSpace.group, distantSculptures.group])
+  for (const child of [...scene.children]) {
+    if (!horizon.has(child) && !(child instanceof THREE.Light) && child !== sun.target) foreground.add(child)
+  }
+  foreground.scale.setScalar(0.94)
+  foreground.position.set(-1.3, -0.15, 1.5)
+  scene.add(foreground)
+
+  const handTarget = new THREE.Vector3()
+  const musicShader = createMusicShader(scene)
+
+  return { scene, lampLight, sunLight: sun, posterWall, tagAnchors: { papers: papersAnchor, projects: projectsAnchor, music: musicAnchor }, setSpeakerPlaying, tick, setNight, dispose }
 }

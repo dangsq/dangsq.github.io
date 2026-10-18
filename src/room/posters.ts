@@ -27,98 +27,64 @@ function heart(ctx: CanvasRenderingContext2D, x: number, y: number, hex: string)
   px(ctx, x + 3, y + 5, 1, 1, hex)
 }
 
-const SLIME_COLORS = [
-  ['#FFB6D9', '#E88BB8'],
-  ['#A8EBC8', '#7AD4A8'],
-  ['#C9B8F5', '#A08BE0'],
-  ['#FFE08A', '#F0BE4E'],
-] as const
-
-/* 单只史莱姆：弹跳 + squash/stretch + 落地睁眼/空中眯眼 */
-function drawSlimeAt(
-  ctx: CanvasRenderingContext2D,
-  cx: number, groundY: number, s: number,
-  bodyHex: string, darkHex: string,
-  t: number, phase: number,
-) {
-  const bounce = Math.abs(Math.sin(t * 2.4 + phase))
-  const airborne = bounce > 0.55
-  const jump = airborne ? (bounce - 0.55) * 22 * s : 0
-  const squash = airborne ? 0.85 : 1 + (1 - bounce) * 0.28
-  const bw = 20 * s * squash
-  const bh = (17 * s) / squash
-  const by = groundY - bh - jump
-  const bx = cx - bw / 2
-
-  // 地面影子
-  px(ctx, cx - bw / 2 + 2, groundY + 1, bw - 4, 2, '#C8A8D8')
-
-  // 身体（圆角矩形近似）
-  px(ctx, bx + 3, by, bw - 6, 3, bodyHex)
-  px(ctx, bx, by + 3, bw, bh - 6, bodyHex)
-  px(ctx, bx + 3, by + bh - 3, bw - 6, 3, bodyHex)
-  px(ctx, bx, by + bh - 5, bw, 5, darkHex)
-  px(ctx, bx + 4, by + 4, 5, 3, '#FFFFFF')
-
-  // 表情
-  const eyeY = by + 8
-  if (airborne) {
-    px(ctx, cx - 7, eyeY, 4, 2, '#2B2A33')
-    px(ctx, cx + 3, eyeY, 4, 2, '#2B2A33')
-  } else {
-    px(ctx, cx - 6, eyeY - 1, 3, 5, '#2B2A33')
-    px(ctx, cx + 3, eyeY - 1, 3, 5, '#2B2A33')
-  }
-  px(ctx, cx - 10, eyeY + 3, 3, 2, '#FF7BAC') // 腮红
-  px(ctx, cx + 7, eyeY + 3, 3, 2, '#FF7BAC')
-  px(ctx, cx - 2, by + 13, 5, 2, '#2B2A33') // 微笑
-}
-
-/* 确定性星星位置（每次渲染一致） */
-const STARS: [number, number][] = (() => {
-  const arr: [number, number][] = []
-  let seed = 5
-  const rand = () => {
-    seed = (seed * 16807) % 2147483647
-    return seed / 2147483647
-  }
-  for (let i = 0; i < 20; i++) {
-    arr.push([4 + rand() * (W - 10), 5 + rand() * (H - 34)])
-  }
-  return arr
-})()
+/* A room inside the room: nested doorways drift out of alignment, with a dark sun. */
+const STARS: [number, number][] = Array.from({ length: 27 }, (_, i) => [
+  4 + ((i * 37 + i * i * 13) % 80),
+  5 + ((i * 19 + i * i * 7) % 69),
+])
 
 function drawY2KSlimes(ctx: CanvasRenderingContext2D, w: number, h: number, t: number) {
-  // 粉→薰衣草渐变条带背景
-  const bands = ['#FFD9EF', '#FBCFEA', '#F4C9E8', '#EBC6E9', '#E0C3EC', '#D4C2EE', '#C8C1F0', '#BEC0F2']
-  for (let i = 0; i < 8; i++) px(ctx, 0, (i * h) / 8, w, h / 8, bands[i])
+  ctx.clearRect(0, 0, w, h)
+  ctx.save()
+  ctx.beginPath()
+  ctx.ellipse(w / 2, h / 2, w * 0.49, h * 0.49, 0, 0, Math.PI * 2)
+  ctx.clip()
+  const bands = ['#004C7B', '#006B98', '#008BAB', '#00A8B9', '#00C6C5', '#29DFCE', '#71F3D9', '#BBFFE8']
+  for (let i = 0; i < bands.length; i++) px(ctx, 0, i * h / bands.length, w, h / bands.length + 1, bands[i])
 
-  // 闪烁四角星
+  // Impossible horizon: its vanishing point slips independently of the architecture.
+  const vanishingX = w * 0.5 + Math.sin(t * 0.29) * 9
+  const vanishingY = h * 0.51 + Math.sin(t * 0.37) * 6
+  for (let i = 0; i < 8; i++) {
+    const size = 36 - i * 4
+    const offset = Math.sin(t * 0.41 + i * 0.75) * (i + 1) * 0.8
+    ctx.strokeStyle = i % 3 === 0 ? '#36FFDB' : i % 3 === 1 ? '#D7FFF2' : '#00D9FF'
+    ctx.globalAlpha = 0.18 + i * 0.06
+    ctx.lineWidth = i % 3 === 0 ? 1.5 : 1
+    ctx.beginPath()
+    ctx.ellipse(vanishingX + offset, vanishingY, size, size * 0.8, Math.sin(t * 0.2 + i) * 0.35, 0, Math.PI * 2)
+    ctx.stroke()
+  }
+  ctx.globalAlpha = 1
+
+  // A negative sun: bright corona, black center.
+  const sunX = vanishingX + Math.sin(t * 0.6) * 4
+  const sunY = vanishingY - 7
+  ctx.fillStyle = '#E6FBF6'
+  ctx.beginPath(); ctx.arc(sunX, sunY, 13, 0, Math.PI * 2); ctx.fill()
+  ctx.fillStyle = '#03040B'
+  ctx.beginPath(); ctx.arc(sunX + 3, sunY - 2, 13, 0, Math.PI * 2); ctx.fill()
+  ctx.strokeStyle = '#6DD2C7'
+  ctx.lineWidth = 1
+  ctx.beginPath(); ctx.arc(sunX, sunY, 16, -1.4, 1.7); ctx.stroke()
+
   STARS.forEach(([sx, sy], i) => {
-    if (Math.sin(t * 3 + i * 1.9) > -0.2) {
-      sparkle(ctx, sx, sy, ['#FFF3A0', '#A8E0FF', '#FFFFFF'][i % 3])
-    }
+    if (Math.sin(t * 1.8 + i * 3.7) > 0.17) sparkle(ctx, sx, sy, i % 2 ? '#E8FDFA' : '#4DD2E6')
   })
 
-  // 缓缓上升的爱心
-  for (let k = 0; k < 6; k++) {
-    const hx = 10 + ((k * 17 + 6) % (w - 24))
-    const hy = h - ((t * 8 + k * 19) % (h + 8))
-    if (hy > 4 && hy < h - 18) heart(ctx, hx, hy, k % 2 ? '#FF4F9E' : '#FF9ECC')
+  // Scanline tears arrive in bursts, not as a constant texture.
+  if (Math.sin(t * 2.6) > 0.7) {
+    for (let i = 0; i < 5; i++) {
+      const y = (i * 19 + Math.floor(t * 8) * 7) % h
+      px(ctx, i % 2 ? 0 : 9, y, w - 12, 1, i % 2 ? '#53C1C6' : '#A1CEC2')
+    }
   }
-
-  // 三只史莱姆：大居中 + 左小 + 右中，各自节奏与配色
-  const c0 = Math.floor(t * 0.5) % 4
-  const c1 = Math.floor(t * 0.4 + 1) % 4
-  const c2 = Math.floor(t * 0.45 + 2) % 4
-
-  drawSlimeAt(ctx, 16, h - 13, 0.75, SLIME_COLORS[c1][0], SLIME_COLORS[c1][1], t, 1.7)
-  drawSlimeAt(ctx, w / 2 + Math.sin(t * 1.2) * 5, h - 16, 1.3, SLIME_COLORS[c0][0], SLIME_COLORS[c0][1], t, 0)
-  drawSlimeAt(ctx, w - 17, h - 14, 0.9, SLIME_COLORS[c2][0], SLIME_COLORS[c2][1], t, 3.1)
+  ctx.restore()
 }
 
 export type PosterWallHandle = {
   group: THREE.Group
+  frame: THREE.Group
   tick: (t: number) => void
 }
 
@@ -141,31 +107,16 @@ export function buildPosterWall(): PosterWallHandle {
   const h = 2.0
   const frame = new THREE.Group()
 
-  const pink = toonMat('#FF4F9E')
-  const white = toonMat('#FFF9F0')
-  const t1 = 0.09
   const t2 = 0.05
-
-  // 粉色外框
-  const pTop = new THREE.Mesh(new THREE.BoxGeometry(w + t1 * 2, t1, t1), pink); pTop.position.set(0, h / 2 + t1 / 2, 0)
-  const pBot = new THREE.Mesh(new THREE.BoxGeometry(w + t1 * 2, t1, t1), pink); pBot.position.set(0, -h / 2 - t1 / 2, 0)
-  const pL = new THREE.Mesh(new THREE.BoxGeometry(t1, h + t1 * 2, t1), pink); pL.position.set(-w / 2 - t1 / 2, 0, 0)
-  const pR = new THREE.Mesh(new THREE.BoxGeometry(t1, h + t1 * 2, t1), pink); pR.position.set(w / 2 + t1 / 2, 0, 0)
-
-  // 白色衬边
-  const wTop = new THREE.Mesh(new THREE.BoxGeometry(w + t2 * 2, t2, t2 * 0.7), white); wTop.position.set(0, h / 2 + t2 / 2, 0)
-  const wBot = new THREE.Mesh(new THREE.BoxGeometry(w + t2 * 2, t2, t2 * 0.7), white); wBot.position.set(0, -h / 2 - t2 / 2, 0)
-  const wL = new THREE.Mesh(new THREE.BoxGeometry(t2, h + t2 * 2, t2 * 0.7), white); wL.position.set(-w / 2 - t2 / 2, 0, 0)
-  const wR = new THREE.Mesh(new THREE.BoxGeometry(t2, h + t2 * 2, t2 * 0.7), white); wR.position.set(w / 2 + t2 / 2, 0, 0)
 
   // 海报画面
   const screen = new THREE.Mesh(
     new THREE.PlaneGeometry(w - t2 * 2 + 0.02, h - t2 * 2 + 0.02),
-    new THREE.MeshBasicNodeMaterial({ map: tex }),
+    new THREE.MeshBasicNodeMaterial({ map: tex, transparent: true }),
   )
   screen.position.z = 0.012
 
-  frame.add(pTop, pBot, pL, pR, wTop, wBot, wL, wR, screen)
+  frame.add(screen)
   frame.position.set(0, 2.6, -4.86)
   frame.rotation.z = 0.012 // 手挂微歪
   group.add(frame)
@@ -179,7 +130,7 @@ export function buildPosterWall(): PosterWallHandle {
     tex.needsUpdate = true
   }
 
-  return { group, tick }
+  return { group, frame, tick }
 }
 
 /* ============================================================
@@ -309,8 +260,8 @@ export function buildMikuPoster(): MikuPosterHandle {
   const group = new THREE.Group()
   const frame = new THREE.Group()
 
-  const pink = toonMat('#FF4F9E')
-  const white = toonMat('#FFF9F0')
+  const pink = toonMat('#00BEB9')
+  const white = toonMat('#F4FAF5')
   const t1 = 0.07
   const t2 = 0.04
 
@@ -329,10 +280,10 @@ export function buildMikuPoster(): MikuPosterHandle {
   screen.position.z = 0.012
 
   // 顶部两角和纸胶带
-  const tapeL = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.08, 0.012), toonMat('#57C1F0'))
+  const tapeL = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.08, 0.012), toonMat('#A0BCB7'))
   tapeL.position.set(-w / 2 + 0.05, h / 2 + 0.04, 0.02)
   tapeL.rotation.z = Math.PI / 4
-  const tapeR = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.08, 0.012), toonMat('#FFD84D'))
+  const tapeR = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.08, 0.012), toonMat('#C9C7AA'))
   tapeR.position.set(w / 2 - 0.05, h / 2 + 0.04, 0.02)
   tapeR.rotation.z = -Math.PI / 4
 

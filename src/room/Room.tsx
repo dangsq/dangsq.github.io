@@ -2,23 +2,67 @@ import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three/webgpu'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { buildRoom, type RoomHandle } from './scene'
-import { EdgeCritters } from './EdgeCritters'
+import { startBackgroundMusic } from './music'
 import { publications, projects, profile, papersMeta } from '../data/content'
+import { sceneHotspots } from './hotspots'
 import './Room.css'
 
 type PanelKind = 'papers' | 'projects' | 'about' | 'contact' | null
 
 export function Room() {
   const mountRef = useRef<HTMLDivElement>(null)
-  const papersTagRef = useRef<HTMLDivElement>(null)
-  const projectsTagRef = useRef<HTMLDivElement>(null)
+  const hotspotRefs = useRef(new Map<string, HTMLDivElement>())
+  const roomHandleRef = useRef<RoomHandle | null>(null)
+  const musicRef = useRef<{ stop: () => void } | null>(null)
+  const musicStartingRef = useRef(false)
   const [loading, setLoading] = useState(true)
+  const [labelsVisible, setLabelsVisible] = useState(true)
+  const labelsVisibleRef = useRef(true)
+  const toggleLabels = () => {
+    labelsVisibleRef.current = !labelsVisibleRef.current
+    setLabelsVisible(labelsVisibleRef.current)
+    setPanel(null)
+  }
   const [panel, setPanel] = useState<PanelKind>(null)
+  const [musicOn, setMusicOn] = useState(false)
+  const [musicError, setMusicError] = useState(false)
+  const [aboutLang, setAboutLang] = useState<'zh' | 'en'>('zh')
+
+  const toggleMusic = async () => {
+    if (musicStartingRef.current) return
+    if (musicRef.current) {
+      musicRef.current.stop()
+      musicRef.current = null
+      roomHandleRef.current?.setSpeakerPlaying(false)
+      setMusicOn(false)
+      return
+    }
+    musicStartingRef.current = true
+    try {
+      const music = await startBackgroundMusic()
+      musicRef.current = music
+      roomHandleRef.current?.setSpeakerPlaying(true)
+      setMusicOn(true)
+      setMusicError(false)
+    } catch (error) {
+      console.error('[Room] 音乐播放失败:', error)
+      setMusicError(true)
+    } finally {
+      musicStartingRef.current = false
+    }
+  }
 
   /* ESC 关闭面板 */
   useEffect(() => {
     const onKey = (ev: KeyboardEvent) => {
-      if (ev.key === 'Escape') setPanel(null)
+      if (ev.key === 'Escape') {
+        setPanel(null)
+        labelsVisibleRef.current = true
+        setLabelsVisible(true)
+      }
+      const target = ev.target as HTMLElement | null
+      if (ev.key.toLowerCase() === 'h' && !ev.repeat && !ev.metaKey && !ev.ctrlKey && !ev.altKey
+        && !target?.closest('input, textarea, select, [contenteditable="true"]')) toggleLabels()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -32,10 +76,11 @@ export function Room() {
     let renderer: InstanceType<typeof THREE.WebGPURenderer> | null = null
     let controls: OrbitControls | null = null
     let room: RoomHandle | null = null
+    let resizeObserver: ResizeObserver | null = null
 
     // 相机：水平直视后墙（正对桌子与海报）
-    const camera = new THREE.PerspectiveCamera(50, mount.clientWidth / mount.clientHeight, 0.1, 60)
-    camera.position.set(0, 1.85, -1.0)
+    const camera = new THREE.PerspectiveCamera(54, mount.clientWidth / mount.clientHeight, 0.1, 60)
+    camera.position.set(6.64, 5.30, 6.86)
 
     /* ── 交互拾取：桌上的书 → 论文，笔记本 → 设计项目 ── */
     const raycaster = new THREE.Raycaster()
@@ -54,7 +99,7 @@ export function Room() {
         let o: THREE.Object3D | null = hit.object
         while (o) {
           const kind = (o.userData as { kind?: string }).kind
-          if (kind === 'book' || kind === 'laptop') return o
+          if (kind === 'book' || kind === 'laptop' || kind === 'speaker') return o
           if (kind) return null // 其它带 kind 的物件不响应
           o = o.parent
         }
@@ -82,7 +127,7 @@ export function Room() {
     }
 
     const onPointerMove = (ev: PointerEvent) => {
-      const root = pick(ev.clientX, ev.clientY)
+      const root = labelsVisibleRef.current ? pick(ev.clientX, ev.clientY) : null
       if (root !== hoverRoot) {
         setGlow(hoverRoot, false)
         hoverRoot = root
@@ -99,16 +144,19 @@ export function Room() {
     const onPointerUp = (ev: PointerEvent) => {
       // 拖拽视角不算点击
       if (Math.hypot(ev.clientX - downX, ev.clientY - downY) > 6) return
-      const root = pick(ev.clientX, ev.clientY)
+      const root = labelsVisibleRef.current ? pick(ev.clientX, ev.clientY) : null
       const kind = root ? (root.userData as { kind: string }).kind : null
       if (kind === 'book' || kind === 'laptop') {
         setPanel(kind === 'book' ? 'papers' : 'projects')
+      } else if (kind === 'speaker') {
+        void toggleMusic()
       }
     }
 
     const onResize = () => {
       if (!mount || !renderer) return
       camera.aspect = mount.clientWidth / mount.clientHeight
+      camera.fov = Math.max(54, Math.min(105, THREE.MathUtils.radToDeg(2 * Math.atan(0.7 / camera.aspect))))
       camera.updateProjectionMatrix()
       renderer.setSize(mount.clientWidth, mount.clientHeight)
     }
@@ -123,16 +171,20 @@ export function Room() {
       await renderer.init()
       if (disposed) return
       mount.appendChild(renderer.domElement)
+      onResize()
+      resizeObserver = new ResizeObserver(onResize)
+      resizeObserver.observe(mount)
 
       room = buildRoom()
+      roomHandleRef.current = room
 
       // 轨道相机：严格限制在房间内的合理视角
       controls = new OrbitControls(camera, renderer.domElement)
-      controls.target.set(0, 1.9, -3.9)
+      controls.target.set(0, 2.3, -7)
       controls.enableDamping = true
       controls.dampingFactor = 0.06
       controls.minDistance = 2.2
-      controls.maxDistance = 4.5
+      controls.maxDistance = 16
       controls.minPolarAngle = 0.9
       controls.maxPolarAngle = 1.78 // 可抬头看屋顶霓虹与吸顶灯
       controls.minAzimuthAngle = -1.3 // 左右限制，不出房间（可看到侧墙的床和爱心）
@@ -146,20 +198,18 @@ export function Room() {
 
       const clock = new THREE.Clock()
       let frames = 0
-      // 常驻 2D 贴纸标签：把 3D 锚点投影到屏幕坐标，标签跟随
-      const tagVec = new THREE.Vector3()
-      const updateTags = () => {
+      const projected = new THREE.Vector3()
+      const updateHotspots = () => {
         if (!room) return
-        const w = mount.clientWidth
-        const h = mount.clientHeight
-        const place = (anchor: THREE.Object3D, el: HTMLDivElement | null) => {
-          if (!el) return
-          tagVec.setFromMatrixPosition(anchor.matrixWorld)
-          tagVec.project(camera)
-          el.style.transform = `translate(${(tagVec.x * 0.5 + 0.5) * w}px, ${(-tagVec.y * 0.5 + 0.5) * h}px)`
+        for (const entry of sceneHotspots) {
+          const element = hotspotRefs.current.get(entry.id)
+          const anchor = room.tagAnchors[entry.id]
+          if (!element || !anchor) continue
+          anchor.getWorldPosition(projected).project(camera)
+          const visible = projected.z > -1 && projected.z < 1 && Math.abs(projected.x) < 0.96 && Math.abs(projected.y) < 0.94
+          element.style.visibility = visible ? 'visible' : 'hidden'
+          element.style.transform = `translate(${(projected.x * 0.5 + 0.5) * mount.clientWidth}px, ${(-projected.y * 0.5 + 0.5) * mount.clientHeight}px)`
         }
-        place(room.tagAnchors.papers, papersTagRef.current)
-        place(room.tagAnchors.projects, projectsTagRef.current)
       }
       renderer.setAnimationLoop(() => {
         if (!renderer || !controls || !room) return
@@ -167,7 +217,7 @@ export function Room() {
         room.posterWall.tick(clock.getElapsedTime())
         room.tick(clock.getElapsedTime())
         renderer.render(room.scene, camera)
-        updateTags()
+        updateHotspots()
         // 前几帧渲染管线就绪后再揭幕，避免闪黑/半成品画面
         if (++frames === 3) setLoading(false)
       })
@@ -180,6 +230,7 @@ export function Room() {
     return () => {
       disposed = true
       window.removeEventListener('resize', onResize)
+      resizeObserver?.disconnect()
       if (renderer) {
         renderer.domElement.removeEventListener('pointermove', onPointerMove)
         renderer.domElement.removeEventListener('pointerdown', onPointerDown)
@@ -188,6 +239,9 @@ export function Room() {
       renderer?.setAnimationLoop(null)
       controls?.dispose()
       room?.dispose()
+      roomHandleRef.current = null
+      musicRef.current?.stop()
+      musicRef.current = null
       renderer?.domElement.remove()
       renderer?.dispose()
     }
@@ -198,28 +252,37 @@ export function Room() {
   return (
     <div className="room-root">
       <div ref={mountRef} className="room-mount" />
-      <EdgeCritters onCatClick={() => setPanel('about')} onSlimeClick={() => setPanel('contact')} />
+      {labelsVisible && <div className="scene-signature"><span>Shengqi Dang</span><small>党圣奇 · Visual Affect & Experiments</small></div>}
+      {labelsVisible && <nav className="space-navigation" aria-label="Personal navigation">
+        <button onClick={() => setPanel('about')}>关于我 About me <span>↗</span></button>
+        <button onClick={() => setPanel('contact')}>联系我 Contact <span>↗</span></button>
+      </nav>}
+      <button className="scene-ui-toggle" onClick={toggleLabels} aria-pressed={!labelsVisible}
+        aria-label={labelsVisible ? "隐藏界面 Hide UI" : "显示界面 Show UI"} title="H 切换界面，Esc 恢复">
+        {labelsVisible ? "隐藏界面 · Hide UI" : "显示界面 · Show UI"} <kbd>H</kbd>
+      </button>
 
-      {/* 常驻 2D 贴纸标签：标示可交互的物体（跟随 3D 锚点） */}
-      {!loading && (
-        <>
-          <div ref={papersTagRef} className="scene-tag-wrap">
-            <button className="scene-tag tag-papers" onClick={() => setPanel('papers')}>
-              <span className="tag-icon">✦</span>论文 Papers
-            </button>
-          </div>
-          <div ref={projectsTagRef} className="scene-tag-wrap">
-            <button className="scene-tag tag-projects" onClick={() => setPanel('projects')}>
-              <span className="tag-icon">✿</span>设计 Projects
-            </button>
-          </div>
-        </>
+      {!loading && labelsVisible && (
+        <nav className="object-hotspots" aria-label="场景入口 Scene objects">
+          {sceneHotspots.map(entry => {
+            const label = entry.id === 'music' ? `音乐 Music · ${musicError ? '不可用' : musicOn ? 'ON' : 'OFF'}` : entry.label
+            return <div key={entry.id} className="object-hotspot" style={{ visibility: 'hidden' }}
+              ref={element => { if (element) hotspotRefs.current.set(entry.id, element); else hotspotRefs.current.delete(entry.id) }}>
+              <button className={`object-hotspot-button ${entry.id === 'music' && musicOn ? 'is-playing' : ''}`}
+                aria-label={label} aria-pressed={entry.id === 'music' ? musicOn : undefined}
+                onClick={() => entry.action === 'music' ? void toggleMusic() : setPanel(entry.action)}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d={entry.path} /></svg>
+                <span className="object-hotspot-label">{label}</span>
+              </button>
+            </div>
+          })}
+        </nav>
       )}
 
       {/* 3D 场景加载提示：Y2K 波点屏 + 四角闪 */}
       <div className={`room-loading ${loading ? '' : 'done'}`}>
         <div className="loading-sparkle" />
-        <div className="loading-title">正在搭建小房间…</div>
+        <div className="loading-title">正在进入房间…</div>
         <div className="loading-dots"><i /><i /><i /></div>
       </div>
 
@@ -267,8 +330,8 @@ export function Room() {
           <div className="poster-card info-card" onClick={e => e.stopPropagation()}>
             <button className="info-close" onClick={closePanel} aria-label="关闭">✕</button>
             <div className="poster-card-head">
-              <h2>设计项目</h2>
-              <span className="poster-venue">Projects ✦ {projects.length} 个</span>
+              <h2>作品集</h2>
+              <span className="poster-venue">Collection ✦ {projects.length} 件作品</span>
             </div>
             <div className="info-list">
               <div className="info-grid">
@@ -283,7 +346,7 @@ export function Room() {
                     </div>
                     <div className="info-item-desc">{p.desc}</div>
                     <div className="info-item-foot">
-                      <span className="authors">{p.team}</span>
+                      {p.team && <span className="authors">{p.team}</span>}
                       {p.link && (
                         <a className="info-link" href={p.link} target="_blank" rel="noreferrer">去看看 ↗</a>
                       )}
@@ -301,29 +364,57 @@ export function Room() {
         <div className="poster-modal" onClick={closePanel}>
           <div className="poster-card info-card about-card" onClick={e => e.stopPropagation()}>
             <button className="info-close" onClick={closePanel} aria-label="关闭">✕</button>
-            <div className="poster-card-head">
-              <h2>关于我</h2>
-              <span className="poster-venue">{profile.roleZh} · {profile.role}</span>
-            </div>
-            <div className="info-list">
-              <p className="about-name">{profile.nameZh}<span className="about-name-en">{profile.name}</span></p>
-              <p className="about-tagline">{profile.taglineZh}</p>
-              <p className="about-bio">{profile.bioZh}</p>
-              <div className="about-sec">✦ 兴趣方向</div>
-              <div className="about-tags">
-                {profile.interests.map(it => <span className="about-tag" key={it}>{it}</span>)}
+            <div className="about-sheet">
+              <header className="about-cover">
+                <div className="about-topline">
+                  <span className="about-eyebrow">ABOUT / 关于</span>
+                  <div className="about-language" role="group" aria-label="About Me language">
+                    <button type="button" className={aboutLang === 'zh' ? 'active' : ''} onClick={() => setAboutLang('zh')} aria-pressed={aboutLang === 'zh'}>中</button>
+                    <span aria-hidden="true">/</span>
+                    <button type="button" className={aboutLang === 'en' ? 'active' : ''} onClick={() => setAboutLang('en')} aria-pressed={aboutLang === 'en'}>EN</button>
+                  </div>
+                </div>
+                <div className="about-title-row">
+                  <div>
+                    <span className="about-hello">{aboutLang === 'zh' ? '关于' : 'About'}</span>
+                    <h2>{aboutLang === 'zh' ? profile.nameZh : profile.name}<span>{aboutLang === 'zh' ? profile.name : profile.nameZh}</span></h2>
+                    <p className="about-identity">{aboutLang === 'zh' ? profile.roleZh : profile.role}</p>
+                  </div>
+                  <div className="about-doodle" aria-hidden="true"><span>✳</span><b>sqd.</b></div>
+                </div>
+              </header>
+
+              <div className="about-columns">
+                <main className="about-story">
+                  <p className="about-fragment">{aboutLang === 'zh' ? profile.bioZh : profile.bio}</p>
+                  <section className="about-journey">
+                    <h3>{aboutLang === 'zh' ? '走过的路' : 'The path so far'} <span>{aboutLang === 'zh' ? 'how I got here' : 'education & detours'}</span></h3>
+                    <ol>
+                      {profile.education.map(e => (
+                        <li key={e.period}>
+                          <time>{e.period}</time>
+                          <span>{e.text}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </section>
+                </main>
+                <aside className="about-margin">
+                  <div className="about-margin-note">
+                    <span className="about-note-label">{aboutLang === 'zh' ? '最近着迷 / currently into' : 'CURRENTLY INTO'}</span>
+                    <p>{profile.interests.join(' · ')}</p>
+                  </div>
+                  <div className="about-margin-note about-personal-note">
+                    <span className="about-note-label">{aboutLang === 'zh' ? '页边的小字' : 'IN THE MARGINS'}</span>
+                    <p>{aboutLang === 'zh' ? profile.personality : profile.personalityEn}</p>
+                    <ul>{(aboutLang === 'zh' ? profile.funFacts : profile.funFactsEn).map(f => <li key={f}>{f}</li>)}</ul>
+                  </div>
+                </aside>
               </div>
-              <div className="about-sec">✦ 教育经历</div>
-              <ul className="about-edu">
-                {profile.education.map(e => (
-                  <li key={e.period}><span className="edu-period">{e.period}</span>{e.text}</li>
-                ))}
-              </ul>
-              <div className="about-sec">✦ 小档案</div>
-              <ul className="about-facts">
-                <li>{profile.personality}</li>
-                {profile.funFacts.map(f => <li key={f}>{f}</li>)}
-              </ul>
+              <footer className="about-footer">
+                <span aria-hidden="true">✳</span>
+                <a href={`mailto:${profile.email}`}>write me a note ↗</a>
+              </footer>
             </div>
           </div>
         </div>

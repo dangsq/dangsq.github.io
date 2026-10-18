@@ -12,7 +12,7 @@ export type Publication = {
 export type Project = {
   title: string
   titleEn?: string
-  team: string
+  team?: string
   tags: string
   desc: string
   link?: string
@@ -22,10 +22,10 @@ export const profile = {
   name: 'Shengqi Dang',
   nameZh: '党圣奇',
   initials: 'sqd',
-  role: 'PhD Candidate',
-  roleZh: '博士生',
-  tagline: 'researcher of human-centered generative models, graphics & visualization',
-  taglineZh: '做以人为本的生成式模型、图形学与可视化研究',
+  role: 'PhD researcher · amateur artist',
+  roleZh: '博士研究者 · 业余艺术家',
+  tagline: 'research / art / play',
+  taglineZh: '研究 / 艺术 / 游戏',
   affiliations: [
     'Shanghai Innovation Institute · 上海创智学院 (2025.09 →)',
     'Tongji University · 同济大学 (2025.03 →)',
@@ -36,11 +36,17 @@ export const profile = {
     { period: '2023.09 – 2025.01', text: 'M.Eng, AI & Data Design, Tongji University, College of Design & Innovation' },
     { period: '2019.09 – 2023.06', text: 'B.S., Mathematics, Tongji University' },
   ],
-  bio: `I'm a PhD candidate exploring where human-centered design meets generative AI — building tools that make creation feel more expressive, intuitive, and human. I love the messy intersection of technology, art, and human experience.`,
-  bioZh: `我是党圣奇，一名博士生，探索以人为中心的设计与生成式 AI 的交汇——做让创作更具表达力、更直觉、更有人情味的工具。我着迷于技术、艺术与人类体验之间那片混沌又迷人的交界地带。`,
+  bio: 'Mathematics, design, computing. Papers, games, installations, and images.',
+  bioZh: '数学、设计、计算机。论文、游戏、装置与图像。',
   personality: 'INFP · 依然相信跨学科的力量 · 咖啡因驱动',
-  interests: ['HCI', 'Generative Models', 'Computer Vision', 'Graphics & Fab', 'Visualization', 'Creative Coding'],
-  funFacts: ['做过的项目横跨论文、游戏、装置和可视化', '本科学数学，硕士转设计，现在读博搞 CS', '坚信好的研究应该既严谨又好玩'],
+  personalityEn: 'INFP · still believes in crossing disciplines · powered by caffeine',
+  interests: ['Visual Art', 'Creative Coding', 'Games', 'HCI', 'Generative Models', 'Visualization'],
+  funFacts: ['做过的项目横跨论文、游戏、装置和可视化', '本科学数学，硕士转设计，现在读博搞 CS', '喜欢严谨地胡思乱想，也喜欢把想法做成能玩的东西'],
+  funFactsEn: [
+    'My projects have crossed papers, games, installations, and visualization.',
+    'I studied mathematics, moved into design, and now do a PhD in computer science.',
+    'I like thinking carefully about strange ideas, then making them into things people can play with.',
+  ],
 }
 
 /* ────────────────────────────────────────────────
@@ -104,6 +110,20 @@ export const papersMeta = {
 }
 
 export const projects: Project[] = [
+  {
+    title: 'N+1 位艺术家',
+    titleEn: 'N+1 Artists',
+    tags: 'AI Art · Hackathon',
+    desc: 'AI 艺术黑客松作品。',
+    link: 'https://mp.weixin.qq.com/s/af5gduL7G9-ABfNFopRZQw',
+  },
+  {
+    title: '怪诞花园',
+    titleEn: 'Fantastical Garden',
+    tags: 'Tripothon · Game · Interactive Art',
+    desc: '音乐与几何、黑白绘画、黏土与糖果，三种创作方式生长为三个可游玩的花园。在漫游、触碰与聆听中，重新想象花园的形状，也发现自己的创造力。',
+    link: 'https://developers.tripo3d.ai/zh/events/tripothon-s1/gallery',
+  },
   {
     title: 'LLM 长短期记忆存储及任务规划',
     titleEn: 'LLM Memory & Task Planning',

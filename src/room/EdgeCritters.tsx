@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 type EdgeCrittersProps = {
   onCatClick?: () => void
   onSlimeClick?: () => void
+  musicOn?: boolean
 }
 
 function Cloud({ flip = false, sparkle = false }: { flip?: boolean; sparkle?: boolean }) {
@@ -42,7 +43,7 @@ function useCloudCount() {
   return n
 }
 
-export function EdgeCritters({ onCatClick, onSlimeClick }: EdgeCrittersProps) {
+export function EdgeCritters({ onCatClick, onSlimeClick, musicOn = false }: EdgeCrittersProps) {
   const cloudCount = useCloudCount()
   const clouds = Array.from({ length: cloudCount }, (_, i) => CLOUD_STYLES[i % CLOUD_STYLES.length])
 
@@ -94,7 +95,7 @@ export function EdgeCritters({ onCatClick, onSlimeClick }: EdgeCrittersProps) {
 
       {/* ── 右缘：史莱姆探头 → Contact me ── */}
       <div
-        className="edge-critter edge-slime"
+        className={`edge-critter edge-slime ${musicOn ? 'edge-slime-dancing' : ''}`}
         role="button"
         aria-label="Contact me"
         tabIndex={0}

@@ -2,7 +2,7 @@ import * as THREE from 'three/webgpu'
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js'
 import {
   Fn, uv, vec3, float, color, mix, fract, floor, smoothstep, texture,
-  mx_cell_noise_float, mx_fractal_noise_float, positionLocal, normalLocal,
+  mx_cell_noise_float, mx_fractal_noise_float, positionLocal, normalLocal, normalWorld, positionWorld,
 } from 'three/tsl'
 
 /* ── 圆角盒子：圆润家具的基础形状 ── */
@@ -27,8 +27,17 @@ export function toonGradient() {
 
 /* ── 平色 toon 材质 ── */
 export function toonMat(hex: string, side?: THREE.Side) {
-  const m = new THREE.MeshToonNodeMaterial(side ? { color: hex, side } : { color: hex })
+  const m = new THREE.MeshToonNodeMaterial({ color: hex, side: side ?? THREE.FrontSide, toneMapped: false })
   m.gradientMap = toonGradient()
+  const facing = normalWorld.dot(vec3(-0.34, 0.79, 0.51)).add(1).mul(0.5)
+  const crookedShadow = facing.add(positionWorld.y.mul(2.2).add(positionWorld.x.mul(0.9)).sin().mul(0.13))
+  const dark = smoothstep(float(0.16), float(0.47), crookedShadow)
+  const collapsedHighlight = smoothstep(float(0.78), float(0.86), facing)
+    .mul(smoothstep(float(0.74), float(0.96), positionWorld.x.mul(2.4).add(positionWorld.y.mul(1.9)).sin()))
+  const cleanShade = mix(color(hex).mul(0.66), color(hex), dark)
+  m.colorNode = mix(cleanShade, color('#003C77'), collapsedHighlight.mul(0.25))
+  m.emissive.set(hex)
+  m.emissiveIntensity = 0.32
   return m
 }
 
