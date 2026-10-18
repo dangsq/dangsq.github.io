@@ -1,0 +1,62 @@
+{
+  "chartblenderaninteractivesystemforauthoringandsynchronizingvisualizationchartsinvideo": {
+    "en": "Creates and embeds charts in video, using object and camera tracking to keep them synchronized with the scene. Customizable templates and editing tools reduce frame-by-frame authoring work.",
+    "zh": "将图表嵌入视频，通过物体与相机追踪让图表随场景同步运动；结合可定制模板和编辑工具，减少逐帧调整的制作工作。",
+    "source": "https://arxiv.org/abs/2506.13129"
+  },
+  "cogblendertowardscontinuouscognitiveinterventionintexttoimagegeneration": {
+    "en": "Rewrites prompts to represent extreme cognitive states, then blends their flow-matching velocity fields to continuously control image valence, arousal, dominance, and memorability.",
+    "zh": "将提示词改写为不同认知属性的极端状态，再混合它们对应的流匹配速度场，连续调控生成图像的效价、唤醒度、支配感与可记忆性。",
+    "source": "https://arxiv.org/abs/2603.09286v2"
+  },
+  "densicrafterphysicallyconstrainedgenerationandfabricationofselfsupportinghollowstructures": {
+    "en": "Optimizes density fields from pretrained 3D generators to create lightweight hollow objects that can stand stably while preserving their outer shape. Physical constraints avoid simulation, and printed prototypes validate fabrication.",
+    "zh": "优化预训练 3D 生成模型的密度场，在保留外形的同时得到轻量、能稳定站立的中空物体。用无需仿真的物理约束优化结构，并通过实际打印验证可制造性。",
+    "source": "https://arxiv.org/abs/2511.09298"
+  },
+  "designedtospreadagenerativeapproachtoenhanceinformationdiffusion": {
+    "en": "Combines a topology-free diffusion influence indicator with a reinforcement-learning editor to generate audience-aware text or images, improving information diffusion while preserving the original meaning.",
+    "zh": "结合无需网络拓扑的传播影响力指标与强化学习编辑器，生成面向目标受众的文本或图像，在保留原意的同时提升信息传播效果。",
+    "source": "https://ojs.aaai.org/index.php/AAAI/article/view/37063"
+  },
+  "driftawaremultimodaluserrepresentationlearningviamultiscaletemporalmodelingandsparsemixtureofexperts": {
+    "en": "Combines static profiles, short- and long-term behavior, and a sparse mixture of interest experts to track changing user preferences. Three-stage training improves interest and interaction prediction on social media datasets.",
+    "zh": "融合静态画像、短期行为与长期依赖，并用稀疏混合专家表示并存的多种兴趣，追踪用户偏好的变化；三阶段训练提升了社交媒体中的兴趣与交互预测。",
+    "source": "https://arxiv.org/abs/2608.25773"
+  },
+  "freeshellacontextfree4dprintingtechniqueforfabricatingcomplex3dtrianglemeshshells": {
+    "en": "Prints flat triangular tiles joined by heat-shrinkable connectors. Heating draws the tiles into a target 3D shell, while optimized mesh flattening improves precision and reduces dependence on materials and fabrication conditions.",
+    "zh": "将三角片和热收缩连接件平面打印出来，加热后由连接件牵引拼合为目标三维壳体；通过网格展平优化提高成形精度，并减少对材料与制作条件的依赖。",
+    "source": "https://arxiv.org/abs/2407.19533"
+  },
+  "fromlatentinfluencetolanguagediffusionorientedcontentgenerationviaaudiencesusceptiblefeatures": {
+    "en": "Optimizes content features for diffusion, decodes them into natural-language descriptions of audience susceptibility, and uses these descriptions to rewrite multimodal content. Evaluation shows higher predicted diffusion influence than the tested baselines.",
+    "zh": "先优化有利于传播的内容特征，再将其解码为自然语言描述的受众易感特征，用来指导多模态内容改写。实验中，生成内容的预测传播影响力优于所比较的方法。",
+    "source": "https://arxiv.org/abs/2608.19809"
+  },
+  "emoticraftertexttoemotionalimagegenerationbasedonvalencearousalmodel": {
+    "en": "Maps continuous valence–arousal values into text features so users can specify both image content and emotion. An emotion-focused loss strengthens emotional expression while retaining alignment with the prompt.",
+    "zh": "把连续的效价—唤醒度数值映射到文本特征，让用户同时指定图像内容与情绪，并通过情绪损失函数强化情绪表达，同时保持与提示词内容一致。",
+    "source": "https://openaccess.thecvf.com/content/ICCV2025/html/Dang_EmotiCrafter_Text-to-Emotional-Image_Generation_based_on_Valence-Arousal_Model_ICCV_2025_paper.html"
+  },
+  "fundingthefrontiervisualizingthebroadimpactofscienceandsciencefunding": {
+    "en": "Links research grants to publications, patents, policy documents, clinical trials, and news. Coordinated visualizations and predictive models help users examine downstream funding impacts and explore future investment opportunities.",
+    "zh": "将科研资助与论文、专利、政策文件、临床试验和新闻关联起来，通过联动可视化与预测模型，帮助用户分析资助的下游影响并探索未来投资机会。",
+    "source": "https://arxiv.org/abs/2509.16323"
+  },
+  "mvcrafteranintelligentsystemformusicguidedvideogeneration": {
+    "en": "Generates scripts from musical semantics, creates video clips, and aligns them to music using dynamic beat matching and visual-envelope warping. An editing interface lets users refine the resulting music videos.",
+    "zh": "从音乐语义生成脚本和视频片段，再通过动态节拍匹配与视觉包络变形实现音画同步，并提供编辑界面供用户调整生成的音乐视频。",
+    "source": "https://arxiv.org/abs/2504.17267"
+  },
+  "personalizingproductswithstylizedheadportraitsforselfexpression": {
+    "en": "PicMe converts face photos into stylized vector portraits for personalizing products. Two experiments and a user study assess portrait generation and how the resulting designs support self-expression.",
+    "zh": "PicMe 将人脸照片转为风格化矢量头像，用于个性化产品设计；通过两项实验与用户研究，评估头像生成效果及其对自我表达的支持。",
+    "source": "https://idvxlab.com/papers/2024CHI_PicMe_Shi.pdf"
+  },
+  "bringcliparttolife": {
+    "en": "ClipFaceShop uses reference clipart to edit facial attributes in photos. A lightweight adaptor in StyleGAN’s latent space transfers attributes such as hair or beard across the clipart–photo gap without paired training data.",
+    "zh": "ClipFaceShop 用参考剪贴画控制人脸照片的属性编辑，通过 StyleGAN 潜空间中的轻量适配器迁移发型、胡须等特征，无需成对训练数据即可跨越剪贴画与照片的域差异。",
+    "source": "https://openaccess.thecvf.com/content/ICCV2023/papers/Zhao_Bring_Clipart_to_Life_ICCV_2023_paper.pdf"
+  }
+}

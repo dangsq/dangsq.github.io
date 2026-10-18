@@ -3,9 +3,10 @@ import * as THREE from 'three/webgpu'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { buildRoom, type RoomHandle } from './scene'
 import { startBackgroundMusic } from './music'
-import { publications, projects, profile, papersMeta } from '../data/content'
+import { publications, profile, papersMeta } from '../data/content'
 import { sceneHotspots } from './hotspots'
 import './Room.css'
+import { Collection } from './Collection'
 
 type PanelKind = 'papers' | 'projects' | 'about' | 'contact' | null
 
@@ -16,6 +17,7 @@ export function Room() {
   const musicRef = useRef<{ stop: () => void } | null>(null)
   const musicStartingRef = useRef(false)
   const [loading, setLoading] = useState(true)
+  const [paperLang, setPaperLang] = useState<'zh' | 'en'>('en')
   const [labelsVisible, setLabelsVisible] = useState(true)
   const labelsVisibleRef = useRef(true)
   const toggleLabels = () => {
@@ -296,7 +298,14 @@ export function Room() {
               <span className="poster-venue">Publications ✦ {publications.length} 篇</span>
             </div>
             <div className="sync-badge" title={`数据源：${papersMeta.sources.join(' + ')}`}>
-              <span className="sync-dot" />自动同步 {papersMeta.sources.join(' · ')} · {new Date(papersMeta.fetchedAt).toLocaleDateString('zh-CN')}
+              <span className="sync-dot" />自动同步 · {papersMeta.sources.join(' · ')} · 最近成功：{new Date(papersMeta.fetchedAt).toLocaleDateString('zh-CN')}
+            </div>
+            <div className="paper-summary-toolbar">
+              <span>{paperLang === 'zh' ? '论文简介 · TL;DR / 原始摘要' : 'Paper summaries · TL;DR / Abstract'}</span>
+              <div role="group" aria-label="论文简介语言 / Summary language">
+                <button type="button" aria-pressed={paperLang === 'zh'} onClick={() => setPaperLang('zh')}>中</button>
+                <button type="button" aria-pressed={paperLang === 'en'} onClick={() => setPaperLang('en')}>EN</button>
+              </div>
             </div>
             <div className="info-list">
               <div className="info-grid">
@@ -312,7 +321,9 @@ export function Room() {
                         <a className="info-link" href={p.url} target="_blank" rel="noreferrer">PDF ↗</a>
                       )}
                     </div>
-                    <div className="info-item-desc">{p.abstract}</div>
+                    <span className="paper-summary-kind">{p.summarySource ? (paperLang === 'zh' ? 'TL;DR · 据摘要核对' : 'TL;DR · Reviewed against abstract') : (paperLang === 'zh' ? '自动同步摘要 · 未整理 TL;DR' : 'Synced abstract · TL;DR pending')}</span>
+                    <div className="info-item-desc">{(paperLang === 'zh' && p.abstractZh ? p.abstractZh : p.abstract) || (paperLang === 'zh' ? '数据源暂未提供摘要，可查看论文原文。' : 'Abstract not yet available from the data source. Please see the paper.')}</div>
+                    {p.summarySource && <a className="paper-summary-source" href={p.summarySource} target="_blank" rel="noreferrer">{paperLang === 'zh' ? '摘要原文' : 'Source abstract'} ↗</a>}
                     <div className="info-item-foot">
                       <span className="authors">{p.authors}</span>
                     </div>
@@ -324,40 +335,8 @@ export function Room() {
         </div>
       )}
 
-      {/* 设计项目面板：点击桌上的笔记本 */}
-      {panel === 'projects' && (
-        <div className="poster-modal" onClick={closePanel}>
-          <div className="poster-card info-card" onClick={e => e.stopPropagation()}>
-            <button className="info-close" onClick={closePanel} aria-label="关闭">✕</button>
-            <div className="poster-card-head">
-              <h2>作品集</h2>
-              <span className="poster-venue">Collection ✦ {projects.length} 件作品</span>
-            </div>
-            <div className="info-list">
-              <div className="info-grid">
-                {projects.map(p => (
-                  <div className="info-item" key={p.title}>
-                    <div className="info-item-title">
-                      {p.title}
-                      {p.titleEn && p.titleEn !== p.title && <span className="title-en"> · {p.titleEn}</span>}
-                    </div>
-                    <div className="info-item-meta">
-                      <span className="stamp">{p.tags}</span>
-                    </div>
-                    <div className="info-item-desc">{p.desc}</div>
-                    <div className="info-item-foot">
-                      {p.team && <span className="authors">{p.team}</span>}
-                      {p.link && (
-                        <a className="info-link" href={p.link} target="_blank" rel="noreferrer">去看看 ↗</a>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* 作品集：点击桌上的笔记本 */}
+      {panel === 'projects' && <Collection onClose={closePanel} />}
 
       {/* About me：点击左缘猫猫 */}
       {panel === 'about' && (

@@ -47,7 +47,7 @@ function stampOf(venue, year, url) {
 async function fetchJson(url, label, tries = 3) {
   for (let i = 1; i <= tries; i++) {
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': 'dangsq.github.io publications sync' } })
+      const res = await fetch(url, { headers: { 'User-Agent': 'dangsq.github.io publications sync' }, signal: AbortSignal.timeout(20000) })
       if (!res.ok) throw new Error(`${label} HTTP ${res.status}`)
       return res.json()
     } catch (e) {
@@ -100,14 +100,8 @@ async function fetchS2() {
   }))
 }
 
-/* 摘要截断：面板展示一行半足够，完整版给链接 */
-const trimAbstract = (s) => {
-  if (!s) return null
-  const clean = s.replace(/\s+/g, ' ').trim()
-  if (clean.length <= 220) return clean
-  const cut = clean.slice(0, 220)
-  return cut.slice(0, cut.lastIndexOf(' ')) + '…'
-}
+/* Preserve complete abstracts; reviewed TL;DRs live separately in paperSummaries.json. */
+const cleanAbstract = (s) => s ? s.replace(/\s+/g, ' ').trim() : null
 
 async function main() {
   const sources = []
@@ -137,6 +131,15 @@ async function main() {
     }
     console.error('[papers] 无任何数据且无缓存 JSON，构建终止')
     process.exit(1)
+  }
+
+  // Do not replace a complete cached list with a partial response or mark it fresh.
+  if (existsSync(OUT) && (sources.length < 2 || !dblp.length || !s2.length)) {
+    const cached = JSON.parse(readFileSync(OUT, 'utf8'))
+    if (cached.papers?.length) {
+      console.warn('[papers] 数据源不完整，保留已有论文、引用数及原同步日期')
+      return
+    }
   }
 
   const s2ByNorm = new Map(s2.map(p => [p._norm, p]))
@@ -191,7 +194,7 @@ async function main() {
         venue: p.venue || s2p?.venue || '',
         year,
         stamp: stampOf(p.venue || s2p?.venue || '', year, url),
-        abstract: trimAbstract(s2p?.abstract),
+        abstract: cleanAbstract(s2p?.abstract),
         citationCount: s2p?.citationCount ?? null,
         url,
       }

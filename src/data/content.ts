@@ -4,14 +4,21 @@ export type Publication = {
   venue: string
   year: string
   abstract: string
+  abstractZh?: string
+  summarySource?: string
   stamp?: string
   url?: string
   citationCount?: number | null
 }
 
+export type ProjectCategory = 'art' | 'design' | 'technology'
+
 export type Project = {
+  categories: ProjectCategory[]
   title: string
   titleEn?: string
+  award?: { event: string; name: string }
+  images?: string[]
   team?: string
   tags: string
   desc: string
@@ -52,51 +59,27 @@ export const profile = {
 /* ────────────────────────────────────────────────
    论文数据自动同步：scripts/fetch-papers.mjs 在构建前
    从 DBLP（元数据）+ Semantic Scholar（摘要/引用数）拉取，
-   生成 publications.json。下面的 overrides 是手工覆盖层：
-   主页偏好的短摘要、备注等，不会被子代拉取覆盖。
+   生成 publications.json。paperSummaries.json 保存据原始摘要核对的中英文 TL;DR 与来源，
+   独立于自动同步的数据，不会被构建时的数据拉取覆盖。
    ──────────────────────────────────────────────── */
 import papersJson from './publications.json'
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 
-const overrides: Record<string, Partial<Publication>> = {
-  emoticraftertexttoemotionalimagegenerationbasedonvalencearousalmodel: {
-    abstract: 'Text-to-image generation steered by emotion on the valence–arousal plane — making emotion a first-class control.',
-  },
-  densicrafterphysicallyconstrainedgenerationandfabricationofselfsupportinghollowstructures: {
-    abstract: 'Generating self-supporting hollow structures that are ready for physical fabrication.',
-  },
-  freeshellacontextfree4dprintingtechniqueforfabricatingcomplex3dtrianglemeshshells: {
-    abstract: 'A 4D printing technique for complex free-form 3D mesh shells, without support context.',
-  },
-  chartblenderaninteractivesystemforauthoringandsynchronizingvisualizationchartsinvideo: {
-    abstract: 'Authoring and synchronizing charts that live inside video.',
-  },
-  personalizingproductswithstylizedheadportraitsforselfexpression: {
-    abstract: 'Stylized head portraits as a vehicle for self-expression in personalized products.',
-  },
-  mvcrafteranintelligentsystemformusicguidedvideogeneration: {
-    abstract: 'An intelligent system that crafts music-guided videos.',
-  },
-  bringcliparttolife: {
-    abstract: 'Bringing static clipart to life with expressive, lively motion.',
-  },
-  cogblendertowardscontinuouscognitiveinterventionintexttoimagegeneration: {
-    abstract: 'Continuous cognitive intervention for controllable text-to-image synthesis.',
-  },
-  fundingthefrontiervisualizingthebroadimpactofscienceandsciencefunding: {
-    abstract: 'Visualizing the broad impact of science and science funding.',
-  },
-}
+// Abstract-based summaries reviewed against the linked primary sources.
+import summaryData from './paperSummaries.json'
+const summaries: Record<string, { en: string; zh: string; source: string }> = summaryData
 
 export const publications: Publication[] = papersJson.papers.map((p) => {
-  const ov = overrides[normTitle(p.title)] ?? {}
+  const summary = summaries[normTitle(p.title)]
   return {
     title: p.title,
     authors: p.authors.join(', '),
     venue: p.venue,
     year: String(p.year),
-    abstract: ov.abstract ?? p.abstract ?? '',
+    abstract: summary?.en ?? p.abstract ?? '',
+    abstractZh: summary?.zh,
+    summarySource: summary?.source,
     stamp: p.stamp,
     url: p.url ?? undefined,
     citationCount: p.citationCount,
@@ -111,39 +94,53 @@ export const papersMeta = {
 
 export const projects: Project[] = [
   {
+    categories: ['art', 'technology'],
     title: 'N+1 位艺术家',
     titleEn: 'N+1 Artists',
+    team: '周致远、党圣奇',
+    award: { event: '首届全球AI艺术黑客松', name: '最佳颠覆创新奖——安迪沃霍尔奖' },
     tags: 'AI Art · Hackathon',
     desc: 'AI 艺术黑客松作品。',
     link: 'https://mp.weixin.qq.com/s/af5gduL7G9-ABfNFopRZQw',
   },
   {
+    categories: ['art', 'design'],
     title: '怪诞花园',
     titleEn: 'Fantastical Garden',
+    team: 'Jojo、梅子雨、电子蝴蝶（党圣奇）',
+    images: ['fantastical-garden.png'],
+    award: { event: 'Tripothon', name: '最佳tripo工具使用奖' },
     tags: 'Tripothon · Game · Interactive Art',
     desc: '音乐与几何、黑白绘画、黏土与糖果，三种创作方式生长为三个可游玩的花园。在漫游、触碰与聆听中，重新想象花园的形状，也发现自己的创造力。',
     link: 'https://developers.tripo3d.ai/zh/events/tripothon-s1/gallery',
   },
   {
+    categories: ['design', 'technology'],
     title: 'LLM 长短期记忆存储及任务规划',
     titleEn: 'LLM Memory & Task Planning',
+    images: ['llm-1.jpg', 'llm-2.jpg', 'llm-3.jpg', 'llm-4.jpg', 'llm-5.jpg', 'llm-6.jpg', 'llm-7.jpg'],
     team: 'Xuechen Li, Yuqi Liu, Shengqi Dang',
     tags: 'Agents · LLM · Interaction Design',
     desc: '让人参与到 LLM 的记忆管理中，用工作流整理与规划模型记忆，实现更高效的任务规划。',
   },
   {
+    categories: ['art', 'technology'],
     title: '文字洪流 TORRENT OF WORDS',
+    images: ['torrent.jpg'],
     team: 'Hao Ni, Yi He, Shengqi Dang',
     tags: 'Visual Art · Particle/Fluid Sim · Unity',
     desc: '一个多端交互程序，让观众沉浸于生成式 AI 文字的洪流，探索人与语言的新关系。',
   },
   {
+    categories: ['design', 'technology'],
     title: 'radical run run run',
+    images: ['radical.png'],
     team: 'Hao Ni, Jingxin Ye, Shengqi Dang',
     tags: 'Game Design · Algorithm · Traditional Culture',
     desc: '一款帮助外国人在碎片时间轻松学汉字的游戏，把学习和玩耍揉在一起。',
   },
   {
+    categories: ['design', 'technology'],
     title: 'How Stable Diffusion Imagines Images',
     titleEn: '一段数据可视化之旅',
     team: 'Hao Ni, Shengqi Dang',
@@ -152,8 +149,10 @@ export const projects: Project[] = [
     link: 'https://sd-vis.ioclab.app',
   },
   {
+    categories: ['design', 'technology'],
     title: 'Picme 个性化内容定制系统',
     titleEn: 'Picme',
+    images: ['picme-1.png', 'picme-2.png'],
     team: 'Yechun Peng, Shengqi Dang, Yang Shi, Nan Cao, Nanxuan Zhao',
     tags: 'Content Customization · Cartoon Avatar',
     desc: '用深度学习把头像照片转成卡通头像，并应用到个性化内容定制。',

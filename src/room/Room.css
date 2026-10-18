@@ -948,3 +948,11 @@
 @media (pointer: coarse) { .object-hotspot-button { width: 42px; height: 42px; } }
 /* Names stay visible, including on touch screens. */
 .object-hotspot-label { opacity: 1; font-size: 10px; padding: 3px 6px; background: #f5ffffdf; }
+.paper-summary-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 16px 0 8px; color: #53727a; font-size: 11px; }
+.paper-summary-toolbar > div { display: flex; gap: 4px; }
+.paper-summary-toolbar button { background: transparent; border: 1px solid transparent; padding: 6px 9px; color: #53727a; cursor: pointer; }
+.paper-summary-toolbar button[aria-pressed="true"] { border-color: #a9c9cb; color: #12485b; background: #e9f3f0; }
+.paper-summary-toolbar button:focus-visible { outline: 2px solid #1263ed; outline-offset: 2px; }
+.paper-summary-source { display: inline-block; color: #33748a; font: 10px/1.5 Arial, sans-serif; text-underline-offset: 3px; margin: 4px 0 10px; }
+.paper-summary-kind { display: block; margin: 10px 0 6px; color: #53727a; font: 9px/1.5 Arial, 'PingFang SC', sans-serif; letter-spacing: .03em; }
+.sync-badge { flex-wrap: wrap; line-height: 1.6; }
