@@ -380,7 +380,9 @@ export function Room() {
                     <h2>{aboutLang === 'zh' ? profile.nameZh : profile.name}<span>{aboutLang === 'zh' ? profile.name : profile.nameZh}</span></h2>
                     <p className="about-identity">{aboutLang === 'zh' ? profile.roleZh : profile.role}</p>
                   </div>
-                  <div className="about-doodle" aria-hidden="true"><span>✳</span><b>sqd.</b></div>
+                  <figure className="about-portrait">
+                    <img src="./images/shengqi-dang.jpg" alt={aboutLang === 'zh' ? '党圣奇的照片' : 'Portrait of Shengqi Dang'} width="1279" height="1706" />
+                  </figure>
                 </div>
               </header>
 

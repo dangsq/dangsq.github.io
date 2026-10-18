@@ -877,6 +877,12 @@
 .about-hello { font: 11px/1.5 'Helvetica Neue', Arial, sans-serif; color: #54737e; transform: none; margin: 28px 0 12px; }
 .about-identity { color: #20627a; border: 0; font-size: 12px; }
 .about-doodle { display: none; }
+.about-portrait { flex: 0 0 210px; margin: 28px 0 0; padding: 8px; background: #fff; }
+.about-portrait img { display: block; width: 100%; height: auto; }
+@media (max-width: 600px) {
+  .about-title-row { align-items: flex-start; flex-wrap: wrap; gap: 8px 24px; }
+  .about-portrait { flex-basis: 150px; margin-top: 20px; padding: 6px; }
+}
 .about-eyebrow, .about-note-label, .about-language { font-family: 'Helvetica Neue', Arial, sans-serif; color: #53727a; }
 .about-language button.active { color: #075c83; }
 .about-columns { border-top: 1px solid #bed5d5; gap: 36px; }
